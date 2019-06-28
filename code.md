@@ -1,5 +1,9 @@
 #### string中的substr接口用来获取子串
 
+#### string中的find接口如果找到的字串在开头那么会返回0
+
+    所以不能通过 if (str.find("pattern"))来判断能找到，而要通过 if (string::npos != str.find("pattern")) 来进行。
+
 #### stringstream 字符串流中的clear() 接口注意点
 
     ss.clear() 不会清空流内容，只会设置错误标记，如果要清空内容，请用ss.str("")
