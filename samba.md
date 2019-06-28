@@ -8,6 +8,15 @@
 
 #### ctdb 问题定位命令
     
-    ctdb status             // 看状态 release 释放ip，takeover获取ip
-    ctdb ip                 //看ip分配     
-    /var/log/ctdb/ctdb.log  //ctdb日志多查看 
+   * ctdb ip 查看动态ip所在的节点号 （显示在0上）
+   
+    # ctdb ip
+    # 192.168.0.90 0 
+    
+   * 查看序号0所在的主机
+   
+    # ctdb status 
+    pnn：0 192.168.0.11
+    pnn：1 192.168.0.12
+
+   * 查看日志 /var/log/ctdb/ctdb.log  //ctdb日志多查看 
