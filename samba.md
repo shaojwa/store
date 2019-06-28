@@ -5,6 +5,20 @@
 #### 如何查看samba和AD服务器交互是否正常
 
     net ads testjoin    // 查如果不正常，得考虑是网络问题还是winbind进程出问题。
+    
+#### samba 改异步
+
+samba/smb.conf在[global]中添加  
+
+    strict sync = no
+    sync always = no 
+    
+重启smbd进程
+testparm –sv 可以检查配置
+
+#### 查看samba状态
+
+    smbstatus
 
 #### ctdb 问题定位命令
     
