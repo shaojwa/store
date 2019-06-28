@@ -1,3 +1,7 @@
+####　几个链接
+
+     https://ceph.com/community/new-luminous-cephfs-subtree-pinning/
+
 #### 根目录所在的子树一般是在rank值为0的mds上
 
     尽管在rank值为0的mds上，但是export_pin字段为-1，也就是并没有pin在rank值为0的mds上。
