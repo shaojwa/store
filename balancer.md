@@ -10,7 +10,7 @@
     
     export dir 会导致子树迁移，但是并不会pin住。所以很多时候 export dir之后，马上回迁移回来。
 
-#### 要把一个dir拼在一个mds上
+#### 要把一个dir pin在一个mds上
 
     setfattr -n ceph.dir.pin -v 1 /mnt/cephfs/tmp // 要bin住只能通过这种方式
 
