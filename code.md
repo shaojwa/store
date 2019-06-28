@@ -27,7 +27,7 @@
     CInode *get_inode()    { return inode; }
     const CInode *get_inode() const { return inode; }
   
-  * diri = dir->get_inode() 调用时会更具dir是不是const指针进行选择，如果dir是const指正，那么编译时只会调用第二个接口。
+  diri = dir->get_inode() 调用时会更具dir是不是const指针进行选择，如果dir是const指正，那么编译时只会调用第二个接口。
   所以，而如果CInode中获取字段的接口如果没有const属性，就不能调用，所以代码中很多时候以diri->inode的方式直接访问字段。
   
   
