@@ -1,3 +1,12 @@
+
+#### lease相关的时间配置有哪些？
+#### Mutex::Locker l(mds->mds_lock) 是如何获取锁的？
+#### cond.Wait(mds->mds_lock) 是如何释放锁的？
+#### systemctl中的ceph-mds.service 和ceph-mds.target有什么区别？
+#### 对象的omap和xattr有什么区别？
+#### dir_auth_pin和auth_pin的区别是什么？
+
+
 #### mds_rank_progr 线程的作用
   
 好像嗯哼一些内部的消息处（比如MDSInternalContextBase），laggy，shutdown等处理有关。
@@ -7,13 +16,11 @@
 ProgressThread::entry() 会在一开始获取到锁，然后cond.Wait(mds->mds_lock);释放锁后会尝试再次获取锁。
 
   
-#### 为什么需要 auth_pin
+#### 为什么需要 auth_pin？
 
 auth_pin的目的是两部分：
 一是数据的auth不会改变，就是数据不会被迁移。
 二是pin，就是数据已在在内存中，不会trim掉。ceph中，inode，dentry，dir都有auth_pin。
-
-#### dir_auth_pin和auth_pin的区别是什么？
 
 #### freeing和frozen是做什么用的？
 
@@ -29,13 +36,6 @@ auth_pin的目的是两部分：
 
 lease是处理dentry相关的，lease机制，客户端缓存部分cap，减少客户端发往mds的请求。
 
-#### lease相关的时间配置有哪些？
-
-
-#### Mutex::Locker l(mds->mds_lock) 是如何获取锁的？
-#### cond.Wait(mds->mds_lock) 是如何释放锁的？
-#### systemctl中的ceph-mds.service 和ceph-mds.target有什么区别？
-
 #### 文件的layout信息怎么看
 
 文件一旦创建就会有一个layout信息，可以通过以下命令查看：
@@ -48,6 +48,11 @@ lease是处理dentry相关的，lease机制，客户端缓存部分cap，减少�
      
 #### 文件的layout信息是存放在什么地方？
 
+存在放文件的第一个数据对象的xattr中，可以通过以下命令看到：
+
+    $ rados -p <data_pool> listxattr 100000003f2.00000000
+    layout
+    parent
      
 #### 怎么找到一个文件对应的对象？
 
