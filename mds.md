@@ -45,7 +45,9 @@ lease是处理dentry相关的，lease机制，客户端缓存部分cap，减少�
 其中一般信息是：
     
      ceph.file.layout="stripe_unit=4194304 stripe_count=1 object_size=4194304 pool=.data.pool0
-     
+
+文件的layout和parent信息是放在数据池的第一个对象中的，而目录的这两个信息是在元数据池中的。
+
 #### 文件的layout信息是存放在什么地方？
 
 存在放文件的第一个数据对象的xattr中，可以通过以下命令看到：
