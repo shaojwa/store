@@ -14,14 +14,13 @@ pg 的外部状态：
 
 * recovering：一个osd因为某种原因down掉一段时间后重新up，此时的内容可能已经落后于最新的版本，所以这个osd就需要和最新的副本同步，此时反应到pg层的状态就是recovering，正在恢复。
 
-* backfilling:回填，和恢复类似，只是这个osd是新加入的。一般回填会在后台进行。
+* backfilling：回填，和恢复类似，只是这个osd是新加入的。一般回填会在后台进行。
 
 * incomplete：recovering或者backfilling失败，比如容量不够等。
 
-* remapped：一般是pg对应的acting set发生变化，数据需要迁移。因为迁移需要时间，所以需要原有的set先服务一段时间，等下新的set数据迁移完成可以提供服务之后，就会启用新的acting set。在这段时间内，这个pg处于remapped状态？？？
+* remapped：一般是pg对应的acting set发生变化，数据需要迁移。因为迁移需要时间，所以需要原有的set先服务一段时间，等下新的set数据迁移完成可以提供服务之后，就会启用新的acting set。在这段时间内，这个pg处于remapped状态？？？？
 
 * stale：pg中的主osd没有上报pg统计信息给monitor时，就会被mon标记为stale状态，或者pg中的其他osd上报主osd已经down掉时。这个pg会被标记为stale。
-
 
 #### mds_max_purge_ops_per_pg
 
