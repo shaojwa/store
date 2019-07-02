@@ -10,6 +10,18 @@ pg 的外部状态：
 
 * perring：peer一个PG，就是ceph让这个pg中的osd，对这个pg中所有object的状态和元数据达成一致。状态的一致，不代表所有object的副本都为最新的数据。要注意的是，一个三副本的pg，因为一个osd down掉，此时只有两个osd up，那peering的过程就是保证这两个osd数据一致的过程，而不是等到另外选取一个osd后让这三个osd数据一致的过程。
 
+* degraded：如果这个pg中的osd有一个down掉，或者找不到对应的osd，此时osd数目小于副本数，那么这个pg就会标记为degraded状态。同时，当写一个对象时，主osd写入之后，备osd返回完成写入之前的这段时间，这个PG也处于degraded状态，直到主osd收到osd的写入完成ack。
+
+* recovering：一个osd因为某种原因down掉一段时间后重新up，此时的内容可能已经落后于最新的版本，所以这个osd就需要和最新的副本同步，此时反应到pg层的状态就是recovering，正在恢复。
+
+* backfilling:回填，和恢复类似，只是这个osd是新加入的。一般回填会在后台进行。
+
+* incomplete：recovering或者backfilling失败，比如容量不够等。
+
+* remapped：一般是pg对应的acting set发生变化，数据需要迁移。因为迁移需要时间，所以需要原有的set先服务一段时间，等下新的set数据迁移完成可以提供服务之后，就会启用新的acting set。在这段时间内，这个pg处于remapped状态？？？
+
+* stale：pg中的主osd没有上报pg统计信息给monitor时，就会被mon标记为stale状态，或者pg中的其他osd上报主osd已经down掉时。这个pg会被标记为stale。
+
 
 #### mds_max_purge_ops_per_pg
 
