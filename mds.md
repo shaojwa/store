@@ -1,3 +1,10 @@
+#### safe_timer　线程
+
+* MDBalancer::tick()
+
+
+### 
+
 
 #### lease相关的时间配置有哪些？
 #### Mutex::Locker l(mds->mds_lock) 是如何获取锁的？
