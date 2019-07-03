@@ -1,6 +1,9 @@
 #### ms_dispath 线程的工作
 
+* handle mds map 
 * handle client 的request，一系列 handle_client_xxxx 接口操作。
+
+#### beacon ms_dispathc线程
 
 #### md_submit 线程的工作
 
@@ -11,10 +14,13 @@
 * client 的请求处理commit日志之后的回调处理。
 
 
-
-#### safe_timer线程的工作
+#### safe_timer 线程的工作
 
 * MDBalancer::tick()
+
+#### safe_timer 线程的工作
+
+*　给mon发心跳
 
 #### ms_local 线程做什么？
 
@@ -29,6 +35,9 @@
 #### pq_finisher线程
   
 * PurgeQueue的finisher 线程， PurgeQueue队列是干什么的？
+
+#### log 线程
+
 
 #### mds中的subsystem
 
