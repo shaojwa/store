@@ -1,10 +1,42 @@
-#### safe_timer　线程
+#### ms_dispath 线程的工作
+
+* handle client 的request，一系列 handle_client_xxxx 接口操作。
+
+#### md_submit 线程的工作
+
+* 提交日志
+
+#### fn_anonymous 线程的工作
+
+* client 的请求处理commit日志之后的回调处理。
+
+
+
+#### safe_timer线程的工作
 
 * MDBalancer::tick()
 
+#### ms_local 线程做什么？
 
-### 
+### service 线程
 
+* 干什么呢？
+
+#### admin_socket 线程的工作
+
+* 处理admin_asok 的请求
+
+#### pq_finisher线程
+  
+* PurgeQueue的finisher 线程， PurgeQueue队列是干什么的？
+
+#### mds中的subsystem
+
+*　在 subsys.h中定义各个子系统以及日志等级
+
+#### signal_handler 线程
+
+#### recovery_thread 线程
 
 #### lease相关的时间配置有哪些？
 #### Mutex::Locker l(mds->mds_lock) 是如何获取锁的？
