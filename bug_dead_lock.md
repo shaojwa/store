@@ -2,7 +2,8 @@
 
 * 现象：通过config set命令设置配置时，概率性出现命令卡死。
 
-命令卡死的原因在于admin_sock线程等待mds_lock，其他线程也在等待，比如心跳，所以心跳没法向mon上报状态，最终mon把该mds踢掉。
+命令卡死的原因在于admin_socket线程等待mds_lock，而持有mds_lock锁的线程，尝试获取admin_socket线程持有的md_config_t对象中的锁。
+这是admin_socket线程的调用栈：
 
       #0  0x00007f0e2ce2551d in __lll_lock_wait () from /lib64/libpthread.so.0
       #1  0x00007f0e2ce20e1b in _L_lock_812 () from /lib64/libpthread.so.0
@@ -18,7 +19,7 @@
       #11 0x00007f0e2ce1ee25 in start_thread () from /lib64/libpthread.so.0
       #12 0x00007f0e2c112bad in clone () from /lib64/libc.so.6
 
-frame 4可以看到，handle_conf_change()接口就发现有对mds_lock的获取：
+frame 4可以看到，handle_conf_change()接口就发现有对mds_lock的获取，看代码如下：
 
     const bool initially_locked = mds_lock.is_locked_by_me();
     if (!initially_locked) {
@@ -43,15 +44,14 @@ frame 4可以看到，handle_conf_change()接口就发现有对mds_lock的获取
       #12 0x00007f36339d2e25 in start_thread () from /lib64/libpthread.so.0
       #13 0x00007f3632cc6bad in clone () from /lib64/libc.so.6
 
-尽管frame上看也是 Mutex::Lock(bool)，但看代码发现，他针对的是md_config_t内部的lock。
-对比admin_socket的栈，有没有可能这两个md_config_t 是同一个实例？
-这样的话admin_socket 在获取到md_config_t 的lock之后尝试获取mds_lock锁。
-而safe_timer线程在获取到mds_lock锁时，尝试获取md_config_t的lock，这就会触发死锁。
-那怎么判断这两个md_config_t是同一个实例？我们看代码发现safe_timer里的md_config_t是g_conf，
-那么只要证明admin_socket中的conf也是这个g_conf，所以我们在MDSDaemon::handle_conf_change()接口处加一条打印证实这个问题：
+尽管frame上看也是Mutex::Lock(bool)，但看代码发现，他针对的是某个md_config_t对象内部的lock。
+对比admin_socket的栈，猜想这两个md_config_t可能是同一个实例？
+这样的话admin_socket在获取到md_config_t的lock之后尝试获取mds_lock锁。
+而safe_timer线程在持有mds_lock锁时，尝试获取md_config_t的lock，这就会触发死锁。
+那怎么判断这两个md_config_t是同一个实例？我们看代码发现safe_timer里的md_config_t实例是g_conf，
+那么只要证明admin_socket中的conf也是这个g_conf，所以我们在MDSDaemon::handle_conf_change()接口处加一条日志打印证实这个问题：
 
       dout(0) << __func__ << " conf: " << conf << ", g_conf: " << g_conf << dendl;
  
  我们最终确认是这个死锁问题，但是我们任然不清楚，为什么MDSDaemon::handle_conf_change需要去拿到mds_lock锁，我们也不请清楚为什么
  Beacon::notify_health()接口会调用md_config_t::get_val<long>（），代码里并没有这个接口。
-
