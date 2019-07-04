@@ -34,6 +34,10 @@ pg 的外部状态：
 * degraded 这个和undersized的区别是什么？undersized存储是acting-set小于存储池的副本数，而degraded可能是发现某个PG实例存在不一致（需要被同步或者修复），acting-size小于副本数只是导致degraded的一种原因。
 
 
+#### 如何查看一个对象的stat信息
+ 
+    rados -p <pool_name> stat 10000003f2.00000000
+
 #### mds_max_purge_ops_per_pg
 
 平均每个pg进行purge操作的上限？
