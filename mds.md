@@ -1,9 +1,9 @@
-#### ms_dispath 线程的工作
+#### ms_dispath线程的工作
 
 * handle mds map 
 * handle client 的request，一系列 handle_client_xxxx 接口操作。
 
-#### beacon ms_dispathc线程
+#### beacon ms_dispath线程
 
 #### md_submit 线程的工作
 
