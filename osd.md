@@ -42,4 +42,7 @@ pg 的外部状态：
 
 平均每个pg进行purge操作的上限？
 
+#### 查看一个pg scrub 的时间
 
+  ceph pg <pg_id> query
+  
