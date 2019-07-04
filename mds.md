@@ -47,13 +47,6 @@
 
 #### recovery_thread 线程
 
-#### lease相关的时间配置有哪些？
-#### Mutex::Locker l(mds->mds_lock) 是如何获取锁的？
-#### cond.Wait(mds->mds_lock) 是如何释放锁的？
-#### systemctl中的ceph-mds.service 和ceph-mds.target有什么区别？
-#### 对象的omap和xattr有什么区别？
-#### dir_auth_pin和auth_pin的区别是什么？
-
 #### mds_rank_progr 线程的作用
   
 好像嗯哼一些内部的消息处（比如MDSInternalContextBase），laggy，shutdown等处理有关。
@@ -118,6 +111,11 @@ lease是处理dentry相关的，lease机制，客户端缓存部分cap，减少�
    
    100000003f2 就是文件 file0 的inode号的16进制表示
    
-  #### 如何查看一个对象的stat信息
- 
-      rados -p <pool_name> stat 10000003f2.00000000
+    
+#### lease相关的时间配置有哪些？
+#### Mutex::Locker l(mds->mds_lock) 是如何获取锁的？
+#### cond.Wait(mds->mds_lock) 是如何释放锁的？
+#### systemctl中的ceph-mds.service 和ceph-mds.target有什么区别？
+#### 对象的omap和xattr有什么区别？
+#### dir_auth_pin和auth_pin的区别是什么？
+#### mds中的witness是做什么的？
