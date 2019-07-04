@@ -69,3 +69,5 @@
 * /sys/kernel/debug/ceph/下的osdc是客户端和osd之前的请求，一般和slow request没关系。
 * osd中，只要状态包含active+clean 就说明是可以正常处理请求，就算active+clean＋srubbing+deep状态也能处理请求。
 * 这个问题原因是有1个pg是active+recovering状态。这pg正是我们objecter_requests命令看到的pg，此时无法处理请求。
+ 
+
