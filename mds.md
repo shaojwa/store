@@ -118,4 +118,4 @@ lease是处理dentry相关的，lease机制，客户端缓存部分cap，减少�
 #### systemctl中的ceph-mds.service 和ceph-mds.target有什么区别？
 #### 对象的omap和xattr有什么区别？
 #### dir_auth_pin和auth_pin的区别是什么？
-#### mds中的witness是做什么的？
+#### mds中的_rename_prepare_witness是做什么的？
