@@ -54,4 +54,22 @@ frame 4可以看到，handle_conf_change()接口就发现有对mds_lock的获取
       dout(0) << __func__ << " conf: " << conf << ", g_conf: " << g_conf << dendl;
  
  我们最终确认是这个死锁问题，但是我们任然不清楚，为什么MDSDaemon::handle_conf_change需要去拿到mds_lock锁，我们也不请清楚为什么
- Beacon::notify_health()接口会调用md_config_t::get_val<long>（），代码里并没有这个接口。
+ Beacon::notify_health()接口会调用md_config_t::get_val<long>（），代码里并没有这个接口。  
+ 注意到ceph tell 好像不会有这个问题（MDSDaemon::handle_conf_change()接口开头加锁有说明）。  
+ 经过测试确实可以，因为tell是mon给mds发消息，mds走ms_dispatch流程：
+      
+      (gdb) bt
+      #0  MDSDaemon::handle_conf_change (this=0x7f5e3c406000, conf=0x7f5e4307a000, changed=...)
+      #1  0x000055f6380a0256 in md_config_t::_apply_changes (this=<optimized out>, oss=<optimized out>)
+      #2  0x000055f6380a30a3 in md_config_t::injectargs (this=<optimized out>, s=..., oss=oss@entry=0x7f5e3c3fd290)
+      #3  0x000055f637af97c3 in MDSDaemon::_handle_command (this=this@entry=0x7f5e3c406000, cmdmap=..., m=m@entry=0x7f5e3e018200, outbl=outbl@entry=0x7f5e3c3fd500, 
+          outs=outs@entry=0x7f5e3c3fd480, run_later=run_later@entry=0x7f5e3c3fd4a8, need_reply=need_reply@entry=0x7f5e3c3fd47d)
+      #4  0x000055f637afa81a in MDSDaemon::handle_command (this=0x7f5e3c406000, m=0x7f5e3e018200)
+      #5  0x000055f637afae41 in MDSDaemon::handle_core_message (this=this@entry=0x7f5e3c406000, m=m@entry=0x7f5e3e018200)
+      #6  0x000055f637afb66b in MDSDaemon::ms_dispatch (this=0x7f5e3c406000, m=0x7f5e3e018200)
+      #7  0x000055f6381a15ab in ms_deliver_dispatch (m=0x7f5e3e018200, this=0x7f5e43085800)
+      #8  MDSDispatchQueue::entry (this=0x7f5e431a8400)
+      #9  0x000055f637f189ee in DispatchQueue::DispatchThread::entry (this=<optimized out>)
+      #10 0x00007f5e44aade25 in start_thread () from /lib64/libpthread.so.0
+      #11 0x00007f5e43da1bad in clone () from /lib64/libc.so.6
+      
