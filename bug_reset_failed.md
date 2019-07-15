@@ -10,7 +10,9 @@
 
     systemctl status ceph-mds@mds0.service
  
-输出可以看到，Active：failed (Result: start-limit)
+输出可以看到：
+
+    Active：failed (Result: start-limit)
 
 #### 怎么看解决办法
 
