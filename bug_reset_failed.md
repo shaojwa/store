@@ -30,10 +30,6 @@
     
 因为状态异常的单元是ceph-mds@mds0.service，而不是ceph-mds.target这个单元，可以通过 systemctl list-units看到单元的状态。
 
-#### target和service文件什么区别
-
-    service也是单元（unit）中的一种，在ceph-mds中，ceph-mds@mds0.service 是 ceph-mds.target的一部分。
-
 #### 如何查看所有ceph-mds相关的单元
 
     systemctl list-units | grep ceph-mds
@@ -44,3 +40,30 @@
 #### 如何查看失败的单元
 
     sysctmctl --failed
+
+#### target和service文件什么区别
+
+service也是单元（unit）中的一种，target 也是一种unit，一般是unit组。  
+在ceph-mds中，ceph-mds@mds0.service 是 ceph-mds.target的一部分。
+ 
+target类型的unit，如果设置成开机运行，会在/etc/systemd/system下生成一个目录，比如ceph-mds.target.wants。  
+里面有需要驱动的service类型的unit，比如ceph-mds@mds0.service，这一般是一个软链接，指向/usr/lib/systemd/system下的service文件。
+
+#### 服务间的before和after
+
+服务之间的先后顺序，不涉及依赖
+   
+#### 服务间的依赖
+
+ Requires 和 Wants
+ 
+ #### Restart=on-failuer什么意思
+ 
+ 任何意外的失败，都重启服务，但是正常的停止，比如systemctl stop 就不会重启。
+ 
+ ####  man 查看
+ 
+    man systemd.target
+    man systemd.service
+    man systemd.socket
+ 
