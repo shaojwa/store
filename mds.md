@@ -75,43 +75,7 @@ auth_pin的目的是两部分：
 #### lease的作用是什么？
 
 lease是处理dentry相关的，lease机制，客户端缓存部分cap，减少客户端发往mds的请求。
-
-#### 文件的layout信息怎么看
-
-文件一旦创建就会有一个layout信息，可以通过以下命令查看：
-
-    getfattr -n ceph.file.layout test_file
-
-其中一般信息是：
-    
-     ceph.file.layout="stripe_unit=4194304 stripe_count=1 object_size=4194304 pool=.data.pool0
-
-文件的layout和parent信息是放在数据池的第一个对象中的，而目录的这两个信息是在元数据池中的。
-
-#### 文件的layout信息是存放在什么地方？
-
-存在放文件的第一个数据对象的xattr中，可以通过以下命令看到：
-
-    $ rados -p <data_pool> listxattr 100000003f2.00000000
-    layout
-    parent
-     
-#### 怎么找到一个文件对应的对象？
-
-  先找出文件的inode号：
-  
-    $ ll -i
-    1099511628786 -rw-r--r-- 1 root root 6291456 test_file
-  
-  在数据池中找到所有对应的对象：
-  
-    $ rados -p <data_pool> ls
-    100000003f2.00000000
-    100000003f2.00000001
    
-   100000003f2 就是文件 file0 的inode号的16进制表示
-   
-    
 #### lease相关的时间配置有哪些？
 #### Mutex::Locker l(mds->mds_lock) 是如何获取锁的？
 #### cond.Wait(mds->mds_lock) 是如何释放锁的？
