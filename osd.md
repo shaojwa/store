@@ -38,11 +38,14 @@ pg 的外部状态：
  
     rados -p <pool_name> stat 10000003f2.00000000
 
-#### mds_max_purge_ops_per_pg
+#### 查看一个pool中的所有object
 
-平均每个pg进行purge操作的上限？
+    rados -p <pool_name> ls
 
-#### 查看一个pg scrub 的时间
+#### 查看一个pg开始scrub的时间
 
   ceph pg <pg_id> query
   
+  #### mds_max_purge_ops_per_pg
+
+平均每个pg进行purge操作的上限？
