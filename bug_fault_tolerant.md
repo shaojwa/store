@@ -5,8 +5,14 @@
 
     ceph osd map .capfs.data.datapool0 100000003ea.00000000
   
-找到 acting set 为[4, 7, 5], pg 为 2.7b93bfe5  
+找到 acting set 为(4, 7, 5), pg 为 2.7b93bfe5  
 
 然后发送查询请求：
 
     getfattr -n ceph.file.layout file
+
+发现osd4没有收到对应的请求，怀疑点是msd缓存中有对应的数据导致的，清掉缓存后再次尝试：
+
+
+
+    
