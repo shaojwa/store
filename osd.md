@@ -33,19 +33,54 @@ pg 的外部状态：
 
 * degraded 这个和undersized的区别是什么？undersized存储是acting-set小于存储池的副本数，而degraded可能是发现某个PG实例存在不一致（需要被同步或者修复），acting-size小于副本数只是导致degraded的一种原因。
 
+#### 文件的layout信息怎么看
 
-#### 如何查看一个对象的stat信息
- 
-    rados -p <pool_name> stat 10000003f2.00000000
+文件一旦创建就会有一个layout信息，可以通过以下命令查看：
+
+    getfattr -n ceph.file.layout test_file
+
+其中一般信息是：
+    
+     ceph.file.layout="stripe_unit=4194304 stripe_count=1 object_size=4194304 pool=.data.pool0
+
+文件的layout和parent信息是放在数据池的第一个对象中的，而目录的这两个信息是在元数据池中的。
+
+     
+#### 怎么找到一个文件对应的对象？
+
+  先找出文件的inode号：
+  
+    $ ll -i
+    1099511628786 -rw-r--r-- 1 root root 6291456 test_file
+  
+  在数据池中找到所有对应的对象：
+  
+    $ rados -p <data_pool> ls
+    100000003f2.00000000
+    100000003f2.00000001
+   
+   100000003f2 就是文件 file0 的inode号的16进制表示
 
 #### 查看一个pool中的所有object
 
     rados -p <pool_name> ls
 
+#### 如何查看一个对象的stat信息
+ 
+    rados -p <pool_name> stat 10000003f2.00000000
+
+#### 文件的layout信息是存放在什么地方？
+
+存在放文件的第一个数据对象的xattr中，可以通过以下命令看到：
+
+    $ rados -p <data_pool> listxattr 100000003f2.00000000
+    layout
+    parent
+    
 #### 查看一个pg开始scrub的时间
 
   ceph pg <pg_id> query
   
-  #### mds_max_purge_ops_per_pg
+#### mds_max_purge_ops_per_pg
 
 平均每个pg进行purge操作的上限？
