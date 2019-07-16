@@ -76,7 +76,13 @@ pg 的外部状态：
     $ rados -p <data_pool> listxattr 100000003f2.00000000
     layout
     parent
-    
+
+#### 刚写入的文件没有layout和parent属性是为什么
+
+元数据没有下刷，flush journal一下就可以：
+
+    ceph daemon mds.mdsX flush journal
+
 #### 查看一个pg开始scrub的时间
 
   ceph pg <pg_id> query
