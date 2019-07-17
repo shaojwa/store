@@ -18,5 +18,16 @@
 
 现在还是不能当mds和数据池通信，查看代码，找到可能的数据池读取流程，找到scrub_dir_inode()和scrub_file_inode()等接口，最后找到enqueue_srcub_work()以及最后的enqueue_scrub，发现scrub_path命令可以触发。
 
-    ceph daemon mds.mds1 scrub_path /data/ft recursive force
-  
+    ceph daemon mds.mds1 scrub_path /data/ft/ddfile recursive force
+    
+发现注入错误之后，mds还是认为scrub error on inode \[inode 0x10000003ea。   
+我发现 damage ls 这命令必须在ceph tell mds.mds0 中才有，ceph daemon mds.mds0 中没有。 
+通过ceph tall mds.mds0 damage ls 看到：
+
+    {
+        ”damage_type": "backtrace",
+        "id": 129562276,
+        "inode": 1099511628778,
+        "path": "/data/ft/ddfile"
+    }
+
