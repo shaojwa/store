@@ -90,3 +90,6 @@ pg 的外部状态：
 #### mds_max_purge_ops_per_pg
 
 平均每个pg进行purge操作的上限？
+
+#### 一个4M的对象，纠删码2+1时怎么存？
+
