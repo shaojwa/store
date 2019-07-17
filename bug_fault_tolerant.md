@@ -18,5 +18,5 @@
 
 现在还是不能当mds和数据池通信，查看代码，找到可能的数据池读取流程，找到scrub_dir_inode()和scrub_file_inode()等接口，最后找到enqueue_srcub_work()以及最后的enqueue_scrub，发现scrub_path命令可以触发。
 
-    ceph daemon mds.mds1 scrub_path /data/ft recursive repair
+    ceph daemon mds.mds1 scrub_path /data/ft recursive force
   
