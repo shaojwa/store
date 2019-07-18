@@ -23,30 +23,6 @@ dispatch_request()主要在void C_MDS_RetryRequest::finish(int r) 这个回调�
 
 C_MDS_RetryRequest类中的回调都会执行dispatch_request(),这是一个比较上层的接口。
 
-##### message的type 和 port 
-
-* message的type
-
-CEPH_MSG_MON_XXXX //
-CEPH_MSG_OSD_XXXX
-CEPH_MSG_CLIENT_XXXX
-
-// Message.h 中定义
-// MDS 内部消息
-MSG_MDS_XXXX
-
-// osd 内部消息
-MSG_OSD_XXXX
-
-// port 是 type的第一个字节
-MDS_PORT_CACHE
-MDS_PORT_MIGRATOR
-
-#### ceph中的OP
-
-CEPH_MDS_OP_XXXX 开头，
-
-
 #### 加锁地方
 
 scrub流程在调用mdcahe->enqueue_scrub()前获取mds_lock大锁。
