@@ -23,7 +23,7 @@ bool MDSRank::handle_deferrable_message(Message *m) 字面意思，就是可以�
   现在我们只要记得一点，mds_lock在最底层的 bool MDSDaemon::ms_dispatch(Message \*m) 中就已经获取到，所以说，这是一把大锁。
   
   
-##### message的type和 port 
+### message的type和 port 
 
 message的type
 
