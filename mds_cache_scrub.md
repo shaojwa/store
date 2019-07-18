@@ -4,23 +4,42 @@
 一种是 void MDCache::enqueue_scrub()触发，这种方式是响应命令做void MDSRank::command_scrub_path() 和void MDSRank::command_tag_path()时调用。
 
 
-#### MDCache::disptch() 和
+#### MDCache::disptch() 和 MDCache::disptch_request()
 
-MDCache::dispatch_request(MDRequestRef& mdr) 有各种work函数。MDCache模块中有dispatch()接口，这里还有dispatch_request(),区别是：  
-MDCache::dispatch() 用来处理 port 为 MDS_PORT_CACHE 类型的消息，根据代码看，只处理MDS发过来的请求：
+有一个要注意，disptch的是message，不是request，是比较底层的消息。
 
-    ALLOW_MESSAGES_FROM(CEPH_ENTITY_TYPE_MDS);
-    mdcache->dispatch(m);
-
+MDCache::dispatch() 用来处理 port 为 MDS_PORT_CACHE 类型的message，根据代码看，只处理MDS发过来的message：
+    case MDS_PORT_CACHE:
+        ALLOW_MESSAGES_FROM(CEPH_ENTITY_TYPE_MDS);
+        mdcache->dispatch(m);
 其中port什么用暂时不清楚，只知道是一个分类。比如还有一个 MDS_PORT_MIGRATOR 是迁移的，都是MDS内部之间的。
 
-MDCache::dispatch_request() 处理三类请求，client的，slave的，还有internal的。比如 CEPH_MDS_OP_ENQUEUE_SCRUB这个就是其中一个。
-dispatch_reques()主要在void C_MDS_RetryRequest::finish(int r) 这个回调函数里执行，暂且认为主要是执行别人的请求。
 
-##### message中的 port
+MDCache::dispatch_request(MDRequestRef& mdr) 有各种work函数。MDCache模块中有dispatch()接口：  
+MDCache::dispatch_request() 处理的是request，即MDRequestRef，和dispatch是不在一个层次的东西。
 
+请求分三类，client的，slave的，还有internal的。比如 CEPH_MDS_OP_ENQUEUE_SCRUB这个就是其中一个。
+dispatch_request()主要在void C_MDS_RetryRequest::finish(int r) 这个回调函数里执行。
+
+C_MDS_RetryRequest类中的回调都会执行dispatch_request(),这是一个比较上层的接口。
+
+##### message的type 和 port 
+
+* message的type
+
+CEPH_MSG_MON_XXXX //
+CEPH_MSG_OSD_XXXX
+CEPH_MSG_CLIENT_XXXX
+
+// Message.h 中定义
+// MDS 内部消息
+MSG_MDS_XXXX
+
+// osd 内部消息
+MSG_OSD_XXXX
+
+// port 是 type的第一个字节
 MDS_PORT_CACHE
-
 MDS_PORT_MIGRATOR
 
 #### ceph中的OP
