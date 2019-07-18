@@ -45,6 +45,17 @@ port 是 type的第一个字节
     MDS_PORT_CACHE
     MDS_PORT_MIGRATOR
 
-#### ceph中的OP
+#### ceph 中的 OP
 
-CEPH_MDS_OP_XXXX 开头
+拥有OP类有很多，很多类等都有这个概念，都继承自Message:
+
+    MClientRequest
+    MClientCaps
+    MClientSession 
+
+
+于此对应，很多OP
+
+    CEPH_MDS_OP_XXXX 
+    CEPH_CAP_OP_XXXX
+    CEPH_SESSION_XXXX  /* client_session ops */
