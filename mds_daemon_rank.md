@@ -1,4 +1,4 @@
-## 消息的分发
+#### 消息的分发
 
 daemon 和 rank中，所有的dispatch接口都是针对Message，有以下接口：
 
@@ -18,12 +18,12 @@ bool MDSRank::handle_deferrable_message(Message *m) 字面意思，就是可以�
     balancer->proc_message(m);
     locker->dispatch(m);
 
-## mds_lock的获取
+#### mds_lock的获取
 
   现在我们只要记得一点，mds_lock在最底层的 bool MDSDaemon::ms_dispatch(Message \*m) 中就已经获取到，所以说，这是一把大锁。
   
   
-## message的type和 port 
+#### message的type和 port 
 
 message的type
 
@@ -45,7 +45,7 @@ port 是 type的第一个字节
     MDS_PORT_CACHE
     MDS_PORT_MIGRATOR
 
-## ceph 中的 OP
+#### ceph 中的 OP
 
 拥有OP类有很多，很多类等都有这个概念，都继承自Message:
 
