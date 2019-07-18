@@ -20,4 +20,31 @@ bool MDSRank::handle_deferrable_message(Message *m) 字面意思，就是可以�
 
 #### mds_lock的获取
 
-  现在我们只要记得一点，mds_lock在最底层的 bool MDSDaemon::ms_dispatch(Message *m)中就已经获取到，所以说，这是一把大锁。
+  现在我们只要记得一点，mds_lock在最底层的 bool MDSDaemon::ms_dispatch(Message \*m) 中就已经获取到，所以说，这是一把大锁。
+  
+  
+##### message的type和 port 
+
+message的type
+
+    CEPH_MSG_MON_XXXX
+    CEPH_MSG_OSD_XXXX
+    CEPH_MSG_CLIENT_XXXX
+
+Message.h 中定义
+MDS 内部消息
+
+    MSG_MDS_XXXX
+
+osd 内部消息
+
+    MSG_OSD_XXXX
+
+port 是 type的第一个字节
+
+    MDS_PORT_CACHE
+    MDS_PORT_MIGRATOR
+
+#### ceph中的OP
+
+CEPH_MDS_OP_XXXX 开头
