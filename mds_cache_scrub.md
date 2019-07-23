@@ -31,13 +31,9 @@ scrub流程在调用mdcahe->enqueue_scrub()前获取mds_lock大锁。
 #### 调用流程
     
     MDCache::dispatch_request(MDRequestRef& mdr)      
-      \-enqueue_scrub_work(mdr); // internal op
-          \-scrubstack->enqueue_inode_top()
-              \-scrubstack->enqueue_inode_bottom()
-                  \-enqueue_inode()
-                      \--_enqueue_inode()
-                      \--kick_off_scrubs()
-                          \--while {
-                              scrub_file_inode()
-                              scrub_dir_inode()
-                             }
+      enqueue_scrub_work(mdr); // internal op
+        scrubstack->enqueue_inode_top()
+          scrubstack->enqueue_inode_bottom()
+            enqueue_inode()
+              _enqueue_inode()
+              kick_off_scrubs()
