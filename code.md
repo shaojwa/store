@@ -1,18 +1,4 @@
-#### string中的substr接口用来获取子串
 
-#### string中的find接口如果找到的字串在开头那么会返回0
-
-    所以不能通过 if (str.find("pattern"))来判断能找到，而要通过 if (string::npos != str.find("pattern")) 来进行。
-
-#### stringstream 字符串流中的clear() 接口注意点
-
-    ss.clear() 不会清空流内容，只会设置错误标记，如果要清空内容，请用ss.str("")
-
-#### map中判断一个key是否存在用count函数
-    
-    std::map<int, int> level_to_expire;
-    level_to_expire.count(k);
-   
 #### Option.set_default("").set_description（""）写法
  
     Option类有set_default()和set_description（）接口，返回的是对象自己的应用，即*this
@@ -33,6 +19,3 @@
   
   diri = dir->get_inode() 调用时会更具dir是不是const指针进行选择，如果dir是const指正，那么编译时只会调用第二个接口。
   所以，而如果CInode中获取字段的接口如果没有const属性，就不能调用，所以代码中很多时候以diri->inode的方式直接访问字段。
-  
-  
-    
