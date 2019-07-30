@@ -12,7 +12,10 @@
   // load.second.auth_subtree_num 是 uint32_t, mds_smart_pin_subtree_threshold 是 uint64_t
   // int64_t - uint32_t  > uint64_t 相减之后的负数 int64_t 转为 uint64_t时变为大数
 
-一般写法，用加法替换减法：
+一般写法，要注意几个地方：
+
+* 算数运算要保证相同的数据类型，一定要避免隐式转换。
+* 可以用加法来替换减法。
 
   (cur_xattrs_size + inc) > g_conf->mds_max_xattr_pairs_size
 
