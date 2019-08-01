@@ -3,14 +3,14 @@
     ceph mds -h
   
 #### 将整形转为caps
-    ceph  mds caps <caps_int>
+    ceph mds caps <caps_int>
  
 #### 启动多mds
-    ceph mds set max_mds  <val>
+    ceph mds set max_mds <val>
 
 #### 查看当前那几个mds是active
 
-    ceph mds stat # 当然也可以用 ceph fs status
+    ceph mds stat #当然也可以用 ceph fs status
 
 #### 通过rank值找到节点的mds的元信息（最常用的是找到主机名）
 
