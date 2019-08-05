@@ -31,3 +31,21 @@
         "path": "/data/ft/ddfile"
     }
 
+
+
+PG write时，如果osd处于down/out/imcompete时，osd都会直接丢弃op
+
+#### read导致assert复现步骤
+
+* mon_osd_down_out_interval
+
+    ceph tell mon.* injectargs --mon_osd_down_out_interval=600
+
+我们知道，mon_osd_down_out_interval默认值是1800秒，这个时间之后，mon对把osd标为out。
+
+
+* down掉3个数据池osd
+
+* dd写入数据发现错误
+    # dd if=/dev/zero of=ddfile bs=1k count=102400
+    dd error writing 'ddfile': Input/output error
