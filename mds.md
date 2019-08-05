@@ -26,3 +26,8 @@ ceph daemon mds.mdsX 的帮助和 ceph 以及 ceph mds不同，不是用的-h，
     ceph daemon mds.mdsX status
     
 mds的id一般在mds的日志中很少体现，主要用在mon中处理mds的心跳时，标记是哪个mds。这个是用来标记mds唯一性的，不容时间的rank值相同的两个mds，id也是不一样的。所以，这是一个mds的实例id，用来唯一标记某个mds实例。
+
+
+#### 怎么看文件系统角度的性能
+      
+    ceph daemonperf mds.mds* 
