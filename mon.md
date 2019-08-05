@@ -3,4 +3,4 @@
 输出中有leader相关信息
 
 #### mon把osd标记为out的日志
-making osd.* out
+Marking osd.* out
