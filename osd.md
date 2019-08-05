@@ -33,6 +33,11 @@ pg 的外部状态：
 
 * degraded 这个和undersized的区别是什么？undersized存储是acting-set小于存储池的副本数，而degraded可能是发现某个PG实例存在不一致（需要被同步或者修复），acting-size小于副本数只是导致degraded的一种原因。
 
+
+#### osd 各种状态
+
+osd中down只是临时性故障，不会触发PG迁移。而out是mon检测到某个osd处于down超过一段时间，mon将其设置为out，即为永久性故障。下次CRUSH的选择过程中会被自然淘汰。（橙书76页）
+
 #### 文件的layout信息怎么看
 
 文件一旦创建就会有一个layout信息，可以通过以下命令查看：
