@@ -42,6 +42,7 @@ PG write时，如果osd处于down/out/imcompete时，osd都会直接丢弃op
     ceph tell mon.* injectargs --mon_osd_down_out_interval=600
 
 我们知道，mon_osd_down_out_interval默认值是1800秒，这个时间之后，mon对把osd标为out。
+osd中down，只是临时性故障，不会触发PG迁移。而out是mon检测到某个osd处于down超过一段时间，mon将其设置为out，即为永久性故障。下次CRUSH的选择过程中会被自然淘汰。
 
 * down掉3个数据池osd
 
