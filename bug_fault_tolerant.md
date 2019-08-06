@@ -1,3 +1,4 @@
+#### 视频容错开启后 PG down掉osd就不会out
 #### 第一个对象中有文件的layout和parent属性。
 #### 获取文件的layout信息时往osd发送的请求。
 
@@ -65,3 +66,8 @@ osd中down，只是临时性故障，不会触发PG迁移。而out是mon检测�
 * ceph osd lost 3
 
 恢复lost的osd只需要把systemctl restart ceph-osd@3.service即可。
+
+#### down掉一个osd节点后为什么有的PG是active+undersized+degraded而有的只是active+undersized
+
+
+
