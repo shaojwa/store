@@ -69,5 +69,7 @@ osd中down，只是临时性故障，不会触发PG迁移。而out是mon检测�
 
 #### down掉一个osd节点后为什么有的PG是active+undersized+degraded而有的只是active+undersized
 
+对2+1来说，小于3的osd数量就是undersized
+
 
 
