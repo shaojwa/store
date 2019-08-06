@@ -35,7 +35,7 @@
 
 PG write时，如果osd处于down/out/imcompete时，osd都会直接丢弃op
 
-#### read导致assert复现步骤
+#### truncate 导致assert复现步骤
 
 * mon_osd_down_out_interval
 
@@ -50,3 +50,18 @@ osd中down，只是临时性故障，不会触发PG迁移。而out是mon检测�
 
         # dd if=/dev/zero of=ddfile bs=1k count=102400
         dd error writing 'ddfile': Input/output error
+        
+* 把 一个osd down掉，写入数据后，truncate就可以。
+
+
+#### 构造PG的imcomplete状态
+
+* 假如对象对应的三个osd是(3, 4, 7), 冗余策略是2+1就删码。
+* 先down osd 4
+* 然后写一个对象，数据可以写入，分布在3, 7上
+* 然后down osd 3
+* 然后up 4
+此时4开始恢复，但是无法恢复
+* ceph osd lost 3
+
+恢复lost的osd只需要把systemctl restart ceph-osd@3.service即可。
