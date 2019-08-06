@@ -71,6 +71,10 @@ lost操作只能针对down的osd，up的不能lost
 
 * 构造imcomplete状态一般有两种方式，一种是在冗余度足够的情况下构造，这种比较难。二是冗余度不够的情况下触发peering。
 
+* 确认那个pg处于imcomplete状态
+
+    ceph pg 2.1e5 query | grep state
+
 #### down掉一个osd节点后为什么有的PG是active+undersized+degraded而有的只是active+undersized
 
 对2+1来说，小于3的osd数量就是undersized
