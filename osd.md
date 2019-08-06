@@ -38,6 +38,11 @@ PG的down：当前在线的osd不足以完成数据恢复，就会把一个pg表
 
 * degraded 这个和undersized的区别是什么？undersized存储是acting-set小于存储池的副本数，而degraded可能是发现某个PG实例存在不一致（需要被同步或者修复），acting-size小于副本数只是导致degraded的一种原因。
 
+
+#### pg 查看各种卡主类型的pg
+
+    ceph pg dump_stuck {inactive|unclean|stale|undersized|degraded}
+    
 #### 查看一个pg开始scrub的时间
 
   ceph pg <pg_id> query
