@@ -4,5 +4,6 @@
 Terminate信号的发起进程是systemd，所以除非认为执行systemctl命令，否则很大可能性是系统触发的。
 执行systemctl stop ceph-mds.target命令时，mds有日志：
 
-    WARNING received signal: Terminated from PID: 1 task name: /usr/lib/systemd/systemd --switch-root --system --deserialize11 UID: 0 
+    WARNING received signal: Terminated from PID: 1 task name: /usr/lib/systemd/systemd
+        --switch-root --system --deserialize 22 UID: 0 
     ERROR mds.mds0 **** got signal Terminated ****
