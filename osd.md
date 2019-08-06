@@ -1,8 +1,9 @@
+## pg相关
 #### pg 各种状态的含义
 
 http://docs.ceph.com/docs/master/rados/operations/monitoring-osd-pg/
 
-pg 的外部状态：
+pg 的外部状态（蓝书146页）：
 
 * active： 活跃状态，此时可以正常处理客户端的读写请求。
 
@@ -29,22 +30,35 @@ pg 的外部状态：
 
 * Deep：总是和Scrubbing成对出现，表明将对PG中的对象执行深度扫描（即同时扫描对象的元数据和用户数据）。
 
+* PG的down状态
+
+PG的down：当前在线的osd不足以完成数据恢复，就会把一个pg表为down。和osd的down不一样。
+
 其他问题：
 
 * degraded 这个和undersized的区别是什么？undersized存储是acting-set小于存储池的副本数，而degraded可能是发现某个PG实例存在不一致（需要被同步或者修复），acting-size小于副本数只是导致degraded的一种原因。
 
-#### PG的down状态（蓝书146页）
+#### 查看一个pg开始scrub的时间
 
-PG的down：当前在线的osd不足以完成数据恢复，就会把一个pg表为down。和osd的down不一样。
+  ceph pg <pg_id> query
+  
+#### mds_max_purge_ops_per_pg
+
+平均每个pg进行purge操作的上限？
+
+## osd 相关
 
 #### osd 各种状态（橙书76页）
 
 osd中down只是临时性故障，不会触发PG迁移。而out是mon检测到某个osd处于down超过一段时间，mon将其设置为out，即为永久性故障。  
 下次CRUSH的选择过程中会被自然淘汰。
 
-#### 视频容错开启后 PG down掉osd就不会out
+#### mon把osd标记为out的日志
+
+    Marking osd.* out
 
 
+## 对象相关
 
 #### 文件的layout信息怎么看
 
@@ -96,19 +110,8 @@ osd中down只是临时性故障，不会触发PG迁移。而out是mon检测到�
 
     ceph daemon mds.mdsX flush journal
 
-#### 查看一个pg开始scrub的时间
-
-  ceph pg <pg_id> query
-  
-#### mds_max_purge_ops_per_pg
-
-平均每个pg进行purge操作的上限？
 
 #### 一个4M的对象，纠删码2+1时怎么存？
-
-#### mon把osd标记为out的日志
-
-    Marking osd.* out
 
 #### 怎么看某个池的io
       
