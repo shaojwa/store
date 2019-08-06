@@ -58,14 +58,18 @@ osd中down，只是临时性故障，不会触发PG迁移。而out是mon检测�
 #### 构造PG的imcomplete状态
 
 * 假如对象对应的三个osd是(3, 4, 7), 冗余策略是2+1纠删码。
-* 先down osd 4
+* 首先 down osd 4
 * 然后写一个对象，数据可以写入，分布在3, 7上
-* 然后down osd 3
-* 然后up 4
-此时4开始恢复，但是无法恢复
+* 然后 down osd 3
+此时pg中两个osd down掉，PG为down状态
 * ceph osd lost 3
+此时表示放弃osd 3上的同步，再次出发peering
+lost操作只能针对down的osd，up的不能lost
+* 最终会达到imcomplete状态
 
 恢复lost的osd只需要把systemctl restart ceph-osd@3.service即可。
+
+* 构造imcomplete状态一般有两种方式，一种是在冗余度足够的情况下构造，这种比较难。二是冗余度不够的情况下触发peering。
 
 #### down掉一个osd节点后为什么有的PG是active+undersized+degraded而有的只是active+undersized
 
