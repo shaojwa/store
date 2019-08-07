@@ -79,5 +79,7 @@ lost操作只能针对down的osd，up的不能lost
 
 对2+1来说，小于3的osd数量就是undersized
 
+#### mds和osd交互
 
+* Objecter::handle_osd_op_reply() 处理osd的返回，线程是 mds-worker-*
 
