@@ -81,12 +81,22 @@ lost操作只能针对down的osd，up的不能lost
 
 #### mds和osd交互
 
-* Objecter::handle_osd_op_reply() 处理osd的返回，线程是 mds-worker-X
+* 发起
+
+        fetch_backtrace_and_tag()
+        ObjectOperation::getxattr()
+        ObjectOperation::add_xattr()
+        objecter::read() # out_handler = NULL
+        
+
+* 收到
+    
+        MOSDOpReply::decode_payload()
+        OSDOp::split_osd_op_vector_out_data(ops, data);
+        Objecter::handle_osd_op_reply() 处理osd的返回，线程是 mds-worker-X,  # the result from osd messager
 
 
+* 处理请求 
 
-* fn_anonymouns线程处理回调函数
-
-     C_ObjectOperation_decodevals()
-     bool _backtrace(int rval)
+        bool _backtrace(int rval) # fn_anonymouns线程处理回调函数
 
