@@ -93,7 +93,9 @@ lost操作只能针对down的osd，up的不能lost
     
         MOSDOpReply::decode_payload()
         OSDOp::split_osd_op_vector_out_data(ops, data);
-        Objecter::handle_osd_op_reply() 处理osd的返回，线程是 mds-worker-X,  # the result from osd messager
+        Objecter::handle_osd_op_reply()
+            // 处理osd的返回，线程是 mds-worker-X,  # the result from osd messager
+            // 把MOSDOpReply m 中的数据通过 m->claim_ops(out_ops); 给out_ops
 
 
 * 处理请求 
