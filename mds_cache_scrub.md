@@ -1,9 +1,4 @@
-#### mds scrub 的流程
-
-关键入口函数是 void MDCache::enqueue_scrub_work(MDRequestRef& mdr) 两种触发方式:  
-一种是 void MDCache::dispatch_request(MDRequestRef& mdr), 因为OP是CEPH_MDS_OP_ENQUEUE_SCRUB触发，应该是命令执行时因为异常操作需要重试。
-一种是 void MDCache::enqueue_scrub()触发，这种方式是响应命令做void MDSRank::command_scrub_path() 和void MDSRank::command_tag_path()时调用。
-
+#### cache对osd相关的头文件引用
 
 #### MDCache::disptch() 和 MDCache::disptch_request()
 
@@ -23,6 +18,12 @@ MDCache::dispatch_request() 处理的是request，即MDRequestRef，和dispatch�
 dispatch_request()主要在void C_MDS_RetryRequest::finish(int r) 这个回调函数里执行。
 
 C_MDS_RetryRequest类中的回调都会执行dispatch_request(),这是一个比较上层的接口。
+
+#### mds scrub 的流程
+
+关键入口函数是 void MDCache::enqueue_scrub_work(MDRequestRef& mdr) 两种触发方式:  
+一种是 void MDCache::dispatch_request(MDRequestRef& mdr), 因为OP是CEPH_MDS_OP_ENQUEUE_SCRUB触发，应该是命令执行时因为异常操作需要重试。
+一种是 void MDCache::enqueue_scrub()触发，这种方式是响应命令做void MDSRank::command_scrub_path() 和void MDSRank::command_tag_path()时调用。
 
 #### 加锁地方
 
