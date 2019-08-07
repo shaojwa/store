@@ -98,5 +98,4 @@ lost操作只能针对down的osd，up的不能lost
 
 * 处理请求 
 
-        bool _backtrace(int rval) # fn_anonymouns线程处理回调函数
-
+        bool _backtrace(int rval) # fn_anonymouns, retval = 9983, ondisk_read_retval = -61
