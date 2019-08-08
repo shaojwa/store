@@ -140,3 +140,18 @@ lock=0 caps=1 dirtyparent=1 dirty=1 authpin=0 0x7fb2ae8fc800]
 （15）	最终为在find_idle_sessions中调用revoke_stale_caps, 对应日志:
 
 （16）	所以，网络异常导致session 60秒超时，随后清空cap，之后在会话结束时没有触发配额回收，最终配额多算。
+
+
+#### cap回收
+
+    // tick to find stale session
+    MDSRankDispatcher::tick()
+        Server::find_idle_sessions()
+            mds->locker->revoke_stale_caps(session);
+                revoke_stale_caps(cap); # revoking mds_int_caps 853 (the caps of 853 is pAsLsXsFsx)
+
+    
+    // remove client caps
+    C_MDS_session_finish::finish()
+        Server::_session_logged()
+            mds->locker->remove_client_cap
