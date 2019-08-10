@@ -10,3 +10,14 @@
       PATH=/sbin:/bin:/usr/sbin:/usr/bin
       [wsh@dev]$ env | grep PATH
       PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:
+      
+ * 这是我linode上的vps的显示，root和普通用户下的PATH是一样的
+ 
+       [root@li984-80 ~]# env | grep PATH
+       PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+       [root@li984-80 ~]# su wsh
+       [wsh@li984-80 root]$ env | grep PATH
+       PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+  
+  * 这个路径受什么影响？
+
