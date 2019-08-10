@@ -1,4 +1,4 @@
-####  which pythn 和 sudo which python 结果不一致
+####  which python 和 sudo which python 结果不一致
 
 * 最开始是发现 do_cmake 中的 Found PythonInterp 不一样
 
