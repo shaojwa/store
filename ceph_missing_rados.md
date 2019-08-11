@@ -19,5 +19,15 @@
        [wsh@li984-80 root]$ env | grep PATH
        PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
   
-  * 这个路径受什么影响？
+ * 这个路径受什么影响？
+  
+  一个shell启动之后，有几个相关额配置文件，profile，bashrc文件，细分起来有4个文件：
+  
+  (1) /etc 下的profile 和 bashrc 两个正常文件
+  (2) 用户目录下的 .bash_profile 和 .bashrc 两个隐藏文件
+  
+* 几个脚本的执行顺序可以参见 man bash中的说明
+  
+  
+ 
 
