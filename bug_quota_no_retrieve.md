@@ -144,13 +144,15 @@ lock=0 caps=1 dirtyparent=1 dirty=1 authpin=0 0x7fb2ae8fc800]
 
 #### cap回收
 
+* 会话超时时间是60秒（mds_session_timeout = 60）
+
     // tick to find stale session
     MDSRankDispatcher::tick()
         Server::find_idle_sessions()
             mds->locker->revoke_stale_caps(session);
                 revoke_stale_caps(cap); # revoking mds_int_caps 853 (the caps of 853 is pAsLsXsFsx)
 
-* 会话超时时间是60秒（mds_session_timeout）
+* 会话关闭超时  mds_session_autoclose = 300）
 
     // remove client caps
     C_MDS_session_finish::finish()
