@@ -150,7 +150,8 @@ lock=0 caps=1 dirtyparent=1 dirty=1 authpin=0 0x7fb2ae8fc800]
             mds->locker->revoke_stale_caps(session);
                 revoke_stale_caps(cap); # revoking mds_int_caps 853 (the caps of 853 is pAsLsXsFsx)
 
-    
+* 会话超时时间是60秒（mds_session_timeout）
+
     // remove client caps
     C_MDS_session_finish::finish()
         Server::_session_logged()
