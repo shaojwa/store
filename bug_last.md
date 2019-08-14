@@ -3,17 +3,41 @@
       $ shutdown -h now 
       2019-08-14 20:28:11  [INFO] Run shutdown -h now
       2分钟后启动系统
+      
+      # message 关闭时间是 20:28:11
+      # message 启动时间是 20:30:02 
+      # message shutdown日志：
+      Stopping Login Prompts
+      # message boot日志：
+      Linux version 4.14.0-49
+      Command line：BOOT_IMAGE=/vmlinuz
+      # operation记录的shutdown时间是：20:31:30 (重启后root登入shell的时间）
+      # last -x
+      reboot   system boot 20:30-21:18 (开始时间是系统启动时间)
+      shutdown system down 20:28-20:30
+      
+      reboot之前记录截止时间是shutdown的时间
+      # last reboot最新记录开始时间是系统启动的的时间
+      # ceph-mds中有Terminate信号
     
-    * operation的日志记录的是机子起来之后的时间  
-    * last reboot之前记录截止时间是shutdown的时间
-    * last reboot最新记录开始时间是系统启动的的时间
-    * message 关闭时间是shutdown的时间（一定有的日志是 Stopping Login Prompts）
-    * message 启动时间是 20:32:02 (一定有的日志是 BOOT_IMAGE=/vmlinuz)
     
 #### shutdown now
 
-  $ shutdown now
-  2019-08-14 20:43:23 [INFO] Run shutdown now
+      $ shutdown now
+      2019-08-14 20:43:23 [INFO] Run shutdown now
+      # message   中关闭时间是 20:43:23
+      # message   中启动时间是 20:48:58
+      # message shutdown日志：
+      Stopping Command Scheduler...
+      Stopped Command Scheduler.
+      Stopped target Timers
+      Stopping Timers.
+      Stopping Login Prompts
+      # operation记录的shutdown时间是：20:54:50
+      # last -x显示：
+      reboot system boot 20:49-21:18 (开始时间是系统启动时间)
+      没有shutdown system down事件
+      # ceph-mds中有Terminate信号
       
 #### reboot
 
