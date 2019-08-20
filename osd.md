@@ -13,7 +13,13 @@
 
 ## pool
 
-池的类型定义了数据持久化方式（The pool type defines the data durability method when creating the pool. ）。 
+#### 一个pool由一下几点决定
+
+* pool type：池的类型定义了数据持久化方式。
+* Placement Groups：
+* CRUSH Ruleset：
+* Durability：可靠性
+
 
 
 
