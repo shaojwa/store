@@ -1,6 +1,5 @@
 https://access.redhat.com/documentation/en-us/red_hat_ceph_storage/3/html/architecture_guide/arch-cluster-arch
-
-    [cache pool](https://docs.ceph.com/docs/master/dev/cache-pool/)
+[cache pool](https://docs.ceph.com/docs/master/dev/cache-pool/)
 
 #### 关于 memstore
     
