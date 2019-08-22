@@ -11,7 +11,9 @@
           gpgkey=file:///mnt/cdrom/RPM-GPG-KEY-CentOS-7
 
 4.将其他分段禁止掉:
+
           enabled=0
+          
 5.yum install nfs-utils安装客户端
 
 #### nfs共享怎么看
