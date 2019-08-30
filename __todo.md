@@ -1,5 +1,7 @@
-  
-    [ceph架构](https://docs.ceph.com/docs/master/architecture/)
+ 
+    ceph架构：https://docs.ceph.com/docs/master/architecture/
+    rados论文：https://ceph.com/wp-content/uploads/2016/08/weil-rados-pdsw07.pdf
+    crush论文：https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf
 
 #### ms_dispath线程的工作
 
