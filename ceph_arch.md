@@ -47,7 +47,24 @@ ceph clients 和 osd进程都使用CRUSH算法拉高效得计算关于对象位�
 并且通过将负载分散到所有的clients和集群中的所有osd来支持海量的扩展。CRUSH使用智能数据复制来保证弹性，这更加适合超大规模存储。
 
 #### cluster map
-  
+
+ceph依赖于具有集群拓扑信息的客户端以及拥有osd进程。包括5个map，这5个map被统称为cluster map。
+
+* monitor map：集群的fsid，位置，每个monitor的名字以及端口。 同时也标记当前的epoch（map是什么时候创建的以及最后一次修改时间）。
+通过运行 ceph mon dump 来查看mon map。
+
+* osd map：包括fsid，map创建以及最后一次修改的时间，pools列表，副本数，PG数，osd列表以及状态，查看osdmap，运行 ceph osd map。
+
+* PG map： 包括PG版本，以及时间戳，最后的OSD map epoch，使用率，以及每个PG的详细信息（PG ID， Up set， acting Set， PG状态）以及每个pool的使用率统计信息。
+
+* CRUSH map：包括存储设备列表，故障域层次关系（即，device，host，rack，row，room等），以及存储数据时遍历层次关系的规则。查看 CRUSH map，执行：
+ ceph osd getcrushmap -o {filename}; 然后通过 crushtool -d {comp-crushmap-filename} -o {decomp-crushmap-filename} 来反编译后，通过文本表机器或者cat查看。
+ 
+* MDS map：包括当前MDS map epoch，map创建的时间，最后一次修改时间，以及元数据池，元数据服务器列表，以及每个元数据服务器的状态，通过 ceph fs dump查看看MDS map。
+
+#### 高可用 monitors
+
+
   
 
 
