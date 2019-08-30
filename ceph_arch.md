@@ -152,5 +152,44 @@ Pool至少会设置以下参数：
 
 每一个池都有一定数量的PG，CRUSH动态得将PG映射到OSD，当client存储对象时，CRUSH将映射每个object到PG。对象到PG的映射会在OSD和client之间创建一个间接层。client集群必须可以增长或者缩减，并且可以重新平衡存储的对象时放置的位置。如果client知道哪个OSD中有哪个对象，那么这就会让client和OSD之间形成紧耦合。所以，CRUSH算法来把每个object映射到PG，然后将每一个PG映射到一个或者多个OSD进程。这个中间层是的cpeh可以在由新的OSD上线时，能动态得重新平衡。
 
+通过cluster map以及CRUSH算法，客户端可以准确计算出用哪个OSD来读取或者写入对象。
+
+#### 计算PG ID
+
+当一个客户端绑定到一个monitor，退回收到最新的一份cluster map拷贝。通过cluster map，client知道集群中所有的 Monitors，OSDs，MDSs。但是并不知道object的位置。
+
+对象的位置通过计算获得。
+
+客户端需要的输入只是 object id以及 pool。通过 object name 计算出 PG，client通过以下步骤计算出PG ID：
+
+* client 输入pool name和 object id. (e.g. pool = 'liverpool', and object-id = 'john')
+* ceph 获取 object id，并计算 hash值
+* ceph 对hash值对PG 数量取模得到 PG ID
+* ceph 通过pool name 得到 pool id （比如 'liverpool' = 4）
+* ceph 规划 pool ID 到 PG ID（比如 4.58）
+
+计算对象的位置远远快于执行一次对象位置查询。CRUSH 算法允许一个client计算出对象应该存储的位置，使得client可以连接到主OSD去存取对象。
 
 
+#### PEERING AND SETS
+
+在之前的章节，我们注意到OSD进程会校验相互之间的心跳，并上报给Monitor。另外一件OSD做的时叫做Peering，
+这是一个将PG中的所有OSD对所有对象以及元数据的状态达成一致的过程。事实上，OSD会上报Peering 失败给Mon，Peering的问题通常会自动解决。
+但是，如果问题持续存在，你也许就需要参考Troubleshooting Peering Failure章节。
+
+对object的状态达成一致并不是说PG有最新的数据。
+
+ceph计算设计的最小副本数时2（也就是size = 2），这是对数据安全的最低要求，对高可用性来说，集群应该保存2个以上的对象副本。
+（size = 3， min size = 2），这样，集群才可以在degraded的状态下继续运行，并维持数据的安全。
+
+回过头参考 智能守护进程支持高扩展中的图，我没并没有专名命名OSD进程，而是将他们称为 Primary, Secondary。按照惯例，Primary 是 Acting Set中的第一个OSD，主管负责PG中的peering过程，并且primary OSD是唯一可以接受由client发起的写对象操作的OSD。
+
+当一系列的OSD对一个PG负责时，那一些列的OSD我们称为Acting Set，一个Acting Set可能是当前对这个PG负责的OSD，或者是在某个epoch时对某个特定的PG负责的OSD。
+
+Acting Set 中的OSD并不总是up，当一个Acting Set 中的OSD up时，他是Up Set中的一部分，这个Up set是一个重要的区别，因为当一个OSD故障时，ceph会把PG重新映射为其他OSD。如果住主OSD挂掉，Acting Set中的第二个OSD会变成主OSD。
+
+#### 重平衡
+
+#### 数据一致性
+
+#### 纠删码
