@@ -1,3 +1,7 @@
+#### client 写数据的大概流程
+
+    参考这里：https://docs.ceph.com/docs/master/architecture/
+        
 
 #### client和pool的连接
 
