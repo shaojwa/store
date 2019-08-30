@@ -148,5 +148,9 @@ Pool至少会设置以下参数：
 * PG的数量
 * 采用的CRUSH规则
 
-####　将PG映射到OSD
+#### 将PG映射到OSD
+
+每一个池都有一定数量的PG，CRUSH动态得将PG映射到OSD，当client存储对象时，CRUSH将映射每个object到PG。对象到PG的映射会在OSD和client之间创建一个间接层。client集群必须可以增长或者缩减，并且可以重新平衡存储的对象时放置的位置。如果client知道哪个OSD中有哪个对象，那么这就会让client和OSD之间形成紧耦合。所以，CRUSH算法来把每个object映射到PG，然后将每一个PG映射到一个或者多个OSD进程。这个中间层是的cpeh可以在由新的OSD上线时，能动态得重新平衡。
+
+
 
