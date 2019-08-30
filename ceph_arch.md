@@ -77,18 +77,26 @@ cephs使用共享秘钥进行认证，即client和monitor集群都有一份clien
 
 ceph的一个关键的可扩展性是避免一个中心化的接口来存储对象。也就说，client必须可以和OSD直接进行交互。为了保护数据，ceph提供cephx认证系统，系统能认证作为客户端的用户，cephx协议的运行方式和kerberos有些类似。
 
+用户通过ceph client 来连接一个monitor，不同于Kerberos，每个monitor可以认证用户以及分发keys，所以cephx没有单点故障或者瓶颈。
+monitor返回一份认证数据结构，和Kerberos中的ticker类似，这份数据包括一个session key，用来获取ceph 服务。
+这个session key是通过用户的永久性的secret key加密过的。所以，只有这个用户可以从monitor那请求服务。
+接下去，用户使用这个session key 项monitor请求需要的服务。然后monitor提供给客户单一个ticket，用来认证client对osd的访问，osd实际处理数据。
+monitor以及osd共享秘钥，所以client可以用monitor提供的ticket和集群中的任何OSD或者MDS使用。
+和Kerberos类似，ticket会过期，所以攻击者不能使用一个过期的窃取的ticket或者session key。
+这种方式的认证可以避免攻击者用某个用户的id伪造消息，或者篡改其他有某个用户的合法消息。
+只要用户的secret 可以在过期之前不被泄露。
 
+要使用cephx，管理员必须先创建用户，client.admin这个用户在命令行下调用
+ceph auth get-or-create-key来过去用户名和秘钥，monitor中的ceph的认证子系统生成username和key，在monior中存一份拷贝，同时把secret key返回给client.admin。也就是说client和monitor共享这份秘钥。
 
+要向monitor进行认证，client发送用户名给monitor（注意不需要用户的secret key），monitor生成一个session key。
+并用这个用户名对应的secret key加密这个session key。然后monitor把这个加密过的ticket回传给client。
+客户端然后用共享的secret key解密获取到session key。这个session key表示当前会话中的这个用户。
+然后client请求一个ticket（用session key签名），monitor生成ticket（使用user的secret key加密）后返回给client。
+client解密ticket，并用ticket来签名发往OSD以及MDS的请求。
 
+所以，client先要请求session key，monitor生成session key，用secret key加密后成为一张ticket，发送给client。  
+client得到session key之后，再次请求ticket，moniter会发送给有使用期限的ticket给client（还是用secret key加密） 
+client达到这张tiacket之后，就可以和OSD和MDS交互。
 
-
-
-
-
-  
-
-
-    
-  
-  
-  
+该认证提供的ceph client和ceph server之间的保护，认证并不扩展到超出client的范围。也就是说，如果用户远程访问client，ceph的认证并不会应用到用户主机和client主机之间的链接。
