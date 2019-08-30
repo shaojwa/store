@@ -1,3 +1,6 @@
+  
+    [ceph架构](https://docs.ceph.com/docs/master/architecture/)
+
 #### ms_dispath线程的工作
 
 * handle mds map 
