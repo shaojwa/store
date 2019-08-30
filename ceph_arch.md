@@ -64,6 +64,13 @@ ceph依赖于具有集群拓扑信息的客户端以及拥有osd进程。包括5
 
 #### 高可用 monitors
 
+在客户端可以读写数据之前，client必须链接monitor来获取最近的cluster map副本。一个ceph集群可以在单一monitor下运行，但是这回引入单点故障。
+为增强可靠性以及容错，ceph支持monitor集群。在monitor集群中，潜在的以及其他错误会导致一个或多个节点落后于当前集群状态，因为这个原因，ceph必须在多个moniter之前对集群的状态达成一致。ceph总是使用多数monitors原则以及Paxos算法去建立一致性。
+
+#### 高可用性认证
+
+
+
 
   
 
