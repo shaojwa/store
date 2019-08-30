@@ -190,6 +190,49 @@ Acting Set 中的OSD并不总是up，当一个Acting Set 中的OSD up时，他�
 
 #### 重平衡
 
+当天津爱一个osd 到ce平衡集群中时，cluster map会进行更新，参见 【计算PGID】部分，这改变了cluster map。所以，这改变了对象的放置，因为这修改了计算的输入。下面的图从某种程度上描述了重平衡的过程（尽管比较初略，但是基本生对大型集群的影响比较小）。并不是所有的PG会从已经存在的OSD迁移到别的OSD。计算是正在进行重平衡，CRUSH是稳定的。很多PG会保持原有原有的配置。每一个OSD都会获得一些容量的增长，所以子完成重平衡后，新的OSD并没有负载的峰值。
+
 #### 数据一致性
 
+作为维护数据一致性和清洁度的一部分，OSD可以在PG的范围内进行对象的清洗。也就是说，OSD会比较在一个PG中所有副本的对象的元数据。清洗过程会发现OSD的bug或者文件系统的错误。OSD也可以执行更深层的清洗，通过逐字节得比较对象的数据。深度scrub因此会发现扇区损坏等在轻量scrub中不会发现的问题。
+
 #### 纠删码
+
+一个纠删码池会把一个对象存储为 K+M 块。它把对象分为K个数据块，以及M个编码块。pool被配置成大小为K+M，以便每一块都存到Acting Set中的一个OSD上。
+每一块的rank值作为对象的属性被存储起来。
+
+创建一个使用5个OSD的纠删码池作为示例（K+M = 5），允许其中的2块丢失（M = 2）
+
+#### 纠删码块的读和写
+
+当一个数据位ABCDEFGHI的，名为NYAN的对象写进一个池中时，纠删码功能会把内容拆分为3个数据块：第一块包含ABC，第二块包含DEF，最后一块为GHI。
+如果内容的出昂度不是K的整数倍，那内容会被追加补全。就删码模块同样会创建爱你两个编码块。第4块包含YXY以及第5块包含QGC。每一块都会存储到acting set中的一个OSD中。所有的块都会用相同的名字NYAN以对象的形式存储在OSD上，除了对象的名字外，块创建的顺序必须以对象属性的形式被保留下来（shard_t）。
+块1（chunk）包括ABC，并且存在OSD5上，而块4包含YXY存在OSD3上。
+
+当对象NYAN 从纠删码池中读取的时候，解码函数会读到3个块，chunk1（包含ACB），chunk3（包含GHI）和块4（包含YXY）。然后重建原先的数据ABCDEFGHI。
+解码模块会通知chunk2和chunk5丢失（其实被称作擦除（erasures）），chunk5不能被毒气，因为OSD4已经out。
+只要有三个chunk被读取，解码函数马上回被调用，OSD2因为最后才读取到，所以OSD2上的chunk就不会算在内。
+
+#### 被中断的全写操作
+
+在纠删码池中，acting set中的主OSD会收到所有的OSD写操作。他负责将负载编码为K+M个块，并把这些块发送到其他的OSD上。主OSD也负责维护权威的 PG-log版本。
+在下图中，一个（K=2，M=1）的就删码PG被创建，显然需要3个OSD支持。acting set 由OSD1，OSD2 和 OSD3 组成。一个object已经被编码并存储在OSD上：
+chunk D1v1（即，chunk number1，verion 1） 在OSD1上，D2v1在OSD2上，C1v1（即Coding chunk 1， verion 1）在OSD 3上。PG log在每一个OSD上都是一样的（比如：1,1 表示epoch1， version1）。
+
+
+OSD1 是主OSD，并且从client那收到一个 WRITE FULL操作，意味着用负载替换掉整个object，而不是覆盖一部分。 对象的version2被创建出来用来覆盖version1。
+OSD1 对负载进行编码为三个chunk2 ：D1v2会写到OSD1上，D2v2会写到OSD2上，C1v2会写到OSD3上。每个chunk都会发动到目标OSD上。
+主OSD除了要处理write操作外，还要负责存储chunks，以及维护一个权威版本的PG log。 当一个OSD收到消息告诉它写chunk时，它也会在PG log中创建一个新的条目来反应这次修改。比如，一旦OSD3存储了C1v2，他就会添加（1，2）（即 epoch1，version2）条目到log中。因为OSD是异步处理的，其他的chunk有可能还在处理中（比如D2v2），而有的chunk已经得到确认并存储到磁盘上，比如C1v1和D1v1。等所有的chunk都写入成功并得到确认，日志的last_complete指正会从(1,1)指向（1,2），最后用来存储原先chunk的文件就可以被删除，比如OSD1上的D1v1，OSD2上的D2v1，以及OSD3上的C1v1。（假设存储引擎是filestore）
+
+但是意外发生了，如果在D2v2还在处理中的时候，OSD1故障，此时object的version2 只是部分被写入： OSD3上有一个chunk，但并不足以恢复。
+它会没有两个chunk，D1v2，D2v2,而纠删码的参数K=2要求至少要有两个chunk才能重建第三个chunk。OSD4 称为性的primary OSD，并且发现last_complete指向的log条目是（1,1），那将成为权威log的头。
+
+OSD3上的（1,2）这个log条目和新的权威log（OSD4提供）有分歧，它将被丢弃，C1v2这个chunk也将会被删除。D1v1chunk将会通过解码函数重建，这个重建过程在scrub的时候发生，并且D1v1会被存储在新的主OSD中，即OSD4中。
+
+#### CACHE TIERING
+
+
+
+
+
+
