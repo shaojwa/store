@@ -122,6 +122,16 @@ OSD进程加入一个集群并上报状态，在底层，OSD通过up/down来反�
 OSD请求发送消息给Monitor，如果monitor没有在配饰的时间间隔内收到消息，他也会把OSD标down。但是，这种机制是failsafe的。
 通常来说，OSD进程能确定是否临近的OSD已经down掉并上报给Monitor，这就能保证Monitor进程是轻量级的。
 
-* 数据 scrub
+* 数据 scrub （清洗）
 
-* 数据备份
+作为维持数据一致性以及清洁度的一部分，OSD可以清洗PG内的object。即，OSD可以比较一个PG内不同osd上对象副本的元数据。scrub（通常一天一次）可以发现bug或者文件系统错误。ceph也可以进行更深的scrub，通过逐bit得比较数据。深度scrub（通常一周一次）可以发现磁盘上损坏的扇区，这在轻量 scrub中并不会发现。
+
+* 数据复制
+
+同client一样，OSD进程也用CRUSH算法，但是OSD进程使用CRUSH来计算副本应该存储在什么地方（也未了重平衡），在一个典型的写场景中，client使用CRUSH来计算什么地方可以存一个对象，将对象一个社到一个pool以及PG，然后查看CRUSH map来找到这个PG的主OSD。
+
+client把对象写到主OSD中，主OSD有它自己的CRUSH map来标记的其他的从OSD。然后复制对象到从OSD中，在确认对象已经成功存储之后再返回给client。因为可以进行数据的复制，OSD可以缓解client的工作，以确保数据的高可用以及安全性。
+
+#### 动态集群管理
+
+
