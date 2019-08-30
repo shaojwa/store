@@ -27,7 +27,7 @@ osd会检查自己的状态以及其他osd的状态并上报给monitor。
 （1）通过librados 提供一个native 的接口给ceph存储集群。
 （2）基于librados的一些列服务接口。
 
-####　数据存储
+#### 数据存储
 
 ceph集群从clients那收到数据，不管是通过 block device，还是object，还是 filesystem，甚至是通过librados的一个用户实现。
 ceph集群以object来存储数据。每一个对象对应一个文件，存储在设备上（如果存储引擎是filestore），osd进程处理存储磁盘上的读写操作。
@@ -43,7 +43,10 @@ osd进程把所有的数据存储在对象中，这些对象都在一个扁平�
  
  #### CRUSH 介绍
  
- 
+ceph clients 和 osd进程都使用CRUSH算法拉高效得计算关于对象位置的信息。CRUSH提供一个比老方法更好的数据管理机制。
+并且通过将负载分散到所有的clients和集群中的所有osd来支持海量的扩展。CRUSH使用智能数据复制来保证弹性，这更加适合超大规模存储。
+
+#### cluster map
   
   
 
