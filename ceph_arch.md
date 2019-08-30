@@ -1,6 +1,5 @@
-        
-     arch 参考https://docs.ceph.com/docs/master/architecture/
-     rados 参考：https://ceph.com/wp-content/uploads/2016/08/weil-rados-pdsw07.pdf
+
+        https://docs.ceph.com/docs/master/architecture/
      
 ## 架构
 
@@ -100,3 +99,29 @@ client得到session key之后，再次请求ticket，moniter会发送给有使�
 client达到这张tiacket之后，就可以和OSD和MDS交互。
 
 该认证提供的ceph client和ceph server之间的保护，认证并不扩展到超出client的范围。也就是说，如果用户远程访问client，ceph的认证并不会应用到用户主机和client主机之间的链接。
+
+#### 智能的DAEMON使得集群可以超大规模扩展
+
+
+在很多集群架构中，集群成员关系的主要目的是有一个集中式的接口知道哪些节点可以访问。所以一个中心化的接口通过double-dsipatch来提供服务给客户端，这对PB到EB字节规模来说，是一个巨大瓶颈。
+
+ceph消除了这种瓶颈，OSD金城河client是集群感知的。和client一样，OSD进程知道集群中的其他OSD，这就能让OSD进程可以直接和其他OSD进程以及Monitor进程交互。
+另外，也让client可以直接和OSD交互。
+
+client，Monitors，OSD进程之间相互交互的能力意味着，OSD进程可以利用节点上的CPU以及RAM，更加容易得执行任务，这些任务通常会拖慢中心化服务器。
+这种能最大化利用算力的能力会有以下几个主要的获益：
+
+* OSD直接为client提供服务
+
+任何网络设备都有一个所能支持的最大并发连接数的限制。一个中心化的系统中，大规模场景下必然会有一个低的物理限制。能让客户端直接连接OSD，ceph就能同时提高性能以及总体容量，并消除单点故障。client可以在需要时，同某个特定的OSD之间维护一个会话，而不需要和一个中心化的节点之间维持会话，
+
+* OSD成员关系以及状态
+
+OSD进程加入一个集群并上报状态，在底层，OSD通过up/down来反应他们是否正在运行以及是否能处理client请求。
+如果一个OSD进程已经down，并且也处于in状态，这表明OSD进程故障。如果一个OSD进程不再运行（即crush掉），OSD不能通知给moniter它已经down掉。
+OSD请求发送消息给Monitor，如果monitor没有在配饰的时间间隔内收到消息，他也会把OSD标down。但是，这种机制是failsafe的。
+通常来说，OSD进程能确定是否临近的OSD已经down掉并上报给Monitor，这就能保证Monitor进程是轻量级的。
+
+* 数据 scrub
+
+* 数据备份
