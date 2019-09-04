@@ -146,3 +146,7 @@ osd中down只是临时性故障，不会触发PG迁移。而out是mon检测到�
 #### 怎么看某个池的io
       
     ceph osd pool stats # statistics
+    
+#### OSD 和MON 之间的心跳延时 
+
+   osd_heartbeat_grace = 20s
