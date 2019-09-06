@@ -32,11 +32,18 @@ ceph mds 开头的常用命令不多，这在ceph -h中称为 monitor命令，�
 
 #### 查看当前那几个mds是active
 
-    ceph mds stat #当然也可以用 ceph fs status
+    ceph mds stat 
+    ceph fs status
+    
+#### 找到某个epoch的 mds map
+
+    ceph fs dump [epoch]
 
 #### 通过rank值找到节点的mds的元信息（最常用的是找到主机名）
 
-    ceph mds metadata 0 # 找到rank值为0的mds节点信息
+找到rank值为0的mds节点信息
+
+    ceph mds metadata 0 
 
 * mds的很多功能都是通过ceph dameon 进行查询，ceph daemon 命令属于 local命令，估计h和这些命令都是查询某个特定mds/osd/mon有关。
 ceph daemon mds.mdsX 的帮助和 ceph 以及 ceph mds不同，不是用的-h，而是 ceph daemon mds.mdsX help，原因是这已经需要通过守护进程自己处理。
