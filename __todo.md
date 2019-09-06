@@ -8,6 +8,10 @@
 
     commit: a5fc29...b4b3
     http://tracker.ceph.com/issues/26962
+    
+#### MDS respawn的实现
+
+respawn
 
 #### ms_dispath线程的工作
 
