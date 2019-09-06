@@ -2,11 +2,16 @@
 
 mds日志：
 
-      2019-09-06 10:02:08.382178 7f6863576700 370386 8  INFO mds.mds0 asok_command: flush journal (starting...)     
+      2019-09-06 10:02:08.382178 7f6863576700 370386 8  INFO mds.mds0 asok_command:
+      flush journal (starting...)    
+      
       2019-09-06 10:03:42.095377 7f68627ff700 370387 7  INFO mds.mds0 map removed me (mds.-1 gid:1001340)
-      from cluster due to lost contact; respawning      
+      from cluster due to lost contact; respawning
+      
       2019-09-06 10:03:42.095385 7f68627ff700 370387 7  INFO mds.mds0 respawn
-      2019-09-06 10:03:42.095388 7f68627ff700 370387 7 WARNING mds.mds0 debug timeout, dump log to get more info
+      
+      2019-09-06 10:03:42.095388 7f68627ff700 370387 7 WARNING mds.mds0 debug timeout,
+      dump log to get more info
 
 #### 找到MON认为MDS超时的日志
 
