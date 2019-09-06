@@ -4,6 +4,11 @@
     crush论文：https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf
     osds-report-peering-failure：https://docs.ceph.com/docs/master/rados/configuration/mon-osd-interaction/
 
+#### 时钟跳变
+
+    commit: a5fc29...b4b3
+    http://tracker.ceph.com/issues/26962
+
 #### ms_dispath线程的工作
 
 * handle mds map 
