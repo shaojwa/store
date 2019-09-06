@@ -3,8 +3,8 @@
 mds日志：
 
       2019-09-06 10:02:08.382178 7f6863576700 370386 8  INFO mds.mds0 asok_command: flush journal (starting...)     
-      2019-09-06 10:03:42.095377 7f68627ff700 370387 7  INFO mds.mds0 map removed me (mds.-1 gid:1001340) from cluster
-      due to lost contact; respawning      
+      2019-09-06 10:03:42.095377 7f68627ff700 370387 7  INFO mds.mds0 map removed me (mds.-1 gid:1001340)
+      from cluster due to lost contact; respawning      
       2019-09-06 10:03:42.095385 7f68627ff700 370387 7  INFO mds.mds0 respawn
       2019-09-06 10:03:42.095388 7f68627ff700 370387 7 WARNING mds.mds0 debug timeout, dump log to get more info
 
@@ -21,7 +21,8 @@ mds日志：
       2019-09-06 10:02:34.811604 7f45f33fe700 203009 2 WARNING log_channel(cluster) log [WRN] : 
       daemon mds.mds0 is not responding, replacing it as rank 0 with standby daemon mds.mds1
       
-      2019-09-06 10:02:34.811624 7f45f33fe700 203009 2  INFO mon.zd2@0(leader).mds e186 fail_mds_gid 1001340 mds.mds0 role 0
+      2019-09-06 10:02:34.811624 7f45f33fe700 203009 2  INFO mon.zd2@0(leader).mds e186 fail_mds_gid
+      1001340 mds.mds0 role 0
 
 
 我们在一个MON节点上（peon-MON）看到了mds map的变化：
