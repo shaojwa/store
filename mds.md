@@ -1,19 +1,19 @@
-#### mds的状态之 replay
+#### MDS 状态 replay
 
-#### MDS状态之 resolve
+#### MDS 状态 resolve
 
 resolve阶段是多活mds才有的阶段，这个阶段主要是处理分布式事务未提交成功的事件。
 代码里分析来看，先是处理rollback_uncommitted_fragments，即回滚未提交的日志段，然后处理adjust_subtree_auth，即调整mds的子树权威，最后向其他mds做同步mdcache->send_resolves()
 
-#### MDS状态之 reconnect
+#### MDS 状态 reconnect
 
 这里主要处理cephfs客户端重连任务，mds向monitor申请更新为reconnect状态后，monitor会向cephfs客户端发送当前active的mds信息，cephfs客户端在ceph_mdsc_handle_mdsmap中更新当前mdsmap，并向当前提升的mds发送reconnect请求。mds收到客户端重连请求后会将该客户端加入客户端列表中，并赋予相关caps。若客户端在mds_reconnect_timeout时间内未重新连接，mds会丢弃该客户端，若该客户端重连会被mds拒绝。
 
-#### MDS状态之 rejoin
+#### MDS 状态 rejoin
 
 主要是实现mds之间缓存的同步，caps还有锁状态的同步。
 
-#### ceph 的mon 命令
+#### ceph 的 mon 命令
 
 ceph mds 开头的常用命令不多，这在ceph -h中称为 monitor命令，因为这些命令都是通过和mon交互进行的。
 
