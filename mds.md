@@ -22,7 +22,7 @@ ceph mds 开头的常用命令不多，这在ceph -h中称为 monitor命令，�
     ceph -h
     ceph mds -h
   
-#### 将整形转为caps
+#### 将整形转为 caps
 
     ceph mds caps <caps_int>
  
@@ -48,7 +48,7 @@ ceph mds 开头的常用命令不多，这在ceph -h中称为 monitor命令，�
 * mds的很多功能都是通过ceph dameon 进行查询，ceph daemon 命令属于 local命令，估计h和这些命令都是查询某个特定mds/osd/mon有关。
 ceph daemon mds.mdsX 的帮助和 ceph 以及 ceph mds不同，不是用的-h，而是 ceph daemon mds.mdsX help，原因是这已经需要通过守护进程自己处理。
 
-#### 查询mds的id
+#### 查询 mds 的 id
 
     ceph daemon mds.mdsX status
     
@@ -61,3 +61,11 @@ mds的id一般在mds的日志中很少体现，主要用在mon中处理mds的心
 #### MDS给mon的心跳异常超时时间
 
     10秒，mds_beacon_grace = 10s
+
+#### ceph中默认的单个文件最大大小
+
+    Option("mds_max_file_size", Option::TYPE_UINT, Option::LEVEL_ADVANCED)
+    .set_default(70368744177664)
+    .set_description("")
+    
+    70368744177664 = 64T
