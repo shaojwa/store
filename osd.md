@@ -140,10 +140,16 @@ osd中down只是临时性故障，不会触发PG迁移。而out是mon检测到�
 
 #### 一个4M的对象，纠删码2+1时怎么存？
 
-#### 怎么看某个池的io
+一共三片，为2M + 2M + 2M
+
+#### 怎么看某个池的 io
       
     ceph osd pool stats # statistics
     
 #### OSD 和MON 之间的心跳延时 
 
    osd_heartbeat_grace = 20s
+
+##### 怎么查看某个版本的osd map
+
+   ceph osd dump <epoch>
