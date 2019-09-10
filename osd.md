@@ -1,4 +1,4 @@
-## 集群要做的事
+### 集群要做的事
 
  * 数据持久化： 副本或者纠删码
  * 数据完整性： 通过 scrubbing or CRC checks
@@ -11,8 +11,7 @@
 * 把一个对象所在的pg算出来
 * 把一个pg对应的acting set 算出来。
 
-## pool
-
+### pool 相关
 #### 一个pool由一下几点决定
 
 * pool type：池的类型定义了数据持久化方式。
@@ -21,9 +20,7 @@
 * Durability：可靠性
 
 
-
-
-## pg相关
+### pg 相关
 #### pg 各种状态的含义
 
 http://docs.ceph.com/docs/master/rados/operations/monitoring-osd-pg/
@@ -76,8 +73,8 @@ PG的down：当前在线的osd不足以完成数据恢复，就会把一个pg表
 
 平均每个pg进行purge操作的上限？
 
-## osd 相关
 
+### osd 相关
 #### osd 各种状态（橙书76页）
 
 osd中down只是临时性故障，不会触发PG迁移。而out是mon检测到某个osd处于down超过一段时间，mon将其设置为out，即为永久性故障。  
@@ -88,7 +85,7 @@ osd中down只是临时性故障，不会触发PG迁移。而out是mon检测到�
     Marking osd.* out
 
 
-## 对象相关
+#### 对象相关
 
 #### 文件的layout信息怎么看
 
