@@ -37,7 +37,8 @@ ceph mds 开头的常用命令不多，这在ceph -h中称为 monitor命令，�
     
 #### 找到某个epoch的 mds map
 
-    ceph fs dump [epoch]
+    ceph fs dump <epoch>
+    // 目前不清楚为什么 ceph mds dump <epoch> 返回的都是最新的版本
 
 #### 通过rank值找到节点的mds的元信息（最常用的是找到主机名）
 
