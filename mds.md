@@ -2,7 +2,11 @@
 
 #### MDS 状态 resolve
 
-resolve阶段是多活mds才有的阶段，这个阶段主要是处理分布式事务未提交成功的事件。
+resolve阶段是多活mds才有的阶段，用来解决跨多个MDS出现权威元数据分歧场景。对服务端侧来说，包括子树分布，Anchor表更新等功能。  
+客户端侧包括rename，unlink等操作。resolve用于确定日志中还不明确的事务，每个恢复MDS向所有其他MDS广播resolve消息。
+消息内容包括权威子树信息，失败是导入未知位置子树信息。
+
+这个阶段主要是处理分布式事务未提交成功的事件。
 代码里分析来看，先是处理rollback_uncommitted_fragments，即回滚未提交的日志段，然后处理adjust_subtree_auth，即调整mds的子树权威，最后向其他mds做同步mdcache->send_resolves()
 
 #### MDS 状态 reconnect
