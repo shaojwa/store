@@ -75,6 +75,12 @@ mds的id一般在mds的日志中很少体现，主要用在mon中处理mds的心
     
     70368744177664 = 64T
     
+#### 刚写入的文件没有layout和parent属性是为什么
+
+元数据没有下刷，flush journal一下就可以：
+
+    ceph daemon mds.mdsX flush journal
+
 #### 文件的layout信息是存放在什么地方？
 
 存在放文件的第一个数据对象的xattr中，可以通过以下命令看到：
@@ -83,8 +89,14 @@ mds的id一般在mds的日志中很少体现，主要用在mon中处理mds的心
     layout
     parent
 
-#### 刚写入的文件没有layout和parent属性是为什么
+#### 文件的layout信息怎么看
 
-元数据没有下刷，flush journal一下就可以：
+文件一旦创建就会有一个layout信息，可以通过以下命令查看：
 
-    ceph daemon mds.mdsX flush journal
+    getfattr -n ceph.file.layout test_file
+
+其中一般信息是：
+    
+     ceph.file.layout="stripe_unit=4194304 stripe_count=1 object_size=4194304 pool=.data.pool0
+
+文件的layout和parent信息是放在数据池的第一个对象中的，而目录的这两个信息是在元数据池中的。
