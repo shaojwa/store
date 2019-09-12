@@ -74,3 +74,17 @@ mds的id一般在mds的日志中很少体现，主要用在mon中处理mds的心
     .set_description("")
     
     70368744177664 = 64T
+    
+#### 文件的layout信息是存放在什么地方？
+
+存在放文件的第一个数据对象的xattr中，可以通过以下命令看到：
+
+    $ rados -p <data_pool> listxattr 100000003f2.00000000
+    layout
+    parent
+
+#### 刚写入的文件没有layout和parent属性是为什么
+
+元数据没有下刷，flush journal一下就可以：
+
+    ceph daemon mds.mdsX flush journal
