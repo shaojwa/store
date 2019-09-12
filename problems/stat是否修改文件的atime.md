@@ -3,3 +3,4 @@ atime的访问通过stat命令查看，getxatttr不应该修改atime，否者sta
 数据set，影响mtime。数据get，影响atime。
 
 xfs中stat不会修改atime，file命令会影响atime，因为file会读取文件数据，来判断文件类型。
+file文件之后，文件的部分数据已经在内存中，再次file就不会更新。
