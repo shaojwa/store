@@ -1,5 +1,8 @@
-#### export_pin是针对目录的inode，子树是目录分片，会有不一致
+#### export_pin是针对目录的inode而子树的单位是目录分片
 
+export_pin的话，一个目录都pin在一个rank上，就算这个目录有多个分片，也都会固定在一个上面。
+
+动态迁移基于目录分片，既然是动态迁移，export_pin就会是-1，所以这是俩个功能，不矛盾。
 
 #### set export pin 之前应该先project一下：
 
