@@ -4,6 +4,7 @@
     crush论文：https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf
     osds-report-peering-failure：https://docs.ceph.com/docs/master/rados/configuration/mon-osd-interaction/
     https://yq.aliyun.com/articles/221507
+    https://docs.oracle.com/cd/E37670_01/E37355/html/ol_repair_xfs.html
 
 #### 时钟跳变
 
