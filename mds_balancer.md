@@ -1,4 +1,22 @@
-#### 几个链接
+#### export_pin是针对目录的inode，子树是目录分片，会有不一致
+
+
+#### set export pin 之前应该先project一下：
+
+        pi = cur->project_inode();
+        cur->set_export_pin(rank);
+
+应该要使用projected_inode(), 类似set_export_pin:
+
+        void CInode::set_export_pin(mds_rank_t rank)
+        {
+          assert(is_dir());
+          assert(is_projected());
+          get_projected_inode()->export_pin = rank;
+          maybe_export_pin(true);
+        }
+        
+#### 链接
 
      https://ceph.com/community/new-luminous-cephfs-subtree-pinning/
 
