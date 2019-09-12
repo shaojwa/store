@@ -1,3 +1,5 @@
+#### stat是否修改文件的atime
+
 atime的访问通过stat命令查看，getxatttr不应该修改atime，否者stat一次,atime就变化一次不合理。
 一个文件，两种数据，元数据和数据。元数据set，影响ctime，元数据get，不影响任何时间。
 数据set，影响mtime。数据get，影响atime。
