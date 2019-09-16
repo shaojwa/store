@@ -1,5 +1,28 @@
-#### MDLog 日志的提交
+#### MDLog的提交的主要流程
 
+* 工作函数是MDLog::_submit_entry()
+
+主要调用者是MDLog::submit_entry(),MDS处理元数据请求过程中，实际通过Server::submit_mdlog_entry()来提交日志。
+Server::submit_mdlog_entry()，主要在Server::journal_and_reply()中调用，所以主要流程是：
+
+    Server::journal_and_reply()
+        \-Server::submit_mdlog_entry() 
+            \-MDLog::submit_entry()
+                \-MDLog::_submit_entry()
+
+
+Server::journal_and_reply() 一些通用操作以完成请求。
+Server::submit_mdlog_entry()对MDLog::submit_entry()增加TrackedOp模块对event进行跟踪之后的封装。
+MDLog::submit_entry()主要是MDLog::_submit_entry()增加锁机制后的封装。
+
+除了以上的主流程，其他流程调用submit_mdlog_entry()主要是以下几种情况：
+
+* slave 相关处理
+* snap 相关处理
+* rollback 相关处理
+* 处理内部op的dispatch_fragment_dir
+
+这几个都不是处理一般情况下的client发起的正常业务流程，暂时不先不分析。
 
 
 #### MDLog 中的 submit线程
