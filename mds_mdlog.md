@@ -1,8 +1,10 @@
-#### mdslog.flush的含义
 
-mdlog的flush接口只是把event写到日志里去，而不是把元数据日志转为元数据写入到对象中。
 
-对应的命令是 ceph daemon mds.mdsX log flush
+#### MDLog中的flush的含义
+
+MDLog的flush接口只是把event写到日志里去并落盘（写到日志对象中），而不是把元数据日志转为元数据写入到对象中。
+
+但是命令是 ceph daemon mds.mdsX flush journal中不只是MDLog的flush，还有MDLog的trim（trim_all），所以会将日志中的元数据转为元数据对象。
 
 #### 如何证明mdlog的flush只是下刷日志到磁盘而没有更新到元数据对象
 
