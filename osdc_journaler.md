@@ -1,8 +1,8 @@
-#### get_layout_period()
+## get_layout_period()
 
 默认情况下返回一个对象的大小4M
 
-#### flush 流程
+## flush 流程
 
 MDLog模块通过journaler->flush()来完成日志的下刷：
 
@@ -17,7 +17,7 @@ MDLog模块通过journaler->flush()来完成日志的下刷：
 * _fulsh() 主要调用_do_flush和wait_for_flush接口。
 
 
-### _do_flush()
+## _do_flush()
 
 几个相关postion：
 
@@ -35,9 +35,9 @@ MDLog模块通过journaler->flush()来完成日志的下刷：
     write_pos > flush_pos > saft_pos
     write_pos = flush_pos + write_buf.length()
 
-### _wait_for_flush()
+## _wait_for_flush()
 
-#### _issue_prezero()
+## _issue_prezero()
 
 * 先找到置0的位置：比write_pos至少多num_periods个period（4M）的period整数倍的数值，设置为to。
 * 只要prezeroing_pos没达到to，就每次一个perion得进行zero，如果一开始prezeroing_pos不是perion的整数倍，就先prezeroing_pos到整数倍。
