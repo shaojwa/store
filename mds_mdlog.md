@@ -1,3 +1,35 @@
+#### MDLog 中的 submit线程
+
+
+    submit 线程循环处理：
+        （1）判断daemon是否正在停止或者pending_event已经为空。
+        （2）拿到pending_event这个map的第一个元素（key为log segment）
+        （3）拿到第一个需要处理的PendingEvent，记为data。
+            （a）如果data中的log_event字段不为空则：
+                 回放的顺序记录LogEvent为le；
+                 记录le中的segment为ls；
+                 把le编码为bl。
+                 得到journaler的write_pos；
+                 将ls中的开始偏移量start_off设置为write_pos；
+                 如果event的类型是SUBTREEMAP：
+                         那么把ls的offset也设置为write_pos；
+
+                 把bl追加到journaler中，并返回新的写入位置：new_write_pos；（写日志成功）
+                 如果data.fin非空：
+                         将data.fin动态转型为MDSLogContextBase，并吧new_write_pos值设置到fin中
+                 如果data.info为空：
+                         则创建新的额MDL_Flushed上下文，并赋值给fin
+
+                 journaler将fin把回调上下文放到回调列表（日志下刷完成后调用，这里不是同步等）
+
+                 如果data.flush为真：
+                         journaler下刷日志（下刷的意思是把日志写入到日志盘，而不是把日志转为元数据）
+            （b）如果data中的log_event字段不为空（一般是强制下刷事件)
+                 如果data.fin非空（表示有回调事件）
+                         构建C_MDL_Flushed回调事件
+                         把回调上下文放到回调列表（日志下刷完成后调用）
+                 如果data.flush为真：
+                         journaler下刷日志
 
 
 #### MDLog中的flush的含义
