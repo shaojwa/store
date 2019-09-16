@@ -36,3 +36,9 @@ MDLog模块通过journaler->flush()来完成日志的下刷：
     write_pos = flush_pos + write_buf.length()
 
 ### _wait_for_flush()
+
+#### _issue_prezero()
+
+* 先找到置0的位置：比write_pos至少多num_periods个period（4M）的period整数倍的数值，设置为to。
+* 只要prezeroing_pos没达到to，就每次一个perion得进行zero，如果一开始prezeroing_pos不是perion的整数倍，就先prezeroing_pos到整数倍。
+
