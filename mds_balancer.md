@@ -8,7 +8,6 @@
 
 所以，如果 get subtrees 里看到的是 -1，说明这个目录的任何一层dir都没有pin住。
 
-
 #### export_pin是针对目录的inode而子树的单位是目录分片
 
 export_pin的话，一个目录都pin在一个rank上，就算这个目录有多个分片，也都会固定在一个上面。
@@ -40,7 +39,7 @@ export_pin的话，一个目录都pin在一个rank上，就算这个目录有多
     
 #### mds.0 上都保存根目录的对应的子树
 
-    根目录是CAPFS，inode是1，umount之后自然就不再是1，data目录不是根（inode是0x10000000001）。
+    根目录是CAPFS，inode是1（umount之后为139772829），data目录不是根（inode是0x10000000001）。
 
 #### 每个active mds 都至少有一颗子树
   
