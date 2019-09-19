@@ -40,6 +40,11 @@ export_pin的话，一个目录都pin在一个rank上，就算这个目录有多
 #### mds.0 上都保存根目录的对应的子树
 
     根目录是CAPFS，inode是1（umount之后为139772829），data目录不是根（inode是0x10000000001）。
+    
+#### ~mds0 子谁答应的dirfrag
+    
+    ~mds0对应 0x100，export_pin = -1，auth_first = 0, auth_second = -2
+    ~mds1 对应0x101, export_pin = -1，auth_first = 1, auth_second = -2
 
 #### 每个active mds 都至少有一颗子树
   
