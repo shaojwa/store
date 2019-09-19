@@ -56,4 +56,6 @@ export_pin的话，一个目录都pin在一个rank上，就算这个目录有多
 
 #### 要把一个dir pin在一个mds上
 
-    setfattr -n ceph.dir.pin -v 1 /mnt/cephfs/tmp // 要bin住只能通过这种方式
+要bin住只能通过这种方式
+
+    setfattr -n ceph.dir.pin -v 1 /mnt/cephfs/tmp 
