@@ -36,7 +36,7 @@ ceph mds 开头的常用命令不多，这在ceph -h中称为 monitor命令，�
 
 #### 查看当前那几个mds是active
 
-    ceph mds stat 
+    ceph mds stat  // stat = status
     ceph fs status
     
 #### 找到某个epoch的 mds map
