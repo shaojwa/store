@@ -45,3 +45,10 @@
 
 ## 2.2 负载
 
+* 元数据事务分两类：
+  1. open,close,setattr等针对文件或者目录的inode。
+  2. rename，unlink，等在影响系统命名空间以及层次的directory dentry。
+ 
+ # 3 相关工作
+  
+
