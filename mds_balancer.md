@@ -1,3 +1,17 @@
+#### get subtrees中的 auth_first 和 auth_second 是什么意思？
+
+#### get subtrees中的 export_pin 看到的是什么
+
+子树的单位是dir，这里的export_pin是dir对应的inode的export_pin属性。
+
+如果子树目录路径中，任何一层dir对应的inode 的 export_pin不是MDS_RANK_NONE就返回对应的export_pin值。
+
+所以，如果 get subtrees 里看到的是 -1，说明这个目录的任何一层dir都没有pin住。
+
+
+###
+
+
 #### export_pin是针对目录的inode而子树的单位是目录分片
 
 export_pin的话，一个目录都pin在一个rank上，就算这个目录有多个分片，也都会固定在一个上面。
@@ -38,5 +52,3 @@ export_pin的话，一个目录都pin在一个rank上，就算这个目录有多
 #### 要把一个dir pin在一个mds上
 
     setfattr -n ceph.dir.pin -v 1 /mnt/cephfs/tmp // 要bin住只能通过这种方式
-
-
