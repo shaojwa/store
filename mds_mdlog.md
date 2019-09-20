@@ -156,6 +156,22 @@ journaler->flush()来完成日志的落盘：
 
 把回调上下文放到队列中，日志落盘完成后会调用这里设置的回调函数。
 
+### 回调上下文的处理 waitfor_safe map
+
+waitfor_safe 存储从write_pos -> list<context>的映射，用来在日志落盘之后的处理流程获取回调上下文。
+
+    C_Flush->finish()
+        \- ls->_finish_flush()
+
+
+#### 回调上下文处理 pending_safe 
+
+pending_safe 存储flush_pos -> safe_pos
+
+flush_pos 已经flush的位置，即在journaler中的位置。safe_pos 已经落盘的位置，所以 safe_pos < flush_pos.
+
+在_do_flush 中设置 pending_safe[flush_pos] = next_safe_pos;
+
 ### _issue_prezero()
 
 * 先找到置0的位置：比write_pos至少多num_periods个period（4M）的period整数倍的数值，设置为to。
