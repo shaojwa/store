@@ -67,16 +67,16 @@ unflushed++没有置零的场景也有两：
 只有专用的PendingEvent(NULL, NULL, true) 的才是true。所以大多数时候只是把Event放到journaler中，而没有下刷。
 所以，回答刚才的问题，flush把event都放到了journaler中，不一定下刷，两种情况下下刷：
 
-* 标记下刷的Event收到
-* 如果pengding_events列表为空，就下刷。
+* 收到标记下刷的Event。
+* 如果pengding_events列表已经为空，表示全部放到journaler对象中，触发下刷。
 
 ### submit_thread 做什么
 
 submit_thread 主要干的事是：
 
-* 把event追加到journaler中，journaler->append_entry()
+* 把event放到journaler中，journaler->append_entry()
 * 设置回调函数，journaler->wait_for_flush(fin)
-* 执行 journaler->flush();
+* 执行 journaler->flush()
 
         submit 线程循环处理：
             （1）判断daemon是否正在停止或者pending_event已经为空。
@@ -116,20 +116,22 @@ journaler->flush()来完成日志的落盘：
             \-_wait_for_flush(onsafe);
     
 
-* 少数几处调用Journaler::flush时onsafe参数不为NULL，正常的日志下刷可以认为就是不指定回调的，调用_flush时onsafe也是null。
+* 少数几处调用Journaler::flush时onsafe参数不为NULL，正常的日志下刷一般不指定回调的，调用_flush时onsafe也是null。
 
 * _fulsh() 主要调用_do_flush和wait_for_flush接口。
 
+#### 问题：什么情况下journaler->flush 会指定回调？
+
 ### _do_flush()
 
-主要工作：commit日志，调用filer.write() 接口进行日志落盘 
+主要工作：commit日志，调用filer.write() 接口进行日志落盘。
 
 几个相关位置：
 
-* prezero_pos : 预置为0的位置。
-* write_pos   ：日志写入位置，下一条日志要写入，就从此处写入。
-* flush_pos   ：将此处之前的日志落盘，完成落盘后safe_pos等于flush_pos。
-* safe_pos    : 已经落盘的日志位置。
+* prezero_pos: 预置为0的位置。
+* write_pos: 日志写入位置，下一条日志要写入，就从此处写入。
+* flush_pos: 将此处之前的日志落盘，完成落盘后safe_pos等于flush_pos。
+* safe_pos : 已经落盘的日志位置。
 
 几个注意点：
 
