@@ -1,3 +1,4 @@
+
 ## journaler 的操作
 
 journaler操作分两大类，可以在journaler.h中看到 Asynchronous operations 和 Synchronous setters
