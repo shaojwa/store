@@ -106,7 +106,13 @@ submit_thread 主要干的事是：
                              journaler下刷日志
 
 
-## journaler的flush 
+## journaler 的操作
+
+journaler操作分两大类，可以在journaler.h中看到 Asynchronous operations 和 Synchronous setters
+
+其中flush，wait_for_flush 都是异步操作，都有回调参数。
+
+### journaler的flush 
 
 journaler->flush()来完成日志的落盘：
 
@@ -120,7 +126,11 @@ journaler->flush()来完成日志的落盘：
 
 * _fulsh() 主要调用_do_flush和wait_for_flush接口。
 
-#### 问题：什么情况下journaler->flush 会指定回调？
+#### 问题：journaler->flush()参数onsafe，但为什么没看到带参数的调用？
+
+只有一处，恢复线程_recovery_thread中的 _reformat_journal()接口中的 new_journal->flush(&flush_waiter)
+
+在正常流程下，journaler->flush() 接口都不需要回调，但是 _wait_for_flush() 一般都有。
 
 ### _do_flush()
 
