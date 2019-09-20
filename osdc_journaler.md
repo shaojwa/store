@@ -69,11 +69,6 @@ flush_pos 已经flush的位置，即在journaler中的位置。safe_pos 已经�
 * 先找到置0的位置：比write_pos至少多num_periods个period（4M）的period整数倍的数值，设置为to。
 * 只要prezeroing_pos没达到to，就每次一个perion得进行zero，如果一开始prezeroing_pos不是perion的整数倍，就先prezeroing_pos到整数倍。
 
-## _issue_prezero()
-
-* 先找到置0的位置：比write_pos至少多num_periods个period（4M）的period整数倍的数值，设置为to。
-* 只要prezeroing_pos没达到to，就每次一个perion得进行zero，如果一开始prezeroing_pos不是perion的整数倍，就先prezeroing_pos到整数倍。
-
 ## get_layout_period()
 
 默认情况下返回一个对象的大小4M
