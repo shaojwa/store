@@ -132,7 +132,7 @@ journaler->flush()来完成日志的落盘：
 
 在正常流程下，journaler->flush() 接口都不需要回调，但是 _wait_for_flush() 一般都有。
 
-### _do_flush()
+#### _do_flush()
 
 主要工作：commit日志，调用filer.write() 接口进行日志落盘。
 
@@ -152,11 +152,11 @@ journaler->flush()来完成日志的落盘：
 5. 调整next_safe_pos
 6. filer.write进行flush
 
-### _wait_for_flush()
+#### _wait_for_flush()
 
 把回调上下文放到队列中，日志落盘完成后会调用这里设置的回调函数。
 
-### 回调上下文的处理 waitfor_safe map
+#### 回调上下文的处理 waitfor_safe map
 
 waitfor_safe 存储从write_pos -> list<context>的映射，用来在日志落盘之后的处理流程获取回调上下文。
 
