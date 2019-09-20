@@ -1,6 +1,4 @@
-# 1. 基本流程
-
-## 1.1 提交
+## LogEvent 提交
 
 * 提供接口submit_entry，后被Server,Locker,MDCache,Migrator等模块封装使用。
 
@@ -31,7 +29,7 @@ MDLog::submit_entry()主要是MDLog::_submit_entry()增加锁机制后的封装�
 这几个都不是处理一般情况下的client发起的正常业务流程。
 
 
-## 1.2 MDLog 中的 flush 下刷
+## MDLog 中的 flush 下刷
 
 ### MDLog中的flush的含义
 
@@ -46,9 +44,8 @@ MDLog的flush接口只是把event写到日志里去并落盘（写到日志对�
 * 执行journaler->flush()
 * 释放提交锁
 
-### 问题：如果pending_event队列为空，为什么需要执行journaler->flush()
+### 问题：如果pending_event队列为空，为什么还需要执行journaler->flush()
 
-因为：提交线程自己会去调用journaler-flush。具体流程看下文：
 
 ### submit_thread 做什么
 
@@ -58,35 +55,32 @@ submit_thread 主要干的事是：
 * 设置回调函数，journaler->wait_for_flush(fin)
 * 执行 journaler->flush();
 
-    submit 线程循环处理：
-        （1）判断daemon是否正在停止或者pending_event已经为空。
-        （2）拿到pending_event这个map的第一个元素（key为log segment）
-        （3）拿到第一个需要处理的PendingEvent，记为data。
-            （a）如果data中的log_event字段不为空则：
-                 回放的顺序记录LogEvent为le；
-                 记录le中的segment为ls；
-                 把le编码为bl。
-                 得到journaler的write_pos；
-                 将ls中的开始偏移量start_off设置为write_pos；
-                 如果event的类型是SUBTREEMAP：
-                         那么把ls的offset也设置为write_pos；
-
-                 把bl追加到journaler中，并返回新的写入位置：new_write_pos；（写日志成功）
-                 如果data.fin非空：
-                         将data.fin动态转型为MDSLogContextBase，并吧new_write_pos值设置到fin中
-                 如果data.info为空：
-                         则创建新的额MDL_Flushed上下文，并赋值给fin
-
-                 journaler将fin把回调上下文放到回调列表（日志下刷完成后调用，这里不是同步等）
-
-                 如果data.flush为真：
-                         journaler下刷日志（下刷的意思是把日志写入到日志盘，而不是把日志转为元数据）
-            （b）如果data中的log_event字段不为空（一般是强制下刷事件)
-                 如果data.fin非空（表示有回调事件）
-                         构建C_MDL_Flushed回调事件
-                         把回调上下文放到回调列表（日志下刷完成后调用）
-                 如果data.flush为真：
-                         journaler下刷日志
+        submit 线程循环处理：
+            （1）判断daemon是否正在停止或者pending_event已经为空。
+            （2）拿到pending_event这个map的第一个元素（key为log segment）
+            （3）拿到第一个需要处理的PendingEvent，记为data。
+                （a）如果data中的log_event字段不为空则：
+                     回放的顺序记录LogEvent为le；
+                     记录le中的segment为ls；
+                     把le编码为bl。
+                     得到journaler的write_pos；
+                     将ls中的开始偏移量start_off设置为write_pos；
+                     如果event的类型是SUBTREEMAP：
+                             那么把ls的offset也设置为write_pos；
+                     把bl追加到journaler中，并返回新的写入位置：new_write_pos；（写日志成功）
+                     如果data.fin非空：
+                             将data.fin动态转型为MDSLogContextBase，并吧new_write_pos值设置到fin中
+                     如果data.info为空：
+                             则创建新的额MDL_Flushed上下文，并赋值给fin
+                     journaler将fin把回调上下文放到回调列表（日志下刷完成后调用，这里不是同步等）
+                     如果data.flush为真：
+                             journaler下刷日志（下刷的意思是把日志写入到日志盘，而不是把日志转为元数据）
+                （b）如果data中的log_event字段不为空（一般是强制下刷事件)
+                     如果data.fin非空（表示有回调事件）
+                             构建C_MDL_Flushed回调事件
+                             把回调上下文放到回调列表（日志下刷完成后调用）
+                     如果data.flush为真：
+                             journaler下刷日志
 
 
 ## journaler的flush 
@@ -104,6 +98,8 @@ journaler->flush()来完成日志的落盘：
 * _fulsh() 主要调用_do_flush和wait_for_flush接口。
 
 ### _do_flush()
+
+主要工作：commit日志，调用filer.write() 接口进行日志落盘 
 
 几个相关位置：
 
@@ -123,7 +119,7 @@ journaler->flush()来完成日志的落盘：
 
 ### _wait_for_flush()
 
-把回调上下文放到队列中，等待日志落盘完成。
+把回调上下文放到队列中，日志落盘完成后会调用这里设置的回调函数。
 
 ### _issue_prezero()
 
