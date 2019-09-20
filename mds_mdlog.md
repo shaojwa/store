@@ -1,13 +1,15 @@
 ## LogEvent 提交
 
-* 提供接口submit_entry，后被Server,Locker,MDCache,Migrator等模块封装使用。
+* 提供接口submit_entry()，后被Server，Locker，MDCache，Migrator等模块封装使用。
 
-#### MDLog的提交的主要流程
+### MDLog的提交的主要流程
 
-* 工作函数是MDLog::_submit_entry()
+* 模块接口函数是MDLog::submit_entry()， 工作函数是MDLog::_submit_entry()
 
-主要调用者是MDLog::submit_entry(),MDS处理元数据请求过程中，实际通过Server::submit_mdlog_entry()来提交日志。
-Server::submit_mdlog_entry()，主要在Server::journal_and_reply()中调用，所以主要流程是：
+MDLog::submit_entry()主要是对MDLog::_submit_entry()增加锁机制后的封装。
+
+MDS处理元数据请求过程中，实际通过Server::submit_mdlog_entry()来提交日志。
+而 Server::submit_mdlog_entry()，主要在Server::journal_and_reply()中调用，所以主要流程是：
 
     Server::journal_and_reply()
         \-Server::submit_mdlog_entry() 
@@ -15,9 +17,8 @@ Server::submit_mdlog_entry()，主要在Server::journal_and_reply()中调用，�
                 \-MDLog::_submit_entry()
 
 
-Server::journal_and_reply() 一些通用操作以完成请求。
+Server::journal_and_reply()一些通用操作以完成请求。
 Server::submit_mdlog_entry()对MDLog::submit_entry()增加TrackedOp模块对event进行跟踪之后的封装。
-MDLog::submit_entry()主要是MDLog::_submit_entry()增加锁机制后的封装。
 
 除了以上的主流程，其他流程调用submit_mdlog_entry()主要是以下几种情况：
 
@@ -28,12 +29,16 @@ MDLog::submit_entry()主要是MDLog::_submit_entry()增加锁机制后的封装�
 
 这几个都不是处理一般情况下的client发起的正常业务流程。
 
+#### 问题，为什么有的handle_client_xxxx函数直接调用submit_mdlog_entry() 而有的需要通过journal_and_reply()
+
+使用场景的区别是什么？
+
 
 ## MDLog 中的 flush 下刷
 
 ### MDLog中的flush的含义
 
-MDLog的flush接口只是把event写到日志里去并落盘（写到日志对象中），而不是把元数据日志转为元数据写入到对象中。
+MDLog的flush接口只是把event写到日志里并落盘（写到日志对象中），而不是把元数据日志转为元数据写入到对象中。
 但是命令ceph daemon mds.mdsX flush journal中不只是MDLog的flush，还有MDLog的trim（trim_all），所以会将日志中的元数据转为元数据对象。
 
 ### mdslog flush过程
@@ -41,14 +46,14 @@ MDLog的flush接口只是把event写到日志里去并落盘（写到日志对�
 * 获取提交锁
 * 如果等待队列pending_event非空，提交一个特殊的event，用来触发下刷。
 * 给提交线程发信号，此时就不再执行journaler->flush()
-* 执行journaler->flush()
+* 如果pending_event为空，则执行journaler->flush()
 * 释放提交锁
 
 #### 问题：如果pending_event队列为空，为什么还需要执行journaler->flush()
 
-MDLog.flush在持有submit_mutex的时候去比较unflush的值。
+MDLog.flush在持有submit_mutex的时候去比较unflushed的值。
 MDLog在pending_event为空时，依然调用journaler->flush()的前提是unflush大于0。
-unflush增加在两个地方：
+unflushed增加在两个地方：
 
 * _submit_entry()接口，在这里，会把LogEvent放到pending_events中，所以这不是原因。
 * _submit_thread()线程主函数中，如果data.flush 不为true的event，是不会flush的。
@@ -60,7 +65,10 @@ unflushed++没有置零的场景也有两：
 
 所以很关键的一种event是 flush 不为 true。就是PendingEvent的默认值，结果发现大部分event都不是true。
 只有专用的PendingEvent(NULL, NULL, true) 的才是true。所以大多数时候只是把Event放到journaler中，而没有下刷。
-所以，可以回答刚才的问题，如果所有的event都放到了journaler中（此时pengding_events列表为空）就下刷一下。
+所以，回答刚才的问题，flush把event都放到了journaler中，不一定下刷，两种情况下下刷：
+
+* 标记下刷的Event收到
+* 如果pengding_events列表为空，就下刷。
 
 ### submit_thread 做什么
 
