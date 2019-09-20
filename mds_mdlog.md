@@ -1,3 +1,9 @@
+# 1. 基本流程
+
+## 1.1 提交
+
+* 提供接口submit_entry，后被Server,Locker,MDCache,Migrator等模块封装使用。
+
 #### MDLog的提交的主要流程
 
 * 工作函数是MDLog::_submit_entry()
@@ -22,11 +28,35 @@ MDLog::submit_entry()主要是MDLog::_submit_entry()增加锁机制后的封装�
 * rollback 相关处理
 * 处理内部op的dispatch_fragment_dir
 
-这几个都不是处理一般情况下的client发起的正常业务流程，暂时不先不分析。
+这几个都不是处理一般情况下的client发起的正常业务流程。
 
 
-#### MDLog 中的 submit线程
+## 1.2 MDLog 中的 flush 下刷
 
+### MDLog中的flush的含义
+
+MDLog的flush接口只是把event写到日志里去并落盘（写到日志对象中），而不是把元数据日志转为元数据写入到对象中。
+但是命令ceph daemon mds.mdsX flush journal中不只是MDLog的flush，还有MDLog的trim（trim_all），所以会将日志中的元数据转为元数据对象。
+
+### mdslog 下刷过程
+
+* 获取提交锁
+* 如果等待队列pending_event非空，提交一个特殊的event，用来触发下刷。
+* 给提交线程发信号，此时就不再执行journaler->flush()
+* 执行journaler->flush()
+* 释放提交锁
+
+### 问题：如果pending_event队列为空，为什么需要执行journaler->flush()
+
+因为：提交线程自己会去调用journaler-flush。具体流程看下文：
+
+### submit_thread 做什么
+
+submit_thread 主要干的事是：
+
+* 把event追加到journaler中，journaler->append_entry()
+* 设置回调函数，journaler->wait_for_flush(fin)
+* 执行 journaler->flush();
 
     submit 线程循环处理：
         （1）判断daemon是否正在停止或者pending_event已经为空。
@@ -59,13 +89,48 @@ MDLog::submit_entry()主要是MDLog::_submit_entry()增加锁机制后的封装�
                          journaler下刷日志
 
 
-#### MDLog中的flush的含义
+## journaler的flush 
 
-MDLog的flush接口只是把event写到日志里去并落盘（写到日志对象中），而不是把元数据日志转为元数据写入到对象中。
+journaler->flush()来完成日志的落盘：
 
-但是命令是 ceph daemon mds.mdsX flush journal中不只是MDLog的flush，还有MDLog的trim（trim_all），所以会将日志中的元数据转为元数据对象。
+    Journaler::flush(Context *onsafe)
+        \-Journaler::_flush(C_OnFinisher *onsafe)
+            \-_do_flush();
+            \-_wait_for_flush(onsafe);
+    
 
-#### 如何证明mdlog的flush只是下刷日志到磁盘而没有更新到元数据对象
+* 少数几处调用Journaler::flush时onsafe参数不为NULL，正常的日志下刷可以认为就是不指定回调的，调用_flush时onsafe也是null。
+
+* _fulsh() 主要调用_do_flush和wait_for_flush接口。
+
+### _do_flush()
+
+几个相关位置：
+
+* prezero_pos : 预置为0的位置。
+* write_pos   ：日志写入位置，下一条日志要写入，就从此处写入。
+* flush_pos   ：将此处之前的日志落盘，完成落盘后safe_pos等于flush_pos。
+* safe_pos    : 已经落盘的日志位置。
+
+几个注意点：
+
+1. 在调用_do_flush时, 一定是 write_pos > flush_pos.(write_pos == flush_pos的情况已经在调用者_flush中处理)
+2. 需要要求flush_pos + len 的位置应该距离 prezero_pos 至少两个 perion (默认情况下一个perion=4M)
+3. 如果flush_pos + len 的位置不满足条件，且flush_pos + period 距离大于 prezero_pos，那么返回等待perzero完成。
+4. 如果flush_pos + len 的位置不满足条件，且flush_pos + period 距离 prezero_pos 小于len，那么会先flush一部分（导致有的entry被部分flush）。
+5. 调整next_safe_pos
+6. filer.write进行flush
+
+### _wait_for_flush()
+
+把回调上下文放到队列中，等待日志落盘完成。
+
+### _issue_prezero()
+
+* 先找到置0的位置：比write_pos至少多num_periods个period（4M）的period整数倍的数值，设置为to。
+* 只要prezeroing_pos没达到to，就每次一个perion得进行zero，如果一开始prezeroing_pos不是perion的整数倍，就先prezeroing_pos到整数倍。
+
+#### mdlog的flush只是下刷日志到磁盘而没有更新到元数据对象
 
 data本身的inode是1099511627777，十六进制10000000001，在data下写文件，那么这些文件信息应该会记录到10000000001开头的对象中。
 但是实际上一开始并没有，我们看到的只是日志对象，大小增长：
