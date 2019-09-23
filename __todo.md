@@ -1,4 +1,5 @@
  
+    https://docs.ceph.com/docs/master/cephfs/
     论文：https://ceph.com/wp-content/uploads/2016/08/
     mds论文：https://ceph.com/wp-content/uploads/2016/08/weil-mds-sc04.pdf
     rados论文：https://ceph.com/wp-content/uploads/2016/08/weil-rados-pdsw07.pdf
