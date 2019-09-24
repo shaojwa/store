@@ -1,9 +1,13 @@
 在存储模型上下文中，这两个词完全不同：
 
+Memory Consistency：
+Cache Coherence： 只能保证多个核心相互看到新值
+
+简单地说coherence就是同一个地址上的consistency问题
+
 #### 理想情况
 
 我们希望写内存的结果可以立即被所有处理器看到，也就是说写操作后其它处理器的读操作所读到的值都是新值。
-
 
 #### coherence
 
