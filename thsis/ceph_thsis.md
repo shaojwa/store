@@ -11,3 +11,8 @@
 ## 3.3 Communication Model
 
 ceph在节点间通信时采用异步消息模型。记发出的消息会先排队，延后发送，而不需要阻塞。
+
+
+# Appendix B：MDS Implementation Details
+
+## B.1 
