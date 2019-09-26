@@ -49,5 +49,13 @@ MExportDiscover 用来保证导出的base directory的inode在目标节点上打
 
 如果base subtree directory被打开的MDS既不是到导入的MDS，也不是导出的MDS，告警阶段就会发生。
 
-*base subtree directory* 是什么意思？？？
+**base subtree directory** 是什么意思？？？
 
+如果不是告警阶段，那么意思是，在子树目录下（包含嵌套），没有元数据在除了导出MDS和导出MDS之外的MDS上做过副本。
+如果是告警阶段，那么一个MExportWarning消息会发送给bystander MDS（应该是除了导出MDS和导入MDS之外的MDS节点），告诉他们那个区域的权威暂时是模糊的，把导入的MDS和导出的MDS都列为模糊MDS。如果bystander MDS 要trim缓存，必须对导入或者导出MDS都要通知，这对于保证存活的MDS能收到消息来说是必要的，因为导入和导出的MDS都可能挂掉。如果子树被冻结（包括导出和导出MDS），过期不会马上被处理，过期消息会排队，直到那区域解冻，即能明确到底那个是权威MDS。
+
+
+导出MDS遍历子树层次，打包成一个MExport消息，包括元数据以及重要的状态（比如，元数据副本信息）。同时，导出方上的元数据对象会标记为非权威。
+MExport消息发送实际的子树元数据给导入方，基于reeipt（收据？），导入方把数据插入到缓存，把所有的对象标记为权威，并把所有元数据在EImportStart日志消息中做一个拷贝。一旦日志被安全下刷，会夫妇一个MExportAck给导出方。导出方于是可以记录一条EExport 日志,这最终指明export已经完成，如果出现故障，会通过EExport日志来消除权威歧义，这个过程在recovery阶段。
+
+一旦记录，导出方会发送一个MExportNotify给所有的bystander MDS，告诉他们权威已经不再模糊，同时缓存过期消息值只需要发送给新的权威MDS。一旦导出MDS收到一个ack（bystander发送的），导出方解冻子树，清理迁移相关的状态，最后发送一个MExportFinish 给导入方。收到凭证后，导入方记录一条EImportFinish（true）日志，即在本地记录下这次导出确实是成功的，然后解冻子树，处理队列中的缓存超时消息，最后清理它的状态。
