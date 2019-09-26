@@ -46,3 +46,8 @@ MExportDiscover 用来保证导出的base directory的inode在目标节点上打
 接着导出MDS发送MExportPrep消息，在导出范围内的包括所有dir、inode、dentry的信息填充到导入MDS。这也备份元数据，但这会导出MDS push out掉，以避免死锁。
 
 导入的MDS负责打开边界目录后，然后发送Ack。这保证导入的MDS拥有正确的dir auth信息，即权威的MDS重新代理被迁移子树的范围是什么。当导入的MDS在处理MExportPrep是，导入的MDS冻结正科子树区域，来避免新的副本或者缓存过期。
+
+如果base subtree directory被打开的MDS既不是到导入的MDS，也不是导出的MDS，告警阶段就会发生。
+
+*base subtree directory* 是什么意思？？？
+
