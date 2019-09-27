@@ -27,3 +27,7 @@
 #### nfs挂载命令
 
     mount -t nfs 192.168.0.22:/share/nfs /mnt/nfs
+    
+#### nfs 客户端是否 direct io
+
+nfs客户端可以缓存数据后发给 nfsd，此时每个报文大小是1M，否则根据应用下发的大小，比如vdbench 先设置 64k 大小下发。
