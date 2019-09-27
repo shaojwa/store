@@ -38,7 +38,9 @@ buffer = buffer cache，cache = page cache。
 
 原先 buffer 用来指写缓存，cache 用来指读缓存。
 
-现在，buffer cache 用来指 块管理缓存（内存以块 block 进行管理，所以叫block cache更合适），page 用来指页管理缓存（内存以页进行分配管理）。
+现在，buffer cache 用来指 块管理缓存（内存以块 block 进行管理，所以叫block cache更合适）
+
+page cache 用来指页管理缓存（内存以页进行分配管理）。
 
 所以现在文件的IO 缓存都用 page cache，而buffer cache 用来优化块设备IO。
 
