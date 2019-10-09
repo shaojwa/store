@@ -11,6 +11,7 @@
 
 #### nfs client mount success
 
+    [root@node94 mnt]# mount -t nfs 172.25.84.93:/NAS/CAPFS/data/nfs nas_nfs
 
 #### 怎么用iso安装nfs客户端
 
