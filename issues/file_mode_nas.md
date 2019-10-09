@@ -6,4 +6,10 @@
 
 mask is 644
 
-#### 
+#### create file on nfs clientumou
+
+    [root@node94 nas_nfs]# touch file_nfs
+    [root@node94 nas_nfs]# ll
+    total 0
+    -rw-r--r-- 1 root root 0 Oct  9 16:11 file_nas
+    -rw-r--r-- 1 root root 0 Oct  9  2019 file_nfs
