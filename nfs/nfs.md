@@ -1,3 +1,15 @@
+#### nfs client mount failure
+
+    [root@node94 mnt]# mount -t nfs 172.25.84.190:/NAS/CAPFS/data/nfs nas_nfs
+    mount: wrong fs type, bad option, bad superblock on 172.25.84.190:/NAS/CAPFS/data/nfs,
+       missing codepage or helper program, or other error
+       (for several filesystems (e.g. nfs, cifs) you might
+       need a /sbin/mount.<type> helper program)
+
+       In some cases useful info is found in syslog - try
+       dmesg | tail or so.
+
+
 #### 怎么用iso安装nfs客户端
 
 1. 上传CentOS.iso镜像
