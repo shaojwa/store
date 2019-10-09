@@ -9,6 +9,8 @@
        In some cases useful info is found in syslog - try
        dmesg | tail or so.
 
+#### nfs client mount success
+
 
 #### 怎么用iso安装nfs客户端
 
