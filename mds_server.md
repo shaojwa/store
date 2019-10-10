@@ -1,8 +1,7 @@
 #### 关于has_journaled_slaves标记
 
 这个标记在三个接口中设置为，handle_slave_link_prep_ack，handle_slave_rmdir_prep_ack，handle_slave_rename_prep_ack。这和我们之前说的。
-有的操作会影响到多威权威mds上的元数据，典型的三个操作就是link，unlink，rename。具体的说就是，比如link，源dnetry和目的inode是由两个不同的权威mds在维护。
-而一般的情况下，一个文件的inode和dentry都是在一个权威mds上的，因为子树的划分是目录，一个目录下的dentry和这些dentry对应的inode都是在同一个权威mds上。
+有的操作会影响到多威权威mds上的元数据，典型的三个操作就是link，unlink，rename。具体的说就是，比如link，源dnetry和目的inode是由两个不同的权威mds在维护。而一般的情况下，一个文件的inode和dentry都是在一个权威mds上的，因为子树的划分是目录，一个目录下的dentry和这些dentry对应的inode都是在同一个权威mds上。
 
 #### Server::handle_client_unlink
 
