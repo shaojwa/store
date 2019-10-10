@@ -32,6 +32,6 @@ Terminate信号的发起进程是systemd，所以除非认为执行systemctl命�
  关机时：
  
     * kernel  没有umount操作
-    * systemd  也没有一些列的stoppiing操作 
+    * systemd  也没有一些列的stopping操作 
     
 但是 ceph-mds也会收到 SIGTERM 信号，收到后ceph-mds 自杀，最后shutdown。
