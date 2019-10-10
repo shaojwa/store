@@ -1,4 +1,4 @@
-## Dir Dentry 和 Inode 层次关系
+### Dir Dentry 和 Inode 层次关系
 
 回想下inode 和 对应的dentry 以及 cdir的关系。inode 是通过 parent找到它的 dentry，因为link的存在，parent可能会很多，所以有一个parent代表primary link，以及一个集合，叫remote_parent。而dentry怎么找到自己的CDir，就是dentry中的dir指针。而CDir中也有map叫items来存储dentry。所以CDir和CDentry关系比较密切。
 
