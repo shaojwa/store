@@ -172,4 +172,5 @@ handle_client_caps处理的CEPH_MSG_CLIENT_CAPS类型的msg，但是要处理的
 虚拟机环境下是 74989 微秒。
 
 #### wr_dispatch_latency
-
+ 
+ osd返回操作结果，osdc收到后dispatch的时间，基本很小，虚拟机中未 142 微秒。
