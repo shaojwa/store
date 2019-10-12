@@ -23,3 +23,8 @@
 最后显示：
 
         onestor-cli perf -m mds -t show
+
+
+#### perf dump 数据
+
+* 
