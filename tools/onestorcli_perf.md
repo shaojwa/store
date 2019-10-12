@@ -39,9 +39,15 @@ perf 先关的leve有三个，默认情况下都是false，也就是不做统计
 
 在一个目录下跑业务，一般都只会发送到一个mds上。
 
-####  request: 总的请求数
-####  reply: 总的响应数
-####  reply_latency（rlat）: 
+####  request
+
+总的请求数
+
+####  reply
+
+总的响应数
+
+####  reply_latency (rlat): 
 
 从recv请求到early_reply或者reply_client_request的延时。
 
@@ -56,7 +62,7 @@ perf 先关的leve有三个，默认情况下都是false，也就是不做统计
         endcount：统计结束时的处理的请求数。
         maxtime：最大时延（微秒）
         
-####  dispatch_latency（dlat）: 分发延时。
+####  dispatch_latency (dlat): 分发延时。
   
   虚拟机下平均2723微秒
   
@@ -80,7 +86,7 @@ perf 先关的leve有三个，默认情况下都是false，也就是不做统计
         maxtime：最大时延（微秒）
   
 
-#### second_reply_latency（slat）：
+#### second_reply_latency (slat)：
 
 在reply_client_request中处理，虚拟机下平均87579微秒。
 
@@ -88,16 +94,19 @@ perf 先关的leve有三个，默认情况下都是false，也就是不做统计
 
 也就是说，针对的就是有early_reply的情况下，进行的统计。这个比rlat要大得多，在虚拟机上测几乎是10倍的差距。
 
+## onestor-cli perf 字段
+#### reply_latency
+
+同上
+
+#### dispatch_latency
+
+同上
+
 ####  flush_caps_msg_num 
 
 针对 CEPH_CAP_OP_FLUSH，不清楚具体用途。
 
-
-
-## onestor-cli perf 字段
-### mds 模块
-#### reply_latency
-#### dispatch_latency
 #### flush_caps_reply_latency
 
 从消息收到到处理CEPH_CAP_OP_FLUSH这个op的时间。
