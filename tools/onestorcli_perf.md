@@ -27,4 +27,56 @@
 
 #### perf dump 数据
 
-* 
+阶段：
+
+* 收到请求：recv_stamp
+* msg中分发：dispatch_stamp。占用时 30% 以下。
+
+在一个目录下跑业务，一般都只会发送到一个mds上。
+
+* request: 总的请求数
+* reply: 总的响应数
+* reply_latency（rlat）: 
+
+从recv请求到early_reply或者reply_client_request的延时。
+
+也就是说，如果这个请求有early_reply，那么这个时间就算到early_reply，如果没有early reply，那么就算到正式reply给client为止。
+
+        avgcount：统计到的事件数。
+        sum：总的用时（秒）。
+        avgtime（微秒）：平均每个请求用时。
+        begincount：开始统计时的已经处理的请求数量。
+        endcount：统计结束时的处理的请求数。
+        maxtime：最大时延（微秒）
+        
+  * dispatch_latency（dlat）: 分发延时。
+  
+  在请求在msg中分发的时间，设定接口是：
+  
+        ms_deliver_dispatch
+        ms_fast_dispatch
+  
+  在一下两个接口中统计，但不会重复，所以count一般等于request的数量：
+  
+        earpy_reply
+        reply_client_request
+  
+ 字段：
+ 
+        avgcount：统计到的事件数。
+        sum：总的dispatch用时（秒）。
+        avgtime（微秒）：平均每个请求dispatch用时。
+        begincount：开始统计时的已经处理的事件数量。
+        endcount：统计结束时的处理的事件数。
+        maxtime：最大时延（微秒）
+  
+
+* second_reply_latency（slat）：
+
+在reply_client_request中处理。
+
+计算是从early_reply结束到日志落盘后调用reply_client_request时的时间间隔，就是第一次relay和第二次relay之间的时间间隔。
+
+也就是说，针对的就是有early_reply的情况下，进行的统计。这个比rlat要大得多，在虚拟机上测几乎是10倍的差距。
+
+*　flush_caps_msg_num  
