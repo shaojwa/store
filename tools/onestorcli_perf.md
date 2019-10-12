@@ -88,21 +88,31 @@ perf 先关的leve有三个，默认情况下都是false，也就是不做统计
 
 也就是说，针对的就是有early_reply的情况下，进行的统计。这个比rlat要大得多，在虚拟机上测几乎是10倍的差距。
 
-#### 　flush_caps_msg_num 
+####  flush_caps_msg_num 
 
 针对 CEPH_CAP_OP_FLUSH，不清楚具体用途。
 
-####  flush_caps_reply_latency
 
-从消息收到到处理CEPH_CAP_OP_FLUSH这个op的时间，虚拟机下平均85934微秒，不清楚为什么这么久。
+
+## onestor-cli perf 字段
+### mds 模块
+#### reply_latency
+#### dispatch_latency
+#### flush_caps_reply_latency
+
+从消息收到到处理CEPH_CAP_OP_FLUSH这个op的时间。
+
+虚拟机下平均85934微秒，不清楚为什么这么久。
 
 #### flush_caps_dispatch_reply_latency
 
-从收到消息到OP被dispatch的时间，虚拟机下平均84345微秒，占flush_caps_reply_latency的绝大部分，不知道为什么。
+从收到消息到OP被dispatch的时间。
+
+虚拟机下平均84345微秒，占flush_caps_reply_latency的绝大部分，不知道为什么。
 
 #### update_caps_msg_num
 
-虚拟机下为3
+虚拟机下有3个。
 
 #### update_caps_reply_latency
 
@@ -116,12 +126,50 @@ handle_client_caps处理的CEPH_MSG_CLIENT_CAPS类型的msg，但是要处理的
 
 虚拟机下平均422微秒。
 
-### onestor-cli perf 字段
 
-* reply_latency
-* dispatch_latency
-* flush_caps_reply_latency
-* flush_caps_dispatch_reply_latency
-* update_caps_reply_latency
-* update_caps_dispatch_reply_latency
-* second_reply_latency
+### mds_server 模块
+
+#### handle_client_request_latency
+
+在dispatch中处理完这个请求的时间，包 dispatch到具体的处理函数，然后获取锁，eary reply，提交日志，最后回到dispath流程的总时间。
+
+虚拟机平均 6968微秒，共101个。
+
+#### handle_client_session_latency
+
+处理session相关请求的时间。
+
+虚拟机平均 81微秒，共3个。
+
+#### create_reply_latency
+
+这个是mds_server模块下的 third_level的 perf。
+
+这个和最开始的reply_latency 是一样的，只是这里会细分出各种操作，在只有create的情况下，这两个是一样的。
+
+虚拟机环境下是 8910 微秒， 数量是 101。
+
+#### create_dispatch_reply_latency
+
+这个是mds_server模块下的third_level的指标。
+
+这个和最开始的dispatch_latency 是一样的，只是这里会细分出各种操作，在只有create的情况下，这两个是一样的。
+
+虚拟机环境下是 2723 微秒，数量是 101。
+
+### mds_log 模块
+
+#### jlat
+
+日志下刷延时，基本是占 second_reply_latency 的大部分，因为日志下刷是异步的，所以一般都会比较久。
+
+## objecter 模块
+
+#### wr_reply_latency
+
+从op发送出去，到执行 finish_op的用时， 该接口在handle_osd_op_reply中调用。 在这个接口的最后面会调用回调函数。
+
+虚拟机环境下是 74989 微秒。
+
+#### wr_dispatch_latency
+
