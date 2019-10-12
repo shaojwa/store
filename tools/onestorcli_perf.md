@@ -2,8 +2,9 @@
 #### mds 性能命令
 
 * 需要在handy节点上运行
+* mds 相关数据取自 ceph daemon mds.mds0 perf dump
 
-##### 使用步骤
+#### 使用步骤
 
 先clean：
 
