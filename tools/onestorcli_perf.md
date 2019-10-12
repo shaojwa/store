@@ -24,11 +24,14 @@
 
         onestor-cli perf -m mds -t show
 
+### perf dump 数据
 
-## perf dump 数据
+perf 先关的leve有三个，默认情况下都是false，也就是不做统计的，目的是对不同类型的延时进行分类。
 
-ceph_perf_count_third_level
-
+        ceph_perf_count_third_level
+        ceph_perf_count_second_level
+        ceph_perf_count_third_level
+        
 ####  阶段：
 
 * 收到请求：recv_stamp
@@ -113,3 +116,12 @@ handle_client_caps处理的CEPH_MSG_CLIENT_CAPS类型的msg，但是要处理的
 
 虚拟机下平均422微秒。
 
+### onestor-cli perf 字段
+
+* reply_latency
+* dispatch_latency
+* flush_caps_reply_latency
+* flush_caps_dispatch_reply_latency
+* update_caps_reply_latency
+* update_caps_dispatch_reply_latency
+* second_reply_latency
