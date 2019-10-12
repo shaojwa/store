@@ -27,6 +27,8 @@
 
 #### perf dump 数据
 
+ceph_perf_count_third_level
+
 阶段：
 
 * 收到请求：recv_stamp
@@ -42,6 +44,8 @@
 
 也就是说，如果这个请求有early_reply，那么这个时间就算到early_reply，如果没有early reply，那么就算到正式reply给client为止。
 
+虚拟机下平均8910微秒
+
         avgcount：统计到的事件数。
         sum：总的用时（秒）。
         avgtime（微秒）：平均每个请求用时。
@@ -50,6 +54,8 @@
         maxtime：最大时延（微秒）
         
   * dispatch_latency（dlat）: 分发延时。
+  
+  虚拟机下平均2723微秒
   
   在请求在msg中分发的时间，设定接口是：
   
@@ -73,10 +79,38 @@
 
 * second_reply_latency（slat）：
 
-在reply_client_request中处理。
+在reply_client_request中处理，虚拟机下平均87579微秒。
 
 计算是从early_reply结束到日志落盘后调用reply_client_request时的时间间隔，就是第一次relay和第二次relay之间的时间间隔。
 
+
 也就是说，针对的就是有early_reply的情况下，进行的统计。这个比rlat要大得多，在虚拟机上测几乎是10倍的差距。
 
-*　flush_caps_msg_num  
+*　flush_caps_msg_num 
+
+针对 CEPH_CAP_OP_FLUSH，不清楚具体用途。
+
+* flush_caps_reply_latency
+
+从消息收到到处理CEPH_CAP_OP_FLUSH这个op的时间，虚拟机下平均85934微秒，不清楚为什么这么久。
+
+* flush_caps_dispatch_reply_latency
+
+从收到消息到OP被dispatch的时间，虚拟机下平均84345微秒，占flush_caps_reply_latency的绝大部分，不知道为什么。
+
+* update_caps_msg_num
+
+虚拟机下为3
+
+* update_caps_reply_latency
+
+从收到请求到handle_client_caps处理完 CEPH_CAP_OP_UPDATE 的时间。
+
+handle_client_caps处理的CEPH_MSG_CLIENT_CAPS类型的msg，但是要处理的op很多。
+
+虚拟机下平均692微秒。
+
+*　update_caps_dispatch_reply_latency
+
+虚拟机下平均422微秒。
+
