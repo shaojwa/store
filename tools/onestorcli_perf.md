@@ -35,7 +35,7 @@ perf 先关的leve有三个，默认情况下都是false，也就是不做统计
 ##  阶段：
 
 * 收到请求：recv_stamp
-* msg中分发：dispatch_stamp。占用时 30% 以下。
+* msg中分发：dispatch_stamp
 
 在一个目录下跑业务，一般都只会发送到一个mds上。
 
