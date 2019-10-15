@@ -1,0 +1,7 @@
+#### flush cap 是做什么的
+
+内核代码上看，flush cap是在fsync的流程中调用。fsync 会把所有的in-core data of file 落盘，也会把所有的元数据下刷。
+
+而ydatasync不一样，fdatasync只会下刷部分元数据，比如 atime 和 mtime的改变不会在fdatasync中下刷。
+因为这些信息对后续的read操作来说并不是必须的。而size就不一样，它就会要求一次元数据的flush，在fdatasync中也会刷下去。
+
