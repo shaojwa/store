@@ -26,6 +26,11 @@ flush 好像是在dirtry上用？
 
 这两类OP都是在handle_deferrable_message接口中处理的，为什么CEPH_MSG_CLIENT_CAPS慢这么多？
 
+调用栈：
+
+    mds_rank->ms_dispatch(m)
+    MDSDaemon::ms_dispatch()
+
 
 ### mds 的 replica_nonce 是什么作用？
 
