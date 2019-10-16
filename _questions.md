@@ -15,6 +15,8 @@
 因为这些信息对后续的read操作来说并不是必须的。而size就不一样，它就会要求一次元数据的flush，在fdatasync中也会刷下去。
 
 
+### mds 的 replica_nonce 是什么作用？
+
 ## clients
 ### 客户端发送请求，怎么选择MDS？
 
