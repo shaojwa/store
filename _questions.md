@@ -7,12 +7,25 @@
 
 ### dump inode 中的 accounted_rstat 是什么意思？
 
-### flush cap 是做什么的
+### flush cap 是做什么的 ？
 
 内核代码上看，flush cap是在fsync的流程中调用。fsync 会把所有的in-core data of file 落盘，也会把所有的元数据下刷。
 
 而ydatasync不一样，fdatasync只会下刷部分元数据，比如 atime 和 mtime的改变不会在fdatasync中下刷。
 因为这些信息对后续的read操作来说并不是必须的。而size就不一样，它就会要求一次元数据的flush，在fdatasync中也会刷下去。
+
+flush 好像是在dirtry上用？
+
+
+#### 为什么 flush cap的 dispatch时间这么久？
+
+通过perf工具看到，一般请求的 dispatch_latency只有5k多微秒，而update_caps分别达到50k微秒，flush_caps甚至达到80k多。分析下原因。
+
+在MDS测看到，CEPH_CAP_OP_UPDATE，CEPH_CAP_OP_FLUSH 这两种OP都属于 CEPH_MSG_CLIENT_CAPS。
+
+正常处理的创建，删除等操作对应的OP是 CEPH_MSG_CLIENT_REQUEST。
+
+这两类OP都是在handle_deferrable_message接口中处理的，为什么CEPH_MSG_CLIENT_CAPS慢这么多？
 
 
 ### mds 的 replica_nonce 是什么作用？
