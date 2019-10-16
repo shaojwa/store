@@ -1,10 +1,10 @@
-### 权威 元数据 cache 更新后，是怎么通知副本 更新的？ 
+### 权威 元数据 cache 更新后，是怎么通知副本 更新的，但是 version相同？ 
 
 发现副本常常没有及时更新。
 
-## dump inode 中的 accounted_rstat 是什么意思？
+### dump inode 中的 accounted_rstat 是什么意思？
 
-## flush cap 是做什么的
+### flush cap 是做什么的
 
 内核代码上看，flush cap是在fsync的流程中调用。fsync 会把所有的in-core data of file 落盘，也会把所有的元数据下刷。
 
