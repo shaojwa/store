@@ -1,12 +1,9 @@
 
-
-
-
 ### 权威 元数据 cache 更新后，是怎么通知副本 更新的，但是 version相同？ 
 
 发现副本常常没有及时更新。
 
-
+### 客户端发送请求，怎么选择MDS？
 
 ### dump inode 中的 accounted_rstat 是什么意思？
 
@@ -18,11 +15,12 @@
 因为这些信息对后续的read操作来说并不是必须的。而size就不一样，它就会要求一次元数据的flush，在fdatasync中也会刷下去。
 
 
-
 ## clients
 ### 客户端发送请求，怎么选择MDS？
 
 用户态发送请求调用make_request()接口, 有默认参数 mds_rank_t use_mds=-1，当然也可以自己指定。
+
+对stat调用发出的_getattr来说用的是-1，make_request()自己会选择mds，具体怎么选得继续看。
 
 ### stat 和 statx 什么区别
 
