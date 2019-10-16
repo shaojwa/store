@@ -16,8 +16,7 @@
 
 flush 好像是在dirtry上用？
 
-
-#### 为什么 flush cap的 dispatch时间这么久？
+### 为什么 flush cap的 dispatch时间这么久？
 
 通过perf工具看到，一般请求的 dispatch_latency只有5k多微秒，而update_caps分别达到50k微秒，flush_caps甚至达到80k多。分析下原因。
 
