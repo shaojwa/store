@@ -10,3 +10,16 @@
 
 而ydatasync不一样，fdatasync只会下刷部分元数据，比如 atime 和 mtime的改变不会在fdatasync中下刷。
 因为这些信息对后续的read操作来说并不是必须的。而size就不一样，它就会要求一次元数据的flush，在fdatasync中也会刷下去。
+
+
+#### dump inode  字段
+
+    "auth_state": {
+       "replicas": {
+           "1": 3
+       }
+    }
+    
+ 1 为rank， 3 为 replica_nonce。
+ 
+ 
