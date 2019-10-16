@@ -6,6 +6,8 @@
 
 发现副本常常没有及时更新。
 
+
+
 ### dump inode 中的 accounted_rstat 是什么意思？
 
 ### flush cap 是做什么的
@@ -22,7 +24,31 @@
 
 用户态发送请求调用make_request()接口, 有默认参数 mds_rank_t use_mds=-1，当然也可以自己指定。
 
--------------------------------
+### stat 和 statx 什么区别
+
+libcephfs提供ceph_lstat, lstat 和stat一样，除非path参数是symbolic link，lstat 返回时的 symbolic link 本身的数据。
+
+cephfs.pyx提供的是lstat，和stat。
+
+libcephfs 提供的是 ceph_lstat，和 ceph_statx, ceph_lstat 没有在libcephfs.h 中导出，只在libcephfs.cc中导出。
+
+client提供了，lstat，stat 和 statx。
+
+fill_stat() 有配置影响size显示的是什么。
+
+    cct->_conf->client_dirsize_rbytes。 
+    
+     int Client::stat(const char *relpath, struct stat *stbuf, 
+            const UserPerm& perms, frag_info_t *dirstat, int mask)
+            
+       int Client::statx(const char *relpath, struct ceph_statx *stx,
+            const UserPerm& perms, unsigned int want, unsigned int flags)
+            
+ 从形式上看，statx通过want 和 flags 算出mask，stat直接给mask。 statx是可以在want中指定要获取什么字段，比如默认的 CEPH_STATX_BASIC_STATS。cephfs.pyx 用的是ceph_statx，而不是ceph_stat。
+ 
+### stat 用的是什么OP
+
+CEPH_MDS_OP_GETATTR
 
 ## mds
 #### dump inode  字段
