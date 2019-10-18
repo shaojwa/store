@@ -141,7 +141,7 @@ handle_client_caps处理的CEPH_MSG_CLIENT_CAPS类型的msg，但是要处理的
 
 33us， 和 wr_dispatch_latency一个量级。
 
-##　mds-worker统计数据
+## mds-worker 统计数据
 
 * 入队列
 * 出队列
