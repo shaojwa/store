@@ -69,7 +69,7 @@ perf 先关的leve有三个，默认情况下都是false，也就是不做统计
 
 虚拟机下平均87579微秒，物理机下我1952微秒。
 
-###  flush_caps_msg_num 
+### flush_caps_msg_num 
 
 针对 CEPH_CAP_OP_FLUSH，不清楚具体用途。
 
@@ -103,11 +103,48 @@ handle_client_caps处理的CEPH_MSG_CLIENT_CAPS类型的msg，但是要处理的
 
 虚拟机下平均422微秒，物理机为56799微秒，不知道为什么。
 
+## mds_cache
 
-###　mds-worker统计数据
+## mds_log
+
+### mds_mem
+
+### mds_server
+
+### handle_client_request_latency
+
+893us
+
+### create_reply_latency
+
+797us
+
+### create_dispatch_reply_latency
+
+31us
+
+### readdir_reply_latency
+
+457us
+
+### readdir_dispatch_reply_latency
+
+98us
+
+## objecter
+
+### wr_reply_latency
+
+1549us, 和 wr_reply_latency 一个量级。
+
+### wr_dispatch_latency
+
+33us， 和 wr_dispatch_latency一个量级。
+
+##　mds-worker统计数据
 
 * 入队列
-* 
+* 出队列
 
 ### msgr_running_total_time_lat 
 
@@ -131,7 +168,104 @@ handle_client_caps处理的CEPH_MSG_CLIENT_CAPS类型的msg，但是要处理的
 
 ### msgr_send_dequeue_time_lat
 
-报文出对队列时间
+报文发送过程中的出对队列时间
+
+### msgr_send_write_time_lat
+
+发文发送过程中的
+
+### msgr_receive_real_time_lat
+
+### msgr_receive_all_time_lat
+
+### msgr_fast_dispatch_time_lat
+
+### msgr_keep2_time_lat
+
+### msgr_keep2_ack_time_lat
+
+### msgr_msgack_time_lat
+
+### msgr_open_header_time_lat
+
+### msgr_recv_osd_op_complete_lat
+
+### msgr_recv_osd_reply_complete_lat
+
+### msgr_recv_repop_complete_lat
+
+### msgr_recv_repop_reply_complete_lat
+
+### msgr_delay_state_time_lat
+
+### msgr_running_process_time_lat
+
+### msgr_send_osd_op_time_lat
+
+### msgr_send_osd_op_reply_time_lat
+
+### msgr_send_repop_op_time_lat
+
+### msgr_send_repop_reply_time_lat
+
+### msgr_send_osd_op_dequeue_lat
+
+### msgr_send_osd_op_reply_dequeue_lat
+
+### msgr_send_repop_dequeue_lat
+
+### msgr_send_repop_reply_dequeue_lat
+
+### msgr_osd_op_time_lat
+
+### msgr_osd_opreply_time_lat
+
+### msgr_osd_repop_time_lat
+
+### msgr_osd_repopreply_time_lat
+
+### msgr_op_inqueue_lat
+
+### msgr_opreply_inqueue_lat
+
+### msgr_repop_inqueue_lat
+
+### msgr_repopreply_inqueue_lat
+
+### msgr_hand_write_lock_time_1_lat
+
+### msgr_hand_write_lock_time_2_lat
+
+### msgr_hand_write_lock_time_3_lat
+
+### msgr_hand_write_lock_time_4_lat
+
+### msgr_ack_time_lat
+
+### msgr_other_send_time_lat
+
+### msgr_receive_header_time_lat
+
+### msgr_throttle_message_time_lat
+
+### msgr_throttle_bytes_time_lat
+
+### msgr_dispatch_queue_time_lat
+
+### msgr_read_real_time_lat
+
+### msgr_decode_time_lat
+
+### msgr_prepare_send_time_1_lat
+
+### msgr_prepare_send_time_2_lat
+
+### msgr_try_send_time_lat
+
+### msgr_calc_crc_time_lat
+
+### msgr_buffer_time_lat
+
 
 ## onestor-cli perf 性能命令
 
