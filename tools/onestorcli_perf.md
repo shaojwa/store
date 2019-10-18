@@ -1,4 +1,8 @@
 
+### 代码
+
+/opt/xxx/lib/python2.7/site-packages/onestor_cli/perf_counter
+
 ## mds 性能命令
 
 * 需要在handy节点上运行
