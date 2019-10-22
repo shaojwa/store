@@ -125,3 +125,9 @@ osd中down只是临时性故障，不会触发PG迁移。而out是mon检测到�
 #### 如何查看一个对象的stat信息
  
     rados -p <pool_name> stat 10000003f2.00000000
+    
+    
+#### osd向mon报告其他osd挂掉时的最少上报次数
+
+"mon_osd_min_down_reporters": "2"
+达到该次数之后mon才承认osd挂掉。
