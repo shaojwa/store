@@ -61,7 +61,7 @@ perf 先关的leve有三个，默认情况下都是false，也就是不做统计
 
 也就是说，针对的就是有early_reply的情况下，进行的统计。这个比rlat要大得多，在虚拟机上测几乎是10倍的差距。
 
-虚拟机下平均87579微秒，物理机下我1952微秒。
+虚拟机下平均87579微秒。物理机下为1952微秒。
 
 ### flush_caps_msg_num 
 
@@ -107,15 +107,15 @@ handle_client_caps处理的CEPH_MSG_CLIENT_CAPS类型的msg，但是要处理的
 
 ### handle_client_request_latency
 
-893us
+893
 
 ### create_reply_latency
 
-797us
+797
 
 ### create_dispatch_reply_latency
 
-31us
+31
 
 ### readdir_reply_latency
 
@@ -123,7 +123,7 @@ handle_client_caps处理的CEPH_MSG_CLIENT_CAPS类型的msg，但是要处理的
 
 ### readdir_dispatch_reply_latency
 
-98us
+98
 
 ## objecter
 
