@@ -75,3 +75,12 @@ scrub流程在调用mdcahe->enqueue_scrub()前获取mds_lock大锁。
             enqueue_inode()
               _enqueue_inode()
               kick_off_scrubs()
+
+## 对目录 dump inode
+### auth_pins
+
+这个inode 被pin住的计数，一般是被pin住原因是某个locker，migrator，或者MDCache对象。
+
+### nested_auth_pins
+
+调整接口都是adjust_nested_auth_pins，对象CInode，CDentry，CDir都有。
