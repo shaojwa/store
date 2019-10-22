@@ -8,19 +8,16 @@ perf 先关的leve有三个，默认情况下都是false，也就是不做统计
         
 ###  阶段：
 
-
 收到请求，recv_stamp
+msg层中分发，dispatch_stamp
 
-msg中分发，dispatch_stamp
-
-early_reply
-
-journal
-
+mds层early_reply
+mds层journal
 Journaler::C_Flush::finish()
 
-reply_client_request
-
+finish回调
+Server::respond_to_request
+Server::reply_client_request
 
 ### 字段
 
