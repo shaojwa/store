@@ -12,3 +12,9 @@ slave mds先对prepare 写日志，当所有的slave都写完成的时候，主m
 #### Server::handle_client_unlink
 
 删除文件和删除目录都是用的这一个接口，通过请求的OP是否为CEPH_MDS_OP_RMDIR来判断是还不是rmdir操作。所以rmdir也是在unlink里做的。
+
+#### 日志相关上下文类
+
+    ServerLogContext::MDSLogContextBase // 大部分都是这个context
+    ServerIOContext::MDSLogContextBase
+
