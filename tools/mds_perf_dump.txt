@@ -8,11 +8,19 @@ perf 先关的leve有三个，默认情况下都是false，也就是不做统计
         
 ###  阶段：
 
-* 收到请求，recv_stamp
-* msg中分发，dispatch_stamp
-* early_reply
-* journal
-* reply_client_request
+
+收到请求，recv_stamp
+
+msg中分发，dispatch_stamp
+
+early_reply
+
+journal
+
+Journaler::C_Flush::finish()
+
+reply_client_request
+
 
 ### 字段
 
@@ -101,6 +109,14 @@ handle_client_caps处理的CEPH_MSG_CLIENT_CAPS类型的msg，但是要处理的
 
 ## mds_log
 
+### jlat
+
+对应枚举值l_mdl_jlat，在Journaler中是logger_key_lat。
+开始：Journaler::_do_flush中够着C_Flush开始。
+结束: Journaler::C_Flush::finish() 执行回调结束。
+
+
+
 ### mds_mem
 
 ### mds_server
@@ -119,7 +135,7 @@ handle_client_caps处理的CEPH_MSG_CLIENT_CAPS类型的msg，但是要处理的
 
 ### readdir_reply_latency
 
-457us
+457
 
 ### readdir_dispatch_reply_latency
 
@@ -129,7 +145,8 @@ handle_client_caps处理的CEPH_MSG_CLIENT_CAPS类型的msg，但是要处理的
 
 ### wr_reply_latency
 
-1549us, 和 wr_reply_latency 一个量级。
+1549
+和 wr_reply_latency 一个量级。
 
 ### wr_dispatch_latency
 
