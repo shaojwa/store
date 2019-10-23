@@ -1,9 +1,9 @@
 
 ## ceph-mds
 
-主线程
+    主线程，global_init()
 
-## mds-worker-0/1/2/3
+## msgr-worker-0/1/2/3
 
 底层报文接收线程？？？
 
@@ -30,23 +30,25 @@ admin 命令处理线程，启动顺序：
 
 ## signal_handler
 
+## ms_diapatch (beacon)
 
-
-
-## beacon
-
-心跳线程
+心跳线程dispatch线程
 
 ## safe_timer
 
 MDBalancer::tick()
 给mon发心跳
 
+## recovery_thread
+
 ## pg_finisher
 
 PurgeQueue的finisher 线程。MDSRank中有purge_queue。在PurgeQueue::init()接口中启动。
 
 ## ms_local
+
+不知道什么用
+
 ## ms_dispath
 
 handle mds map，handle client request，对应 一系列 handle_client_xxxx 接口操作。
@@ -61,6 +63,23 @@ handle mds map，handle client request，对应 一系列 handle_client_xxxx 接
     dispatch_thread.create("ms_dispatch")
     MDSDaemon::ms_dispatch()
 
+    MDSDaemon::ms_dispatch()        
+        MDSDaemon::handle_core_message() //以下是handle_core_message流程
+            MDSDaemon::handle_mds_map()
+                _handle_mds_map() // if whoami == MDS_RANK_NONE
+                MDSRank::handle_mds_map() // if whoami != MDS_RANK_NONE
+                    MDSRank::boot_create()
+                    MDSRank::boot_start()                    
+        MDSRank::ms_dispatch() // Not core, try it as a rank message
+            MDSRank::_dispatch()
+                MDSRank::handle_deferrable_message()
+                    // some dispatches of subsystems 
+                    mdcache->dispatch(m); // mdcache subsystem
+                    mdcache->migrator->dispatch(m); // migrator
+                    server->dispatch();   
+                    balancer->proc_message(m);
+                    locker->dispatch(m);
+    
 ## mds_rank_progr
 
 ## md_submit
