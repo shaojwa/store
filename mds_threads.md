@@ -9,11 +9,29 @@
 
 ## admin_socket
 
-admin 命令处理线程
+admin 命令处理线程，启动顺序：
+
+    main()
+    common_init_finish(g_ceph_context)
+    cct->start_service_thread()
+    _admin_socket->init(_conf->admin_socket)
+    make_named_thread ()
+
+
+## service
+
+上下文服务线程，和admin_socket一样是从common_init_finish接口中创建的线程。
+
+    main()
+    common_init_finish(g_ceph_context);
+    cct->start_service_thread
+    CephContext::start_service_thread()
+    _service_thread->create("service")
 
 ## signal_handler
 
-## log
+
+
 
 ## beacon
 
@@ -26,11 +44,22 @@ MDBalancer::tick()
 
 ## pg_finisher
 
-## service
+PurgeQueue的finisher 线程。MDSRank中有purge_queue。在PurgeQueue::init()接口中启动。
+
 ## ms_local
 ## ms_dispath
 
 handle mds map，handle client request，对应 一系列 handle_client_xxxx 接口操作。
+
+线程的创建：
+
+    main()
+    mds->init()
+    messenger->add_dispatcher_tail(this)
+    messager->ready()
+    dispatch_queue.start()
+    dispatch_thread.create("ms_dispatch")
+    MDSDaemon::ms_dispatch()
 
 ## mds_rank_progr
 
@@ -38,6 +67,44 @@ handle mds map，handle client request，对应 一系列 handle_client_xxxx 接
 
 日志提交线程
 
+## log
+
+日志线程
+
+    main()
+    global_init
+    global_pre_init()
+    common_preinit
+    CephContext::CephContext()
+    _log->start()
+    create("log");
+    
 ## fn_anonymous
 
 回调处理线程，client 的请求处理commit日志之后的回调处理。
+
+有两个，不知道什么原因？
+
+一个是MDSRank的finisher，处理和osd，client之间的网络交互。
+
+一个是MonClient的finisher，处理和mon之间的网络交互。
+
+    // MDSRank中的finisher
+    MDSDaemon::handle_mds_map
+    mds_rank->init()
+    MDSDispatcher::init()
+    finisher->start();
+
+    // MonClient中的Finisher
+    main()
+    mds->init();
+    MDSDaemon::init()
+    monc->init();
+    MonClient::init()
+    finisher.start();
+    
+ 处理流程：
+ 
+    取出finisher_queue，finisher_queue_rval中的上下文（为了减少锁竞争，让其他线程可以继续提交上下文）。
+    然后循环调用上下文中的complete接口。
+    如果finisher_queue中的元素是NULL，就会停下来先处理一个finisher_queue_rval中的上下文。
