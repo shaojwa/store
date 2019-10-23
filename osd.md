@@ -22,8 +22,55 @@
 #### 查看某个pool的 io
       
     ceph osd pool stats # statistics
+ 
+#### 创建pool
+
+    ceph osd pool create mypool 16 16
+
+#### 设置pool副本数
+
+    ceph osd pool set mypool size 4
+   
+一般setsize 之后，pool的PG对应的osd会马上发生变化。
+
+#### 往池内写入一个文件
+
+    rados -p mypool put thekey pri_key
+
+#### 查看池内所有文件
+
+    rados –p mypool ls
+ 
+####  把池添加到文件系统中
+
+    ceph mds add_data_pool <pool> 
+    或者
+    ceph fs add_data_pool <fs_name> <pool>
+ 
+#### 指定目录的layout，属性叫ceph.dir.layout.pool
+
+    setfattr -n ceph.dir.layout.pool -v 5 ecpool
+
+####  查看pool相关信息
+
+ceph没有提供ceph pool的命令集，pool的相关操作在osd 下。
+
+    ceph osd lspools
+    ceph osd pool ls
+    ceph osd pool ls detail
+    
+但是rados 提供直接针对pool的相关操作：
+
+    rados lspools
+
+####  查看集群内所有pool状态
+
+    ceph df 
+    ceph df deatil
 
 ### pg 相关
+
+
 #### pg 各种状态的含义
 
 http://docs.ceph.com/docs/master/rados/operations/monitoring-osd-pg/
