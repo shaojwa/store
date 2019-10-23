@@ -8,7 +8,7 @@
     Server::handle_slave_request()
     Server::handle_mds_rmdirfrag() // 为什么单独处理？
     
-##  handle client request
+##  handle_client_request()
 
     mdr = mdcache->request_start(req)
     Server::dispatch_client_request(mdr)
