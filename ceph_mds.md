@@ -1,15 +1,14 @@
 #### 数据结构层次图
 
       *msgr(pointer)
-      mc (monclient) // 这里应该是可以用指针的，奇怪为什么没用，因为这个mc是做为参数下传的，msgr就是指针传给mds的。
+      mc (monclient)     // 这里应该是可以用指针的，奇怪为什么没用，因为这个mc是做为参数下传的，msgr就是指针传给mds的。
       *mds(pointer)
           mds_lock
           timer
-          beacon
-          
+          beacon          
           *messenger (pointer, =msgr)
           *monc (ponter, =mc)
-          mgrc // 一样好奇为什么这里没有用指针
+          mgrc      // 同样疑问为什么这里没有用指针
           *mdsmap (pointer)
           log_client
           clog
