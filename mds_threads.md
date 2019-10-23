@@ -1,23 +1,45 @@
-#### ms_dispath线程的工作
 
-handle mds map 
-handle client 的request，一系列 handle_client_xxxx 接口操作。
+#### ceph-mds
 
-#### beacon ms_dispath线程
+主线程
 
-#### md_submit 线程的工作
+#### mds-worker-0/1/2/3
 
-提交日志
+底层报文接收线程？？？
 
-#### fn_anonymous 线程的工作
+#### admin_socket
 
-client 的请求处理commit日志之后的回调处理。
+admin 命令处理线程
 
+#### signal_handler
 
-#### safe_timer 线程的工作
+#### md_submit
+
+日志提交线程
+
+#### log
+
+#### beacon
+
+心跳线程
+
+#### safe_timer
 
 MDBalancer::tick()
-
-#### safe_timer 线程的工作
-
 给mon发心跳
+
+#### pg_finisher
+
+#### ms_local
+
+#### ms_dispath
+
+handle mds map，handle client request，对应 一系列 handle_client_xxxx 接口操作。
+
+#### mds_rank_progr
+
+#### service
+
+#### fn_anonymous
+
+回调处理线程，client 的请求处理commit日志之后的回调处理。
