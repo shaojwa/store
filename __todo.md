@@ -1,18 +1,6 @@
-
 #### mds中flush的延时为什么这么长？
 
-
-    https://docs.ceph.com/docs/master/cephfs/
-    论文：https://ceph.com/wp-content/uploads/2016/08/
-    mds论文：https://ceph.com/wp-content/uploads/2016/08/weil-mds-sc04.pdf
-    rados论文：https://ceph.com/wp-content/uploads/2016/08/weil-rados-pdsw07.pdf
-    crush论文：https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf
-    ceph架构：https://docs.ceph.com/docs/master/architecture/
-    osds-report-peering-failure：https://docs.ceph.com/docs/master/rados/configuration/mon-osd-interaction/
-    https://yq.aliyun.com/articles/221507
-    https://docs.oracle.com/cd/E37670_01/E37355/html/ol_repair_xfs.html
-
-#### 时钟跳变
+#### 时钟跳变是什么问题？
 
     commit: a5fc29...b4b3
     http://tracker.ceph.com/issues/26962
@@ -21,64 +9,28 @@
 
 respawn
 
-#### ms_dispath线程的工作
+#### ms_local 线程什么作用？
 
-* handle mds map 
-* handle client 的request，一系列 handle_client_xxxx 接口操作。
+### service 线程什么作用？
 
-#### beacon ms_dispath线程
-
-#### md_submit 线程的工作
-
-* 提交日志
-
-#### fn_anonymous 线程的工作
-
-* client 的请求处理commit日志之后的回调处理。
-
-
-#### safe_timer 线程的工作
-
-* MDBalancer::tick()
-
-#### safe_timer 线程的工作
-
-*　给mon发心跳
-
-#### ms_local 线程做什么？
-
-### service 线程
-
-* 干什么呢？
-
-#### admin_socket 线程的工作
-
-* 处理admin_asok 的请求
-
-#### pq_finisher线程
+#### pq_finisher线程什么作用？
   
 * PurgeQueue的finisher 线程， PurgeQueue队列是干什么的？
 
-#### log 线程
+#### log 线程什么作用？
 
+#### signal_handler 线程什么作用？
 
-#### mds中的subsystem
+#### recovery_thread 线程什么作用？
 
-*　在 subsys.h中定义各个子系统以及日志等级
-
-#### signal_handler 线程
-
-#### recovery_thread 线程
-
-#### mds_rank_progr 线程的作用
+#### mds_rank_progr 线程什么作用？
   
-好像嗯哼一些内部的消息处（比如MDSInternalContextBase），laggy，shutdown等处理有关。
+一些内部的消息处（比如MDSInternalContextBase），laggy，shutdown等处理有关。
 查看ProgressThread::entry()发现，它主要是处理finished_queue里的消息。
 
 #### ProgressThread::entry()为什么一开始就需要获取到锁mds_lock？
 ProgressThread::entry() 会在一开始获取到锁，然后cond.Wait(mds->mds_lock);释放锁后会尝试再次获取锁。
-
-  
+ 
 #### 为什么需要 auth_pin？
 
 auth_pin的目的是两部分：
@@ -106,3 +58,13 @@ lease是处理dentry相关的，lease机制，客户端缓存部分cap，减少�
 #### 对象的omap和xattr有什么区别？
 #### dir_auth_pin和auth_pin的区别是什么？
 #### mds中的_rename_prepare_witness是做什么的？
+
+    https://docs.ceph.com/docs/master/cephfs/
+    论文：https://ceph.com/wp-content/uploads/2016/08/
+    mds论文：https://ceph.com/wp-content/uploads/2016/08/weil-mds-sc04.pdf
+    rados论文：https://ceph.com/wp-content/uploads/2016/08/weil-rados-pdsw07.pdf
+    crush论文：https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf
+    ceph架构：https://docs.ceph.com/docs/master/architecture/
+    osds-report-peering-failure：https://docs.ceph.com/docs/master/rados/configuration/mon-osd-interaction/
+    https://yq.aliyun.com/articles/221507
+    https://docs.oracle.com/cd/E37670_01/E37355/html/ol_repair_xfs.html
