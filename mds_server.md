@@ -12,11 +12,11 @@
 
     mdr = mdcache->request_start(req)
     Server::dispatch_client_request(mdr)
-        // switch by req->get_op()
+        // switch by req->get_op() to handle_client_xxxx()
         Server::handle_client_readdir()
         Server::handle_client_getattr()
         Server::handle_client_open()
-            // detail processing of handle_client_xxxx() 
+            // steps of handle_client_xxxx() 
             mds->locker->acquire_locks() // got locks
             mdlog->start_entry(le) // make log
             mdlog->submit_entry(le) // submit log
