@@ -20,9 +20,9 @@
             mds->locker->acquire_locks() // got locks
             mdlog->start_entry(le) // make log
             mdlog->submit_entry(le) // submit log
-            // if journal need
+            // if journal needed
             Server::journal_and_reply()  // call  Server::respond_to_request in finisher callbacks
-            // if no journal needed
+            // or no journal needed
             Server::respond_to_request()
 
 #### 关于has_journaled_slaves标记
