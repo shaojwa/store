@@ -8,7 +8,10 @@ daemon 和 rank中，所有的dispatch接口都是针对Message，有以下接�
             bool MDSRank::_dispatch(Message *m, bool new_msg)
                 bool MDSRank::handle_deferrable_message(Message *m)
                 
-bool MDSRank::handle_deferrable_message(Message *m) 字面意思，就是可以延期的消息，到这一步，后续的都是各个子系统的dispatch()
+                
+    // 字面意思，就是可以延期的消息，到这一步，后续的都是各个子系统的dispatch()
+    bool MDSRank::handle_deferrable_message(Message *m) 
+
 
 还是刚才说的，各个dispatch都是以Message为参数的，包括：
 
