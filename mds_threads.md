@@ -13,13 +13,9 @@ admin 命令处理线程
 
 ### signal_handler
 
-### md_submit
-
-日志提交线程
-
 ### log
 
-#### beacon
+### beacon
 
 心跳线程
 
@@ -30,15 +26,17 @@ MDBalancer::tick()
 
 ### pg_finisher
 
+### service
 ### ms_local
-
 ### ms_dispath
 
 handle mds map，handle client request，对应 一系列 handle_client_xxxx 接口操作。
 
-### mds_rank_progr
+## mds_rank_progr
 
-### service
+### md_submit
+
+日志提交线程
 
 ### fn_anonymous
 
