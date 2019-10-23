@@ -1,3 +1,31 @@
+## 流程
+
+通过 MDSRank::handle_deferrable_message进入, 根据 message type进行分发：
+                    
+    server->dispatch()
+    Server::handle_client_session()
+    Server::handle_client_request()
+    Server::handle_slave_request()
+    Server::handle_mds_rmdirfrag() // 为什么单独处理？
+    
+
+##  handle client request
+
+    mdr = mdcache->request_start(req)
+    Server::dispatch_client_request(mdr)
+        // switch by req->get_op()
+        Server::handle_client_readdir()
+        Server::handle_client_getattr()
+        Server::handle_client_open()
+            // detail processing of handle_client_xxxx() 
+            mds->locker->acquire_locks() // got locks
+            mdlog->start_entry(le) // make log
+            mdlog->submit_entry(le) // submit log
+            // if journal need
+            Server::journal_and_reply()  // call  Server::respond_to_request in finisher callbacks
+            // if no journal needed
+            Server::respond_to_request()
+
 #### 关于has_journaled_slaves标记
 
 这个标记在三个接口中设置为true，handle_slave_link_prep_ack，handle_slave_rmdir_prep_ack，handle_slave_rename_prep_ack。这和我们之前说的。
