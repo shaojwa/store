@@ -5,9 +5,7 @@
 
 ## mds-worker-0/1/2/3
 
-本来这个线程叫，msg-worker-xxx，原先的线程数目是3个，由ms_async_op_threads配置。现在改名，且数目由mds_async_threads配置。这几个线程由NetworkStack这个数据结构管理.
-
-线程创建和启动：
+本来这个线程叫，msg-worker-xxx，原先的线程数目是3个，由ms_async_op_threads配置。现在改名，且数目由mds_async_threads配置。这几个线程由NetworkStack这个数据结构管理。线程创建和启动：
 
     main()
       Messenger *msgr = Messenger::create()
