@@ -3,9 +3,38 @@
 
     主线程，global_init()
 
-## msgr-worker-0/1/2/3
+## ms_dispatch
 
-底层报文接收线程？？？
+handle mds map，handle client request，对应 一系列 handle_client_xxxx 接口操作。
+
+线程的启动：
+
+    main()
+      mds->init()
+        messenger->add_dispatcher_tail(this)
+         messager->ready()
+            dispatch_queue.start()
+               dispatch_thread.create("ms_dispatch")；
+               local_delivery_thread.create("ms_local");
+
+具体工作
+
+    MDSDaemon::ms_dispatch()        
+        MDSDaemon::handle_core_message() //以下是handle_core_message流程
+            MDSDaemon::handle_mds_map()
+                _handle_mds_map() // if whoami == MDS_RANK_NONE
+                MDSRank::handle_mds_map() // if whoami != MDS_RANK_NONE
+                    MDSRank::boot_create()
+                    MDSRank::boot_start()                    
+        MDSRank::ms_dispatch() // Not core, try it as a rank message
+            MDSRank::_dispatch()
+                MDSRank::handle_deferrable_message()
+                    // some dispatches of subsystems 
+                    mdcache->dispatch(m); // mdcache subsystem
+                    mdcache->migrator->dispatch(m); // migrator
+                    server->dispatch();   
+                    balancer->proc_message(m);
+                    locker->dispatch(m);
 
 ## admin_socket
 
@@ -49,36 +78,7 @@ PurgeQueue的finisher 线程。MDSRank中有purge_queue。在PurgeQueue::init()�
 
 不知道什么用
 
-## ms_dispath
 
-handle mds map，handle client request，对应 一系列 handle_client_xxxx 接口操作。
-
-线程的创建：
-
-    main()
-    mds->init()
-    messenger->add_dispatcher_tail(this)
-    messager->ready()
-    dispatch_queue.start()
-    dispatch_thread.create("ms_dispatch")
-    MDSDaemon::ms_dispatch()
-
-    MDSDaemon::ms_dispatch()        
-        MDSDaemon::handle_core_message() //以下是handle_core_message流程
-            MDSDaemon::handle_mds_map()
-                _handle_mds_map() // if whoami == MDS_RANK_NONE
-                MDSRank::handle_mds_map() // if whoami != MDS_RANK_NONE
-                    MDSRank::boot_create()
-                    MDSRank::boot_start()                    
-        MDSRank::ms_dispatch() // Not core, try it as a rank message
-            MDSRank::_dispatch()
-                MDSRank::handle_deferrable_message()
-                    // some dispatches of subsystems 
-                    mdcache->dispatch(m); // mdcache subsystem
-                    mdcache->migrator->dispatch(m); // migrator
-                    server->dispatch();   
-                    balancer->proc_message(m);
-                    locker->dispatch(m);
     
 ## mds_rank_progr
 
@@ -127,3 +127,7 @@ handle mds map，handle client request，对应 一系列 handle_client_xxxx 接
     取出finisher_queue，finisher_queue_rval中的上下文（为了减少锁竞争，让其他线程可以继续提交上下文）。
     然后循环调用上下文中的complete接口。
     如果finisher_queue中的元素是NULL，就会停下来先处理一个finisher_queue_rval中的上下文。
+    
+## msgr-worker-0/1/2/3
+
+底层报文接收线程？？？
