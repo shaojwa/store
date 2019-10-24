@@ -5,3 +5,6 @@ update_caps_dispatch_reply_latency 达到838微秒，而对应的dispatch_latenc
 
 
 ### 思路1：确认是不是报文优先级问题
+
+op是：CEPH_CAP_OP_UPDATE
+
