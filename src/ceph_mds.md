@@ -33,3 +33,10 @@
     
 分析：社区开发者说，这一块用指针还是不用，没有非常严格，是比较随意的。但是感觉起来，lock，timer，beacon这个几个都没有用指针。
 不知道是不是因为这样代码写起来比较简洁，或者本身像mutex，习惯上都是用的实例而不是指针。
+
+
+### MDS 选择的 Messager
+
+MDS通过  Messenger::create() 来创建自己的 Messager，基类 Messager会创建合适的派生类实例。现在配置中的ms_public_type是空，ms_type是"async+posix"，所以，用的是AsyncMessenger。
+
+
