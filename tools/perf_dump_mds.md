@@ -1,23 +1,27 @@
 ### perf dump 数据
+       
+###  阶段：
+
+recv_stamp (msg)
+dispatch_stamp (msg)
+
+handle_client_request (mds-server)
+dispatch_client_request (mds-server)
+early_reply (mds-server)
+journal(mds-server)
+
+Journaler::C_Flush::finish()
+Server::respond_to_request
+Server::reply_client_request
+
+
+### level
 
 perf 先关的leve有三个，默认情况下都是false，也就是不做统计的，目的是对不同类型的延时进行分类。
 
         ceph_perf_count_third_level
         ceph_perf_count_second_level
         ceph_perf_count_third_level
-        
-###  阶段：
-
-收到请求，recv_stamp
-msg层中分发，dispatch_stamp
-
-mds层early_reply
-mds层journal
-Journaler::C_Flush::finish()
-
-finish回调
-Server::respond_to_request
-Server::reply_client_request
 
 ### 字段
 
@@ -62,9 +66,7 @@ Server::reply_client_request
 
 在reply_client_request中处理。
 
-计算是从early_reply结束到日志落盘后调用reply_client_request时的时间间隔，就是第一次relay和第二次relay之间的时间间隔。
-
-也就是说，针对的就是有early_reply的情况下，进行的统计。这个比rlat要大得多，在虚拟机上测几乎是10倍的差距。
+计算是从early_reply结束到日志落盘后调用reply_client_request时的时间间隔，就是第一次relay和第二次relay之间的时间间隔。也就是说，针对的就是有early_reply的情况下，进行的统计。这个比rlat要大得多，在虚拟机上测几乎是10倍的差距。
 
 虚拟机下平均87579微秒。物理机下为1952微秒。
 
@@ -117,6 +119,8 @@ handle_client_caps处理的CEPH_MSG_CLIENT_CAPS类型的msg，但是要处理的
 ### mds_server
 
 ### handle_client_request_latency
+
+调用handle_client_request接口到返回的时间：分发请求 + early_reply + submit_log。
 
 893
 
