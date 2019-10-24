@@ -3,6 +3,21 @@
 
     主线程，global_init()
 
+## mds-worker-0/1/2/3
+
+本来这个线程叫，msg-worker-xxx，原先的线程数目是3个，由ms_async_op_threads配置。现在改名，且数目由mds_async_threads配置。这几个线程由NetworkStack这个数据结构管理.
+
+线程创建和启动：
+
+    main()
+      Messenger *msgr = Messenger::create()
+        AsyncMessenger::AsyncMessenger()
+            single->ready(transport_type, stack_name);
+                stack = NetworkStack::create(cct, type, name);
+            stack->start();
+                PosixNetworkStack::spawn_worker()
+                    threads[i] = std::thread(func);
+
 ## ms_dispatch
 
 handle mds map，handle client request，对应 一系列 handle_client_xxxx 接口操作。
@@ -128,6 +143,4 @@ PurgeQueue的finisher 线程。MDSRank中有purge_queue。在PurgeQueue::init()�
     然后循环调用上下文中的complete接口。
     如果finisher_queue中的元素是NULL，就会停下来先处理一个finisher_queue_rval中的上下文。
     
-## msgr-worker-0/1/2/3
 
-底层报文接收线程？？？
