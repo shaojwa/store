@@ -5,7 +5,7 @@
 
 ## mds-worker-0/1/2/3
 
-本来这个线程叫，msg-worker-xxx，原先的线程数目是3个，由ms_async_op_threads配置。现在改名，且数目由mds_async_threads配置。这几个线程由NetworkStack这个数据结构管理。线程创建和启动：
+本来这个线程叫，msgr-worker-xxx，原先的线程数目是3个，由ms_async_op_threads配置。现在改名，且数目由mds_async_threads配置。这几个线程由NetworkStack这个数据结构管理。线程创建和启动：
 
     main()
       Messenger *msgr = Messenger::create()
@@ -15,6 +15,14 @@
             stack->start();
                 PosixNetworkStack::spawn_worker()
                     threads[i] = std::thread(func);
+                    
+原先，这个线程名是这么设置的：
+
+    std::function<void ()> NetworkStack::add_thread(unsigned i) {
+        sprintf(tp_name, "msgr-worker-%d", w->id);
+        ceph_pthread_setname(pthread_self(), tp_name);
+    }
+也就是所有的名字都是一样的。
 
 ## ms_dispatch
 
