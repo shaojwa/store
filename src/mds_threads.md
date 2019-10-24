@@ -54,32 +54,30 @@ handle mds map，handle client request，对应 一系列 handle_client_xxxx 接
 admin 命令处理线程，启动顺序：
 
     main()
-    common_init_finish(g_ceph_context)
-    cct->start_service_thread()
-    _admin_socket->init(_conf->admin_socket)
-    make_named_thread ()
-
+        common_init_finish(g_ceph_context)
+            cct->start_service_thread()
+                _admin_socket->init(_conf->admin_socket)
+                    make_named_thread ()
 
 ## service
 
 上下文服务线程，和admin_socket一样是从common_init_finish接口中创建的线程。
 
     main()
-    common_init_finish(g_ceph_context);
-    cct->start_service_thread
-    CephContext::start_service_thread()
-    _service_thread->create("service")
+        common_init_finish(g_ceph_context);
+            cct->start_service_thread
+                CephContext::start_service_thread()
+                    _service_thread->create("service")
 
 ## signal_handler
 
-## ms_diapatch (beacon)
+## beacon (safe_timer)
 
-心跳线程dispatch线程
+心跳定时器线程，打开debug_timer开关可以看到 timer_thread executing。
 
 ## safe_timer
 
 MDBalancer::tick()
-给mon发心跳
 
 ## recovery_thread
 
@@ -91,8 +89,6 @@ PurgeQueue的finisher 线程。MDSRank中有purge_queue。在PurgeQueue::init()�
 
 不知道什么用
 
-
-    
 ## mds_rank_progr
 
 ## md_submit
@@ -140,5 +136,3 @@ PurgeQueue的finisher 线程。MDSRank中有purge_queue。在PurgeQueue::init()�
     取出finisher_queue，finisher_queue_rval中的上下文（为了减少锁竞争，让其他线程可以继续提交上下文）。
     然后循环调用上下文中的complete接口。
     如果finisher_queue中的元素是NULL，就会停下来先处理一个finisher_queue_rval中的上下文。
-    
-
