@@ -1,5 +1,7 @@
 #### mds中flush的延时为什么这么长？
 
+#### ms_async_affinity_cores 配置项功能？
+
 #### 时钟跳变是什么问题？
 
     commit: a5fc29...b4b3
