@@ -160,7 +160,6 @@ caps;
 loner_caps;
 xlocker_caps;
 replica_caps;
-
 ```
 
 
@@ -176,7 +175,7 @@ replica_caps;
 在主动去获取锁的过程中，都会先把自己的锁设置到一个中间状态。
 比如simple_lock的流程中，如果当前不满足，那么就需要充当前的四个稳态中进行迁移：
 
-````
+```
 LOCK_SYNC -> LOCK_SYNC_LOCK
 LOCK_XSYN -> LOCK_EXCL_LOCK
 LOCK_MIX -> LOCK_MIX_LOCK
@@ -189,6 +188,7 @@ LOCK_TSYN -> LOCK_TSYN_LOCK
 ```
 lock->set_state(next);
 ``` 
+
 并在下半副本设置,当然少数状态下，这个next是会修正的，比如：
 当前状态如果是：LOCK_MIX_SYNC，next就会修正为： LOCK_MIX_SYNC2
 当前状态如果是：LOCK_SYNC_MIX，next就会修正为： LOCK_SYNC_MIX2
