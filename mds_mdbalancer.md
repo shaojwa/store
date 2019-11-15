@@ -1,3 +1,7 @@
+####
+
+ sending MExportDirFinish (last==false)
+
 #### get subtrees中的 auth_first 和 auth_second 是什么意思？
 
 #### get subtrees中的 export_pin 看到的是什么
