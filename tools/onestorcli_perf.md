@@ -7,6 +7,10 @@
 * 需要在handy节点上运行
 * mds 相关数据取自 ceph daemon mds.mds0 perf dump
 
+### cephfs 数据来源
+
+通过 /sys/kernel/debug/ceph中的 debug_command收集数据
+
 ### 使用步骤
 
 先clean：
