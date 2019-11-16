@@ -190,40 +190,44 @@ lock->set_state(next);
 ``` 
 
 并在下半副本设置,当然少数状态下，这个next是会修正的，比如：
-当前状态如果是：LOCK_MIX_SYNC，next就会修正为： LOCK_MIX_SYNC2
-当前状态如果是：LOCK_SYNC_MIX，next就会修正为： LOCK_SYNC_MIX2
-从状态机里就可以看到，LOCK_MIX_SYNC的next一定是LOCK_MIX_SYNC2，LOCK_SYNC_MIX的next也一定是LOCK_SYNC_MIX2
-但是LOCK_MIX_LOCK不一样，LOCK_SYNC_MIX的next是LOCK_MIX,所以它不会被设置成LOCK_MIX_LOCK2。
+
+    当前状态如果是：LOCK_MIX_SYNC，next就会修正为： LOCK_MIX_SYNC2
+    当前状态如果是：LOCK_SYNC_MIX，next就会修正为： LOCK_SYNC_MIX2
+
+从状态机里就可以看到，LOCK_MIX_SYNC的next一定是LOCK_MIX_SYNC2，LOCK_SYNC_MIX的next也一定是LOCK_SYNC_MIX2，但是LOCK_MIX_LOCK不一样，LOCK_SYNC_MIX的next是LOCK_MIX,所以它不会被设置成LOCK_MIX_LOCK2。
 
 
 #### simple_lock
 
 simple_lock() 接口的目的就是当自己的锁达到lock状态，简单就是得到锁，并不一定独占。
 所以，它专门处理的稳态是：
-LOCK_SYNC
-LOCK_XSYN
-LOCK_EXCL
-LOCK_MIX
-LOCK_TSYN
+
+    LOCK_SYNC
+    LOCK_XSYN
+    LOCK_EXCL
+    LOCK_MIX
+    LOCK_TSYN
 
 对应的重中间态就是：
 
-LOCK_SYNC_LOCK
-LOCK_EXCL_LOCK
-LOCK_EXCL_LOCK
-LOCK_MIX_LOCK
-LOCK_TSYN_LOCK
+    LOCK_SYNC_LOCK
+    LOCK_EXCL_LOCK
+    LOCK_EXCL_LOCK
+    LOCK_MIX_LOCK
+    LOCK_TSYN_LOCK
 
 #### simple_xlock()
 
 simple_xlock接口的目的就是让自己的锁达到xlock的状态，就是独占锁。
-LOCK_LOCK
-LOCK_SYNC
-LOCK_XSYN
+
+    LOCK_LOCK
+    LOCK_SYNC
+    LOCK_XSYN
 对应的重中间态就是：
-LOCK_LOCK_EXCL
-LOCK_SYNC_EXCL
-LOCK_XSYN_EXCL
+
+    LOCK_LOCK_EXCL
+    LOCK_SYNC_EXCL
+    LOCK_XSYN_EXCL
 
 #### 状态机的含义
 
@@ -238,11 +242,12 @@ MIX：
 #### 锁触发在权威节点上
 
 我们观察下面几个函数发现，这些函数都不必须在object的权威节点上执行。
-simple_eval()
-simple_excl()
-simple_lock()
-simple_xlock()
-simple_sync()
+
+    simple_eval()
+    simple_excl()
+    simple_lock()
+    simple_xlock()
+    simple_sync()
 
 #### 如果是非权威节点受限要发起锁的获取该怎么处理？
 
