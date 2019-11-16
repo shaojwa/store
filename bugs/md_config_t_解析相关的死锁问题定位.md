@@ -1,6 +1,6 @@
-## 一个与_md_config_t_解析相关的死锁问题的定位
+#### 一个与_md_config_t_解析相关的死锁问题的定位
 
-## 现象：通过config set命令设置配置时，概率性出现命令卡死。
+#### 现象：通过config set命令设置配置时，概率性出现命令卡死。
 命令卡死的原因在于admin_socket线程等待mds_lock，而持有mds_lock锁的线程，尝试获取admin_socket线程持有的md_config_t对象中的锁。 
 
 这是admin_socket线程的调用栈：
