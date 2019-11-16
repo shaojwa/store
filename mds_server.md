@@ -4,7 +4,7 @@
  unlink dentry，会将请求发送到dentry所在的权威节点，即dentry所在目录的inode权威节点。
 
 
-1. 流程
+## 流程
 
 通过 MDSRank::handle_deferrable_message进入, 根据 message type进行分发：
                     
