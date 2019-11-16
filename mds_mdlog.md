@@ -1,4 +1,6 @@
-## LogEvent 提交
+### 预写式日志 WriteAhead Log
+
+### LogEvent 提交
 
 * 提供接口submit_entry()，后被Server，Locker，MDCache，Migrator等模块封装使用。
 
