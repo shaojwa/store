@@ -1,4 +1,4 @@
-## openc 流程分析
+#### openc 流程分析
 
 1. ceph_flags_to_mode() 将openc的标记转为mode字段，如果转化得到的mode不对，就返回EINVAL。
 
