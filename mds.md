@@ -1,6 +1,14 @@
 
 #### MDS 中的信号处理？？
 
+#### MDS 发送给 MON 心跳间隔是几秒
+
+4秒，配置项是 mds_beacon_interval
+
+#### MDS 发送给 MON 心跳异常超时是几秒
+
+默认15秒，配置项是  mds_beacon_grace
+
 #### MDS 状态 replay
 
 #### MDS 状态 resolve
