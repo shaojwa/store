@@ -1,17 +1,25 @@
 
-#### MDS 中的信号处理？？
+## mds 和 MON之间的心跳
 
-#### MDS 发送给 MON 心跳间隔是几秒
+#### mds 发送给 mon，还是 mon 发给 mds 
+
+mds主动发送给mon，每次mon ack，mds就会把时间记录在 last_acked_stamp
+
+#### mds 发送给 mon 心跳间隔是几秒
 
 4秒，配置项是 mds_beacon_interval
 
-#### MDS 发送给 MON 心跳异常超时是几秒
+#### mds 发送给 mon 心跳异常超时是几秒
 
 默认15秒，配置项是  mds_beacon_grace
 
-#### MDS 状态 replay
 
-#### MDS 状态 resolve
+
+#### mds 中的信号处理？？
+
+#### mds 状态 replay
+
+#### mds 状态 resolve
 
 resolve阶段是多活mds才有的阶段，用来解决跨多个MDS出现权威元数据分歧场景。对服务端侧来说，包括子树分布，Anchor表更新等功能。
 客户端侧包括rename，unlink等操作。resolve用于确定日志中还不明确的事务，每个恢复MDS向所有其他MDS广播resolve消息。
