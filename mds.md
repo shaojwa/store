@@ -1,10 +1,11 @@
 
+https://docs.ceph.com/docs/master/cephfs/health-messages/
+
 ## mds 和 MON之间的心跳
 
-mds主动发送给mon，mds收到回应，并计算rtt (round-trip time)时间，就是从mds发出报文开始，到收到mon回复为止。
-seq_stamp中记录每一次的发送时间，当收到一条ack时，message 的req就是mds 发出心跳的时间。
+mds主动发送给mon，mds收到回应，并计算rtt (round-trip time)时间，从mds发出报文开始，到收到mon回复为止。  
+seq_stamp中记录每一次的发送时间，当收到一条ack时，就会拿这条信息的发送时间去更新last_acked_stamp。
 last_acked_stamp 记录的是最近一条得到ack回复的心跳的mds的发送时间。
-所以，一收到mon的回复，就会把上一条心跳的发送时间赋值给last_acked_stamp。 
 然后计算rrt，发送的时间和当前收到消息时间之差。
 如果mds的时钟出现回退，mds会把自己标记为laggy，mds日志里也会有显示。
 
@@ -15,8 +16,6 @@ last_acked_stamp 记录的是最近一条得到ack回复的心跳的mds的发送
 #### mds 发送给 mon 心跳异常超时是几秒
 
 默认15秒，配置项是  mds_beacon_grace
-
-
 
 #### mds 中的信号处理？？
 
