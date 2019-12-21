@@ -1,5 +1,4 @@
-
-## client 缓存 mds 分配的caps
+#### client 缓存 mds 分配的caps
 
 
 #### dirty cap 相关
