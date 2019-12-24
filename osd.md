@@ -22,10 +22,17 @@ ceph osd dump <epoch>
 一共三片，为2M + 2M + 2M，三个对象
 ```
 
-#### osd down 和 out 的区别
+#### down 掉一部分osd 之后 inactive 的 PG 在一段时间后会减少
+
+OSD reweight之后，部分pg的map会进行修改。
+
+#### 三副本 down 掉数据池 3个 osd 之后，文件系统中的 inactive pg
+
+对于三副本来说，stale的 pg 就是包含那三个 osd 的 pg
+
+#### down 和 out 什么区别
 
 osd中down只是临时性故障，不会触发PG迁移。而out是mon检测到某个osd处于down超过一段时间，mon将其设置为out，即为永久性故障。  
-下次CRUSH的选择过程中会被淘汰。
 
 #### mon把osd标记为out的日志
 
