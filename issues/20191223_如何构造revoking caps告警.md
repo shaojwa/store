@@ -4,7 +4,7 @@
 * 部署文件系统
 * 部署nas组，至少两个nas节点，nas业务ip192.168.84.10。
 
-#### 步骤：
+## 步骤：
 
 * 在 /NAS/CAPFS/data 下创建wsh目录 后dump inode查看
 
@@ -52,8 +52,8 @@ tcp        0      0 172.16.84.12:33856      172.16.84.12:6856       ESTABLISHED 
 iptables -I INTPUT -p tcp --dport 33856 -j DROP
 iptables -I OUTPUT -p tcp --sport 33856 -j DROP
 ```
-#### 在node3上尝试写入
+## 在node3上尝试写入
 
 此时node3上的内核客户端需要写权限，mds应该会给node2发送revoking caps消息，但node2没有响应。
 
-#### 观察mds的日志
+## 观察mds的日志
