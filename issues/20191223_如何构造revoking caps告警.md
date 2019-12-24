@@ -34,15 +34,26 @@ filelock: excl
 
 在主mds节点上找到监听的端口 6856
 
- ```
+````
 [root@node12 ceph]# netstat -ltnp | grep ceph-mds
 tcp        0      0 172.16.84.12:6856       0.0.0.0:*               LISTEN      3481339/ceph-mds
- ````
+````
  
  然后用6556这个端口匹配内核客户端的链接，最后一列为"-"应该就是内核客户端的链接：
  
 ```
 [root@node12 ceph]# netstat -tnp | grep 6856 | grep " - "
 tcp        0      0 172.16.84.12:33856      172.16.84.12:6856       ESTABLISHED -
+```
 
-##### 在node3上尝试写入。
+通过配置iptables规则来阻断报文：
+
+```
+iptables -I INTPUT -p tcp --dport 33856 -j DROP
+iptables -I OUTPUT -p tcp --sport 33856 -j DROP
+```
+#### 在node3上尝试写入
+
+此时node3上的内核客户端需要写权限，mds应该会给node2发送revoking caps消息，但node2没有响应。
+
+#### 观察mds的日志
