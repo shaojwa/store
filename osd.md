@@ -1,3 +1,16 @@
+#### 停止某个osd
+
+```
+systemctl stop ceph-osd@2
+```
+
+#### 停止osd之后避免拉起
+
+```
+touch /var/lib/ceph/shell/watch_maintaining
+```
+
+
 ### 集群要做的事
 
  * 数据持久化： 副本或者纠删码
@@ -11,7 +24,7 @@
 * 把一个对象所在的pg算出来
 * 把一个pg对应的acting set 算出来。
 
-### pool 相关
+
 #### 一个pool由一下几点决定
 
 * pool type：池的类型定义了数据持久化方式。
@@ -68,9 +81,6 @@ ceph没有提供ceph pool的命令集，pool的相关操作在osd 下。
     ceph df 
     ceph df deatil
 
-### pg 相关
-
-
 #### pg 各种状态的含义
 
 http://docs.ceph.com/docs/master/rados/operations/monitoring-osd-pg/
@@ -123,7 +133,6 @@ PG的down：当前在线的osd不足以完成数据恢复，就会把一个pg表
 
 平均每个pg进行purge操作的上限？
 
-
 ### osd 相关
 #### osd 各种状态（橙书76页）
 
@@ -150,9 +159,9 @@ osd中down只是临时性故障，不会触发PG迁移。而out是mon检测到�
 
 一共三片，为2M + 2M + 2M，三个对象
 
- #### 怎么找到一个文件对应的对象？
+#### 怎么找到一个文件对应的对象？
 
-  先找出文件的inode号：
+先找出文件的inode号：
   
     $ ll -i
     1099511628786 -rw-r--r-- 1 root root 6291456 test_file
@@ -167,13 +176,16 @@ osd中down只是临时性故障，不会触发PG迁移。而out是mon检测到�
 
 #### 查看一个pool中的所有object
 
-    rados -p <pool_name> ls
+ ```
+ rados -p <pool_name> ls
+ ```
 
 #### 如何查看一个对象的stat信息
  
-    rados -p <pool_name> stat 10000003f2.00000000
-    
-    
+ ```
+ rados -p <pool_name> stat 10000003f2.00000000
+ ```
+ 
 #### osd向mon报告其他osd挂掉时的最少上报次数
 
 "mon_osd_min_down_reporters": "2"
