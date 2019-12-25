@@ -1,7 +1,13 @@
 
 https://docs.ceph.com/docs/master/cephfs/health-messages/
 
-## mds 和 MON之间的心跳
+## respawn ceph
+
+```
+ceph tell mds.0 respawn
+```
+
+## mds 和 mon之间的心跳
 
 mds主动发送给mon，mds收到回应，并计算rtt (round-trip time)时间，从mds发出报文开始，到收到mon回复为止。  
 seq_stamp中记录每一次的发送时间，当收到一条ack时，就会拿这条信息的发送时间去更新last_acked_stamp。
