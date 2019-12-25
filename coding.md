@@ -1,4 +1,15 @@
-  
+#### 自杀线程
+```
+pthread_kill(h->thread_id, SIGABRT);
+```
+
+#### 工作函数中不获取锁，接口函数中获取锁
+
+```
+  Journaler::wait_for_flush() -> _wait_for_flush()
+  Journaler::flush() -> _flush()
+```
+
 #### Option.set_default("").set_description（""）写法
  
     Option类有set_default()和set_description（）接口，返回的是对象自己的应用，即*this
@@ -24,7 +35,3 @@
   
     static inline const char *get_lock_action_name(int a)
     
-#### 工作函数中不获取锁，接口函数中获取锁
-
-  Journaler::wait_for_flush() -> _wait_for_flush()
-  Journaler::flush() -> _flush()
