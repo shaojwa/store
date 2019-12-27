@@ -1,17 +1,41 @@
-#### 智能pin的mds停用会怎么样？
+```
+https://docs.ceph.com/docs/master/cephfs/
+论文：https://ceph.com/wp-content/uploads/2016/08/
+mds论文：https://ceph.com/wp-content/uploads/2016/08/weil-mds-sc04.pdf
+rados论文：https://ceph.com/wp-content/uploads/2016/08/weil-rados-pdsw07.pdf
+crush论文：https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf
+ceph架构：https://docs.ceph.com/docs/master/architecture/
+osds-report-peering-failure：https://docs.ceph.com/docs/master/rados/configuration/mon-osd-interaction/
+https://yq.aliyun.com/articles/221507
+https://docs.oracle.com/cd/E37670_01/E37355/html/ol_repair_xfs.html
+```
+    
+#### migrator
 
-#### mds中flush的延时为什么这么长？
+智能pin的mds停用会怎么样？
+
+如果设置了智能pin, 在第一期从mds.0迁出去的时候，如果超时cancel 会怎么样？
+
+#### stary
+
+stray对象怎么清理呢？
+
+本mds的stray目录会有副本在其他mds吗？
+
+#### journaler
+
+* mds中flush的延时为什么这么长？
 
 #### ms_async_affinity_cores 配置项功能？
 
-#### 时钟跳变是什么问题？
+#### beacon
+    
+*　MDS respawn的实现
+
+*  时钟跳变是什么问题？
 
     commit: a5fc29...b4b3
     http://tracker.ceph.com/issues/26962
-    
-#### MDS respawn的实现
-
-respawn
 
 #### ms_local 线程什么作用？
 
@@ -126,28 +150,3 @@ fill_stat() 有配置影响size显示的是什么。
             const UserPerm& perms, unsigned int want, unsigned int flags)
             
  从形式上看，statx通过want 和 flags 算出mask，stat直接给mask。 statx是可以在want中指定要获取什么字段，比如默认的 CEPH_STATX_BASIC_STATS。cephfs.pyx 用的是ceph_statx，而不是ceph_stat。
- 
-### stat 用的是什么OP
-
-CEPH_MDS_OP_GETATTR
-
-## mds
-#### dump inode  字段
-
-    "auth_state": {
-       "replicas": {
-           "1": 3
-       }
-    }
-    
- 1 为rank， 3 为 replica_nonce。
-
-    https://docs.ceph.com/docs/master/cephfs/
-    论文：https://ceph.com/wp-content/uploads/2016/08/
-    mds论文：https://ceph.com/wp-content/uploads/2016/08/weil-mds-sc04.pdf
-    rados论文：https://ceph.com/wp-content/uploads/2016/08/weil-rados-pdsw07.pdf
-    crush论文：https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf
-    ceph架构：https://docs.ceph.com/docs/master/architecture/
-    osds-report-peering-failure：https://docs.ceph.com/docs/master/rados/configuration/mon-osd-interaction/
-    https://yq.aliyun.com/articles/221507
-    https://docs.oracle.com/cd/E37670_01/E37355/html/ol_repair_xfs.html
