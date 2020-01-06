@@ -1,3 +1,9 @@
+#### english
+
+HEALTH_WARN
+HEALTH_ERR
+
+
 #### 自杀线程
 ```
 pthread_kill(h->thread_id, SIGABRT);
