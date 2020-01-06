@@ -1,14 +1,6 @@
-```
-https://docs.ceph.com/docs/master/cephfs/
-论文：https://ceph.com/wp-content/uploads/2016/08/
-mds论文：https://ceph.com/wp-content/uploads/2016/08/weil-mds-sc04.pdf
-rados论文：https://ceph.com/wp-content/uploads/2016/08/weil-rados-pdsw07.pdf
-crush论文：https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf
-ceph架构：https://docs.ceph.com/docs/master/architecture/
-osds-report-peering-failure：https://docs.ceph.com/docs/master/rados/configuration/mon-osd-interaction/
-https://yq.aliyun.com/articles/221507
-https://docs.oracle.com/cd/E37670_01/E37355/html/ol_repair_xfs.html
-```
+#### io超时为什么需要respawn
+
+#### mds是怎么发送信号实现respawn的
     
 #### migrator
 
@@ -150,3 +142,15 @@ fill_stat() 有配置影响size显示的是什么。
             const UserPerm& perms, unsigned int want, unsigned int flags)
             
  从形式上看，statx通过want 和 flags 算出mask，stat直接给mask。 statx是可以在want中指定要获取什么字段，比如默认的 CEPH_STATX_BASIC_STATS。cephfs.pyx 用的是ceph_statx，而不是ceph_stat。
+
+```
+https://docs.ceph.com/docs/master/cephfs/
+论文：https://ceph.com/wp-content/uploads/2016/08/
+mds论文：https://ceph.com/wp-content/uploads/2016/08/weil-mds-sc04.pdf
+rados论文：https://ceph.com/wp-content/uploads/2016/08/weil-rados-pdsw07.pdf
+crush论文：https://ceph.com/wp-content/uploads/2016/08/weil-crush-sc06.pdf
+ceph架构：https://docs.ceph.com/docs/master/architecture/
+osds-report-peering-failure：https://docs.ceph.com/docs/master/rados/configuration/mon-osd-interaction/
+https://yq.aliyun.com/articles/221507
+https://docs.oracle.com/cd/E37670_01/E37355/html/ol_repair_xfs.html
+```
