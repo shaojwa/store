@@ -19,11 +19,9 @@ last_acked_stamp 记录的是最近一条得到ack回复的心跳的mds的发送
 
 4秒，配置项是 mds_beacon_interval
 
-#### mds 发送给 mon 心跳异常超时是几秒
+#### mds 发送给 mon 心跳宽限期是几秒
 
 默认15秒，配置项是  mds_beacon_grace
-
-#### mds 中的信号处理？？
 
 #### mds 状态 replay
 
