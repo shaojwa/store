@@ -1,3 +1,7 @@
+#### code
+
+#include <boost/thread/shared_mutex.hpp> shared_mutex 什么作用
+
 #### io超时为什么需要respawn
 
 #### mds 中的信号处理？？
@@ -12,7 +16,7 @@
 
 #### stary
 
-stray对象怎么清理呢？
+stray对象好像是共用的， stray对象怎么清理呢？
 
 本mds的stray目录会有副本在其他mds吗？
 
