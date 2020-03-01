@@ -46,3 +46,11 @@
 #### nfs 客户端是否 direct io
 
 nfs客户端可以缓存数据后发给 nfsd，此时每个报文大小是1M，否则根据应用下发的大小，比如vdbench 先设置 64k 大小下发。
+
+#### rwx/u
+
+在nfs客户端上，touch file 后mode为 644，在nfs服务器目录下为 644
+
+### rwx/ugo
+
+在nfs客户端上，touch file 后mode为 777，在nfs服务器目录下为 644
