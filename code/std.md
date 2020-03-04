@@ -14,3 +14,18 @@
 #### stringstream 字符串流中的clear() 接口并不会清空原有数据
 
 ss.clear() 不会清空流内容，只会设置错误标记，如果要清空内容，请用ss.str("")
+
+#### map
+
+中判断一个key是否存在用count函数
+```
+std::map<int, int> level_to_expire;
+level_to_expire.count(k);
+```
+
+#### string
+
+* 中的substr接口用来获取子串
+* string中的find接口如果找到的字串在开头那么会返回0
+所以不能通过 if (str.find("pattern"))来判断能找到，而要通过 if (string::npos != str.find("pattern")) 来进行。
+
