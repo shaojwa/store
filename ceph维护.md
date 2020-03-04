@@ -2,13 +2,7 @@
 
 https://docs.ceph.com/docs/master/cephfs/health-messages/
 
-## respawn ceph
-
-```
-ceph tell mds.0 respawn
-```
-
-## mds 和 mon之间的心跳
+#### mds 和 mon之间的心跳
 
 mds主动发送给mon，mds收到回应，并计算rtt (round-trip time)时间，从mds发出报文开始，到收到mon回复为止。  
 seq_stamp中记录每一次的发送时间，当收到一条ack时，就会拿这条信息的发送时间去更新last_acked_stamp。
@@ -17,12 +11,14 @@ last_acked_stamp 记录的是最近一条得到ack回复的心跳的mds的发送
 如果mds的时钟出现回退，mds会把自己标记为laggy，mds日志里也会有显示。
 
 #### mds 发送给 mon 心跳间隔是几秒
-
-4秒，配置项是 mds_beacon_interval
+```
+mds_beacon_interval = 4
+```
 
 #### mds 发送给 mon 心跳宽限期是几秒
-
-默认15秒，配置项是  mds_beacon_grace
+```
+mds_beacon_grace = 15s
+```
 
 #### mds 状态 replay
 
@@ -48,72 +44,82 @@ resolve阶段是多活mds才有的阶段，用来解决跨多个MDS出现权威�
 ceph mds 开头的常用命令不多，这在ceph -h中称为 monitor命令，因为这些命令都是通过和mon交互进行的。
 
 #### 查看帮助都是用 -h
-
-    ceph -h
-    ceph mds -h
-  
+```
+ceph -h
+ceph mds -h
+``` 
 #### 将整形转为 caps
-
-    ceph mds caps <caps_int>
- 
+```
+ceph mds caps <caps_int>
+```
 #### 启动多mds
-
-    ceph mds set max_mds <val>
-
+```
+ceph mds set max_mds <val>
+```
 #### 查看当前那几个mds是active
-
-    ceph mds stat  // stat = status
-    ceph fs status
+```
+ceph mds stat  // stat = status
+ceph fs status
+```
     
 #### 找到某个epoch的 mds map
-
-    ceph fs dump <epoch>
+```
+ceph fs dump <epoch>
+```
 目前不清楚为什么 ceph mds dump <epoch> 返回的都是最新的版本
 
 #### 通过rank值找到节点的mds的元信息（最常用的是找到主机名）
-
 找到rank值为0的mds节点信息
 
-    ceph mds metadata 0 
+```
+ceph mds metadata 0
+```
 
-* mds的很多功能都是通过ceph dameon 进行查询，ceph daemon 命令属于 local命令，估计h和这些命令都是查询某个特定mds/osd/mon有关。
+mds的很多功能都是通过ceph dameon 进行查询，ceph daemon 命令属于 local命令，估计h和这些命令都是查询某个特定mds/osd/mon有关。
 ceph daemon mds.mdsX 的帮助和 ceph 以及 ceph mds不同，不是用的-h，而是 ceph daemon mds.mdsX help，原因是这已经需要通过守护进程自己处理。
 
 #### 查询 mds 的 id
-
-    ceph daemon mds.mdsX status
+```
+ceph daemon mds.mdsX status
+```
     
 mds的id一般在mds的日志中很少体现，主要用在mon中处理mds的心跳时，标记是哪个mds。这个是用来标记mds唯一性的，不容时间的rank值相同的两个mds，id也是不一样的。所以，这是一个mds的实例id，用来唯一标记某个mds实例。
 
 #### 怎么看文件系统角度的性能
-      
-    ceph daemonperf mds.mds* 
+```
+ceph daemonperf mds.mds* 
+```
 
 #### MDS给mon的心跳异常超时时间
-
-    10秒，mds_beacon_grace = 10s
+```
+mds_beacon_grace = 10s
+```
 
 #### ceph中默认的单个文件最大大小
 
-    Option("mds_max_file_size", Option::TYPE_UINT, Option::LEVEL_ADVANCED)
-    .set_default(70368744177664)
-    .set_description("")
-    
-    70368744177664 = 64T
+```
+Option("mds_max_file_size", Option::TYPE_UINT, Option::LEVEL_ADVANCED)
+.set_default(70368744177664)
+.set_description("")
+```
+
+70368744177664 = 64T
     
 #### 刚写入的文件没有layout和parent属性是为什么
 
-元数据没有下刷，flush journal一下就可以：
-
-    ceph daemon mds.mdsX flush journal
+元数据没有下刷，flush journal 一下就可以：
+```
+ceph daemon mds.mdsX flush journal
+```
 
 #### 文件的layout信息是存放在什么地方？
 
 存在放文件的第一个数据对象的xattr中，可以通过以下命令看到：
-
-    $ rados -p <data_pool> listxattr 100000003f2.00000000
-    layout
-    parent
+```
+$ rados -p <data_pool> listxattr 100000003f2.00000000
+layout
+parent
+```
 
 #### 文件的layout信息怎么看
 
@@ -127,9 +133,18 @@ mds的id一般在mds的日志中很少体现，主要用在mon中处理mds的心
 
 文件的layout和parent信息是放在数据池的第一个对象中的，而目录的这两个信息是在元数据池中的。
 
+#### 目录分片
+
 目录分片合并大小： 
 ```
 mds_bal_merge_size = 50
+```
+
+#### mds 维护
+
+respawn mds
+```
+ceph tell mds.0 respawn
 ```
 
 ## mon
