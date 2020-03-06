@@ -171,3 +171,15 @@ mds 自己检查是不是laggy是通过tick周期，如果是laggy，mds 就会�
 ####
 
 分配inode的接口：Server::alloc_inode_id()
+
+#### session 的状态
+```
+enum {
+STATE_CLOSED = 0,
+STATE_OPENING = 1,   // journaling open
+STATE_OPEN = 2,
+STATE_CLOSING = 3,   // journaling close
+STATE_STALE = 4,
+STATE_KILLING = 5
+};
+```
