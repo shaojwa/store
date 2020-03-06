@@ -167,3 +167,7 @@ suicide_grace为0，所以suicide_timeout也为0，所以 HeartbeatMap::_check()
 mds 自己检查是不是laggy是通过tick周期，如果是laggy，mds 就会在tick中跳过很多工作而不执行。
 
 同时不给mon发心跳，mon就会给mds发mdsmap消息，把你移除，mds在MDSDaemon::handle_mds_map() 处理时就会自己respawn。
+
+####
+
+分配inode的接口：Server::alloc_inode_id()
