@@ -155,3 +155,15 @@ client.125255315:2877811973
 |:-|:-|
 |125255315|client id|
 |2877811973|tid，transcation id|
+
+## mds因为心跳导致的 respawn 原因
+
+heartbeat_handle_d 中有一个timeout 和 suicide_timeout, timeout是当前时间加上grace， suicide_timeout 是当前时间加上suicide_grace。
+现在的代码中，reset_timeout(hb, g_conf->mds_beacon_grace, 0)， mds_beacon_grace是15秒，suicide_grace 为0，就是没有设置。
+suicide_grace为0，所以suicide_timeout也为0，所以 HeartbeatMap::_check() 中就不会触发自杀（如果配置自杀宽限时间，是通过SIGUSR1信号来触发respawn）。
+
+为什么mds会respawn？ 因为mds中的Beacon的_send接口中会去判断，cct->get_heartbeat_map()->is_healthy()，如果不健康就不发心跳。
+不发心跳，4秒一次，所以日志skipping beacon, heartbeat map not healthy 也4秒出现一次，就会让mds认为自己 laggy。
+mds 自己检查是不是laggy是通过tick周期，如果是laggy，mds 就会在tick中跳过很多工作而不执行。
+
+同时不给mon发心跳，mon就会给mds发mdsmap消息，把你移除，mds在MDSDaemon::handle_mds_map() 处理时就会自己respawn。
