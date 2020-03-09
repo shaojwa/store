@@ -1,11 +1,4 @@
-
-## 日志中的字段
-
-|thread ID |task id|运行的cpu号| 日志等级|
-|:-|:-|:-|:-|
-|7fa20d3fe700 |2094980 |2|DEBUG|
-|pthread_t|syscall(SYS_gettid)|sched_getcpu()| -1:ERROR 0:WARNING 1:INFO >1: DEBUG|
-
+##　mds中的线程
 ----
 mds 启动流程
 
@@ -168,7 +161,7 @@ mds 自己检查是不是laggy是通过tick周期，如果是laggy，mds 就会�
 
 同时不给mon发心跳，mon就会给mds发mdsmap消息，把你移除，mds在MDSDaemon::handle_mds_map() 处理时就会自己respawn。
 
-####
+#### ino 分配
 
 分配inode的接口：Server::alloc_inode_id()
 
@@ -183,3 +176,9 @@ STATE_STALE = 4,
 STATE_KILLING = 5
 };
 ```
+
+## 日志中的字段
+|thread ID |task id|运行的cpu号| 日志等级|
+|:-|:-|:-|:-|
+|7fa20d3fe700 |2094980 |2|DEBUG|
+|pthread_t|syscall(SYS_gettid)|sched_getcpu()| -1:ERROR 0:WARNING 1:INFO >1: DEBUG|
