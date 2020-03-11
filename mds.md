@@ -1,7 +1,26 @@
 ## mds中的线程
-----
-mds 启动流程
+#### ms_dispatch线程工作
 
+（1）是core-message就handle_core_message()，不是core的就，mds_rank->ms_dispatch()，core 包括 各种MAP的消息处理，触发boot_start等，处理MDSMAP时创建mds_rank。
+
+
+#### fs_anonymous
+
+// mds_rank 中 finisher
+(1) MDSDaemon::handle_mds_map()
+(2) mds_rank->init()
+(3) MDSDispatcher::init()
+(4) finisher->start()
+
+// MonClient 中的 finisher
+(1) main()
+(2) mds->init();
+(3) MDSDaemon::init()
+(4) monc->init();
+(5) MonClient::init()
+(6) finisher.start();
+
+mds 启动流程
 |线程|事务|状态|说明|
 |:-|:-|:-|:-|
 |ms_dispatch |handle_mds_map epoch 77 from mon.0|||
