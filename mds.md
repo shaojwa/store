@@ -6,12 +6,14 @@
 
 #### fs_anonymous
 
+```
 // mds_rank 中 finisher
 (1) MDSDaemon::handle_mds_map()
 (2) mds_rank->init()
 (3) MDSDispatcher::init()
 (4) finisher->start()
-
+```
+```
 // MonClient 中的 finisher
 (1) main()
 (2) mds->init();
@@ -19,6 +21,7 @@
 (4) monc->init();
 (5) MonClient::init()
 (6) finisher.start();
+```
 
 mds 启动流程
 |线程|事务|状态|说明|
