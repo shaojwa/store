@@ -1,6 +1,19 @@
-#### mds
+#### 重新加载 mds 进程
+```
+ceph tell mds.0 respawn 
+```
 
-https://docs.ceph.com/docs/master/cephfs/health-messages/
+#### 对某个mds标fail
+```
+$ceph mds fail <rank>
+failed mds gid 3589
+```
+
+#### 怎么修复damage mds
+```
+ceph mds repaired 0 
+```
+告诉mon，mds已经修好
 
 #### mds 查询命令选择
 ```
@@ -56,24 +69,7 @@ ceph daemon mds.mdsX status
     
 mds的id一般在mds的日志中很少体现，主要用在mon中处理mds的心跳时，标记是哪个mds。这个是用来标记mds唯一性的，不同时间的rank值相同的两个mds，id也是不一样的。所以，这是一个mds的实例id，用来唯一标记某个mds实例。
 
-#### 重新加载 mds 进程
-```
-ceph mds repaired 0 
-```
-
-#### 对某个mds标fail
-```
-$ceph mds fail <rank>
-failed mds gid 3589
-```
-
-#### 怎么修复damage mds
-```
-ceph mds repaired 0 
-```
-告诉mon，mds已经修好
-
-#### 修复mds日
+#### 修复mds日志
 ```
 MDS 修复
 cephfs-journal-tool journal inspect 
@@ -130,7 +126,6 @@ Option("mds_max_file_size", Option::TYPE_UINT, Option::LEVEL_ADVANCED)
 
 70368744177664 = 64T
 
-
 #### 文件的layout信息是存放在什么地方？
 
 存在放文件的第一个数据对象的xattr中，可以通过以下命令看到：
@@ -181,84 +176,6 @@ e = 1110 允许分片
 #### mds 性能
 ```
 ceph daemon mds.0 perf dump [mds|mds_cache|mds_log|mds_server|mds_sessions|objecter]
-```
-
-#### mon
-
-查看mon状态
-```
-ceph mon dump
-ceph mon_status
-ceph quorum_status
-```
-
-主mon
-```
-ceph mon stat # 输出中有leader相关信息
-```
-
-#### mgr 的作用
-
-从L版本开始(12.x)，这是一个要求的组件。mon维护各种map信息，而mgr维护除此之外的监控和管理。
-  
-#### mgr 提供的信息
-
-  * pool的数目，pg数目
-  * object的数目，存储的bytes
-  * 存储使用率，性能指标，负载
-  * pg健康状况
-  
-#### 缺少mgr
-
-ceph -s 会有告警。data部分也会缺少部分信息，ceph health 会无法输出。
-
-## osd
-
-#### 停止某个osd
-```
-systemctl stop ceph-osd@2
-```
-
-#### 停止osd之后避免拉起
-
-```
-touch /var/lib/ceph/shell/watch_maintaining
-```
-
-##### 怎么查看某个版本的osd map
-
-```
-ceph osd dump <epoch>
-```
-
-#### 一个4M的对象，纠删码2+1时怎么存？
-
-```
-一共三片，为2M + 2M + 2M，三个对象
-```
-
-#### down 掉一部分osd 之后 inactive 的 PG 在一段时间后会减少
-
-OSD reweight之后，部分pg的map会进行修改。
-
-#### 三副本 down 掉数据池 3个 osd 之后，文件系统中的 inactive pg
-
-对于三副本来说，stale的 pg 就是包含那三个 osd 的 pg
-
-#### down 和 out 什么区别
-
-osd中down只是临时性故障，不会触发PG迁移。而out是mon检测到某个osd处于down超过一段时间，mon将其设置为out，即为永久性故障。  
-
-#### mon把osd标记为out的日志
-
-```
-Marking osd.* out
-```
-  
-#### OSD 和 MON 之间的心跳延时 
-
-```
-osd_heartbeat_grace = 20s
 ```
 
 #### 怎么找到一个文件对应的对象
