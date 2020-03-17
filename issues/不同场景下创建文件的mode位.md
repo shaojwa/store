@@ -1,4 +1,4 @@
-#### create file on NAS local
+#### NAS本地创建文件
 
     [root@node93 nfs]# ll
     total 0
@@ -6,7 +6,7 @@
 
 mask is 644
 
-#### create file on nfs clientumou
+#### nfs挂载后创建文件
 
     [root@node94 nas_nfs]# touch file_nfs
     [root@node94 nas_nfs]# ll
