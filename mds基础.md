@@ -122,12 +122,12 @@ mds recovery 过程
 |:-|:-|:-|
 |产生Message|AsyncConnection::process||
 ||Messenger::ms_deliver_dispatch||
-||MDSDaemon::ms_dispatch(Message *m)|获取mds_lock，handle_core_message() or ds_rank->ms_dispatch(m)|
-||MDSRankDispatcher::ms_dispatch(Message *m)|mds_rank->ms_dispatch(m)|
-||MDSRank::_dispatch(Message *m, bool new_msg)||
-||MDSRank::handle_deferrable_message(Message *m)||
+||MDSDaemon::ms_dispatch(Message \*m)|获取mds_lock，handle_core_message() or ds_rank->ms_dispatch(m)|
+||MDSRankDispatcher::ms_dispatch(Message \*m)|mds_rank->ms_dispatch(m)|
+||MDSRank::_dispatch(Message \*m, bool new_msg)||
+||MDSRank::handle_deferrable_message(Message \*m)||
 |将Message转为MClientRequest|Server::dispatch()||
-|将MClientRequest转为mdr|MDCache::request_start(MClientRequest *req)||mdr存放在active_requests中
+|将MClientRequest转为mdr|MDCache::request_start(MClientRequest \*req)||mdr存放在active_requests中
 |清理mdr|MDCache::request_finish(MDRequestRef& mdr)||
 ||MDCache::request_cleanup(MDRequestRef& mdr)||
 
@@ -204,3 +204,41 @@ STATE_KILLING = 5
 |:-|:-|:-|:-|
 |7fa20d3fe700 |2094980 |2|DEBUG|
 |pthread_t|syscall(SYS_gettid)|sched_getcpu()| -1:ERROR 0:WARNING 1:INFO >1: DEBUG|
+
+#### 在目录下创建文件所需要的cap是pAsLsXsFs
+
+在92节点的/data目录下创建文件，内核客户端需要的cap是：
+```
+{
+  "client_id": 1328753,
+  "pending": "pAsLsXsFs",
+  "issued": "pAsLsXsFs",
+  "wanted": "pAsLsXsFsx",
+  "last_sent": 47
+ }
+ {
+  "client_id": 6837004,
+  "pending": "pAsLsXs",
+  "issued": "pAsLsXs",
+  "wanted": "-",
+  "last_sent": 3
+ }
+ // last sent 47 是cap的int值，the caps of 47 is pAsxLx，不清楚为什么有Ax和Lx
+```
+然后在91节点的/data目录下创建文件，会观察到cap的转移：
+```
+{
+  "client_id": 1328753,
+  "pending": "pAsLsXsFs",
+  "issued": "pAsLsXsFs",
+  "wanted": "-",
+  "last_sent": 47
+},
+{
+  "client_id": 6837004,
+  "pending": "pAsLsXsFs",
+  "issued": "pAsLsXsFs",
+  "wanted": "AsLsXsFsx",
+  "last_sent": 5
+}
+```
