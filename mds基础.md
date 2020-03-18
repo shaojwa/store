@@ -1,10 +1,25 @@
+## 文档结构
+* 参考
+* 线程概述
+* mds启动
+* 请求构造
+* 获取锁和权限
+* 处理
+* 日志
+* 回调
+* 心跳
+* tick
+* log
+* 其他定时任务
+
+## 参考
+https://docs.ceph.com/docs/master/cephfs/health-messages/
 ## mds中的线程
-#### ms_dispatch线程工作
+## ms_dispatch 线程
 
 （1）是core-message就handle_core_message()，不是core的就，mds_rank->ms_dispatch()，core 包括 各种MAP的消息处理，触发boot_start等，处理MDSMAP时创建mds_rank。
 
-
-#### fs_anonymous
+## fs_anonymous 线程
 
 ```
 // mds_rank 中 finisher
@@ -22,227 +37,6 @@
 (5) MonClient::init()
 (6) finisher.start();
 ```
-
-mds 启动流程
-|线程|事务|状态|说明|
-|:-|:-|:-|:-|
-|ms_dispatch |handle_mds_map epoch 77 from mon.0|||
-|ms_dispatch |mds.mds0 handle_mds_map standby|||
-|ms_dispatch |mds.mds0 handle_mds_map epoch 85 from mon.0|||
-|ms_dispatch |mds.0.0 handle_osd_map epoch 0, 0 new blacklist entries|||
-|ms_dispatch |mds.0.85 handle_mds_map i am now mds.0.85|||
-|ms_dispatch |mds.0.85 handle_mds_map state change up:boot --> up:replay|replay||
-|ms_dispatch |mds.0.85  recovery set is 1|||
-|fn_anonymous |mds.0.85 boot_start 0: opening inotable|||
-|fn_anonymous |mds.0.85 boot_start 0: opening sessionmap|||
-|fn_anonymous |mds.0.85 boot_start 0: opening mds log|||
-|fn_anonymous |mds.0.log open discovering log bounds|||
-|fn_anonymous |mds.0.85 boot_start 0: opening purge queue (async)|||
-|fn_anonymous |mds.0.purge_queue open: opening|||
-|fn_anonymous |mds.0.85 boot_start 0: opening snap table|||
-|fn_anonymous |mds.0.85 boot_start 1: loading/discovering base inodes|||
-|fn_anonymous |mds.0.85 boot_start 2: replaying mds log|||
-|fn_anonymous |mds.0.85 boot_start 2: waiting for purge queue recovered|||
-|fn_anonymous |mds.0.85 replay_done|||
-|fn_anonymous |mds.0.85 making mds journal writeable|||
-|fn_anonymous |mds.0.85 i am not alone, moving to state resolve|||
-|fn_anonymous |request_state up:resolve||request_stat|
-|ms_dispatch |handle_mds_map state change up:replay --> up:resolve|resolve||
-|ms_dispatch |mds.0.85 reopen_log|||
-|ms_dispatch |mds.0.85 now recovery set is 1|||
-|fn_anonymous |WARNING auth: secret_end_id = 712|||
-|ms_dispatch |mds.0.85 resolve_done|||
-|ms_dispatch | request_state up:reconnect||request_state|
-|ms_dispatch |mds.0.85 handle_mds_map state change up:resolve --> up:reconnect|reconnect||
-|ms_dispatch  |reconnect_start: killed 0 blacklisted sessions (2 blacklist entries, 5)|||
-|ms_dispatch  |mds.0.server reconnect_clients -- 5 sessions|||  
-|ms_dispatch |mds.0.server reconnect_tick_finish|||
-|ms_dispatch |mds.0.85 request_state up:rejoin||request_state|
-|ms_dispatch |handle_mds_map state change up:reconnect --> up:rejoin|rejoin||
-|ms_dispatch |mds.0.cache rejoin_send_rejoins,  rejoin message sent to mds:1|||
-|ms_dispatch |mds.0.cache handle_cache_rejoin_strong begin, receive rejoin_strong from: 1|||
-|md_submit |mds.0.log _submit_thread 252162901~300 : ESessions 5 opens cmapv 149197|||
-|ms_dispatch |mds.0.cache handle_cache_rejoin_ack form mds.1|||
-|ms_dispatch |mds.0.cache handle_cache_rejoin_ack done, still need to gather rejoin or rejoin ack|||
-|fn_anonymous |mds.0.cache rejoin_send_acks,  recovery_set: 1, rejoin_ack_sent: , need_resend_rejoin_ack|||
-|fn_anonymous |mds.0.cache rejoin_send_acks,  rejoin ack message sent to mds:1|||
-|fn_anonymous |mds.0.cache rejoin_gather_finish done, after rejoin_send_acks, rejoin_gather: (), rejoin_ack_gather: ()|||
-|fn_anonymous |mds.0.cache rejoin_gather_finish done, after rejoin_send_acks, rejoin_sent: (1), rejoin_ack_sent: (1)|||
-|fn_anonymous |request_state up:active||request_state|
-|ms_dispatch |handle_mds_map state change up:rejoin --> up:active|||
-|ms_dispatch |recovery_done|||
-|ms_dispatch |active_start|||
-
-----
-mds recovery 过程
-
-#### replay
-
-* 回放日志，是相对简单的过程。
-* 读取元数据信息到缓存中，用以恢复失败MDS中还没有来得及提交的元数据，元数据没提交，日志已经提交。
-
-#### resolve
-
-* 用于确定权威元数据在MDS的位置，解决跨多个MDS出现权威元数据分歧的场景，只是确定权威元数据所属的MDS。
-* 恢复中的MDS会向所有的其他MDS广播Resolve消息，消息内容包括权威子树信息，在失败时导入的未知位置的子树信息，向目标节点发送的的更新请求。
-* 恢复中的MDS更新自己的缓存来反应其他节点上已经明确声明的权威子树。
-* 恢复中的MDS对不明确的更新请求信息进行交叉检查，由不同的MDS进行，正常MDS也会回复replay给恢复中的MDS。
-* 恢复中的MDS会裁剪掉非权威元数据，保留权威元数据以及相关约束祖先元数据。
-* 正常MDS也会发送类似的Resolve消息到每一个恢复中的MDS。
-
-#### reconnect
-
-* 文件状态并不和其他MDS共享，也就是说，一个客户端和一个MDS交互，交互信息并不共享到其他MDS。
-* 恢复中的MDS会和原有的客户端建立连接，为了查询之前客户端发布的句柄，重新在缓存中创建一致性功能和锁状态。
-* MDS不会在client打开文件时同步记录这些信息，为了减少打开的延时，但是MDS会将最近打开的inode写入日志, 为了再恢复时加快速度。
-* 如果客户端打开的文件并不在恢复中的MDS缓存中，MDS会根据文件名和inode到目录树中索引得到。
-
-#### rejoin
-
-* 恢复中的MDS发送Weak Rejoin消息给正常的MDS，送的是自己恢复了哪些元数据。
-* 正常的MDS会发送Strong Rejoin给恢复中的MDS，回复的是它拥有的元数据副本信息以及锁状态。
-* 最终完成分部署缓存以及锁状态。
-
-
-|字段|说明|
-|:-|:-|
-|rejoin_sent| 我发送rejoin给这些rank||
-|rejoin_ack_sent| 我需要发送rejoin ack给这些rank|
-|rejoin_gather|我从这些rank收集rejoin（也就是这些rank会向当前rank 发送 rejpoin） |
-|rejoin_ack_gather| 我从这些rank收集rejoin ack（也就是这些rank会向当前rank 发送 rejoin ack） |
-
-|接口|接口|接口||
-|:-|:-|:-|:-|
-|rejoin_start||||
-||rejoin_joint_start|||
-
-## 一个请求的生命周期是怎样的？
-
-|操作|接口|说明|
-|:-|:-|:-|
-|产生Message|AsyncConnection::process||
-||Messenger::ms_deliver_dispatch||
-||MDSDaemon::ms_dispatch(Message \*m)|获取mds_lock，handle_core_message() or ds_rank->ms_dispatch(m)|
-||MDSRankDispatcher::ms_dispatch(Message \*m)|mds_rank->ms_dispatch(m)|
-||MDSRank::_dispatch(Message \*m, bool new_msg)||
-||MDSRank::handle_deferrable_message(Message \*m)||
-|将Message转为MClientRequest|Server::dispatch()||
-|将MClientRequest转为mdr|MDCache::request_start(MClientRequest \*req)||mdr存放在active_requests中
-|清理mdr|MDCache::request_finish(MDRequestRef& mdr)||
-||MDCache::request_cleanup(MDRequestRef& mdr)||
-
-只有到 Server::dispatch() 才把 Message转为 MClientRequest。
-
-## mds laggy 时会 dispatch 么？
-
-不会，MDSRank::_dispatch() 中会判断，如果是 laggy，那么就把 message放到 waiting_for_nolaggy 队列。
-
-```
-if (beacon.is_laggy()) {
-    dout(10) << " laggy, deferring " << *m << dendl;
-    waiting_for_nolaggy.push_back(m);
-}
-```
-
-
-
-## 如果获取锁失败，怎么触发再次尝试
-
-```
-Locker::rdlock_start 中有 SimpleLock::WAIT_STABLE
-lock->add_waiter(wait_on, new C_MDS_RetryRequest(mdcache, mut));
-```
-
-
-## 检查 slow request的接口
-
-```
-check_ops_in_flight()
-```
-
-## 请求中的tid是什么？
-
-```
-client.125255315:2877811973
-```
-
-|字段|字段|
-|:-|:-|
-|125255315|client id|
-|2877811973|tid，transcation id|
-
-## mds因为心跳导致的 respawn 原因
-
-heartbeat_handle_d 中有一个timeout 和 suicide_timeout, timeout是当前时间加上grace， suicide_timeout 是当前时间加上suicide_grace。
-现在的代码中，reset_timeout(hb, g_conf->mds_beacon_grace, 0)， mds_beacon_grace是15秒，suicide_grace 为0，就是没有设置。
-suicide_grace为0，所以suicide_timeout也为0，所以 HeartbeatMap::_check() 中就不会触发自杀（如果配置自杀宽限时间，是通过SIGUSR1信号来触发respawn）。
-
-为什么mds会respawn？ 因为mds中的Beacon的_send接口中会去判断，cct->get_heartbeat_map()->is_healthy()，如果不健康就不发心跳。
-不发心跳，4秒一次，所以日志skipping beacon, heartbeat map not healthy 也4秒出现一次，就会让mds认为自己 laggy。
-mds 自己检查是不是laggy是通过tick周期，如果是laggy，mds 就会在tick中跳过很多工作而不执行。
-
-同时不给mon发心跳，mon就会给mds发mdsmap消息，把你移除，mds在MDSDaemon::handle_mds_map() 处理时就会自己respawn。
-
-#### ino 分配
-
-分配inode的接口：Server::alloc_inode_id()
-
-#### session 的状态
-```
-enum {
-STATE_CLOSED = 0,
-STATE_OPENING = 1,   // journaling open
-STATE_OPEN = 2,
-STATE_CLOSING = 3,   // journaling close
-STATE_STALE = 4,
-STATE_KILLING = 5
-};
-```
-
-## 日志中的字段
-|thread ID |task id|运行的cpu号| 日志等级|
-|:-|:-|:-|:-|
-|7fa20d3fe700 |2094980 |2|DEBUG|
-|pthread_t|syscall(SYS_gettid)|sched_getcpu()| -1:ERROR 0:WARNING 1:INFO >1: DEBUG|
-
-#### 在目录下创建文件所需要的cap是pAsLsXsFs
-
-在92节点的/data目录下创建文件，内核客户端需要的cap是：
-```
-{
-  "client_id": 1328753,
-  "pending": "pAsLsXsFs",
-  "issued": "pAsLsXsFs",
-  "wanted": "pAsLsXsFsx",
-  "last_sent": 47
- }
- {
-  "client_id": 6837004,
-  "pending": "pAsLsXs",
-  "issued": "pAsLsXs",
-  "wanted": "-",
-  "last_sent": 3
- }
- // last sent 47 是cap的int值，the caps of 47 is pAsxLx，不清楚为什么有Ax和Lx
-```
-然后在91节点的/data目录下创建文件，会观察到cap的转移：
-```
-{
-  "client_id": 1328753,
-  "pending": "pAsLsXsFs",
-  "issued": "pAsLsXsFs",
-  "wanted": "-",
-  "last_sent": 47
-},
-{
-  "client_id": 6837004,
-  "pending": "pAsLsXsFs",
-  "issued": "pAsLsXsFs",
-  "wanted": "AsLsXsFsx",
-  "last_sent": 5
-}
-```
-
 ## ceph-mds
 
     主线程，global_init()
@@ -390,46 +184,101 @@ PurgeQueue的finisher 线程。MDSRank中有purge_queue。在PurgeQueue::init()�
     如果finisher_queue中的元素是NULL，就会停下来先处理一个finisher_queue_rval中的上下文。
     
 
-## tick 流程
 
-#### tick 的工作线程是哪个？
+## mds启动
+mds 启动流程
+|线程|事务|状态|说明|
+|:-|:-|:-|:-|
+|ms_dispatch |handle_mds_map epoch 77 from mon.0|||
+|ms_dispatch |mds.mds0 handle_mds_map standby|||
+|ms_dispatch |mds.mds0 handle_mds_map epoch 85 from mon.0|||
+|ms_dispatch |mds.0.0 handle_osd_map epoch 0, 0 new blacklist entries|||
+|ms_dispatch |mds.0.85 handle_mds_map i am now mds.0.85|||
+|ms_dispatch |mds.0.85 handle_mds_map state change up:boot --> up:replay|replay||
+|ms_dispatch |mds.0.85  recovery set is 1|||
+|fn_anonymous |mds.0.85 boot_start 0: opening inotable|||
+|fn_anonymous |mds.0.85 boot_start 0: opening sessionmap|||
+|fn_anonymous |mds.0.85 boot_start 0: opening mds log|||
+|fn_anonymous |mds.0.log open discovering log bounds|||
+|fn_anonymous |mds.0.85 boot_start 0: opening purge queue (async)|||
+|fn_anonymous |mds.0.purge_queue open: opening|||
+|fn_anonymous |mds.0.85 boot_start 0: opening snap table|||
+|fn_anonymous |mds.0.85 boot_start 1: loading/discovering base inodes|||
+|fn_anonymous |mds.0.85 boot_start 2: replaying mds log|||
+|fn_anonymous |mds.0.85 boot_start 2: waiting for purge queue recovered|||
+|fn_anonymous |mds.0.85 replay_done|||
+|fn_anonymous |mds.0.85 making mds journal writeable|||
+|fn_anonymous |mds.0.85 i am not alone, moving to state resolve|||
+|fn_anonymous |request_state up:resolve||request_stat|
+|ms_dispatch |handle_mds_map state change up:replay --> up:resolve|resolve||
+|ms_dispatch |mds.0.85 reopen_log|||
+|ms_dispatch |mds.0.85 now recovery set is 1|||
+|fn_anonymous |WARNING auth: secret_end_id = 712|||
+|ms_dispatch |mds.0.85 resolve_done|||
+|ms_dispatch | request_state up:reconnect||request_state|
+|ms_dispatch |mds.0.85 handle_mds_map state change up:resolve --> up:reconnect|reconnect||
+|ms_dispatch |reconnect_start: killed 0 blacklisted sessions (2 blacklist entries, 5)|||
+|ms_dispatch |mds.0.server reconnect_clients -- 5 sessions|||  
+|ms_dispatch |mds.0.server reconnect_tick_finish|||
+|ms_dispatch |mds.0.85 request_state up:rejoin||request_state|
+|ms_dispatch |handle_mds_map state change up:reconnect --> up:rejoin|rejoin||
+|ms_dispatch |mds.0.cache rejoin_send_rejoins,  rejoin message sent to mds:1|||
+|ms_dispatch |mds.0.cache handle_cache_rejoin_strong begin, receive rejoin_strong from: 1|||
+|md_submit |mds.0.log \_submit_thread 252162901~300 : ESessions 5 opens cmapv 149197|||
+|ms_dispatch |mds.0.cache handle_cache_rejoin_ack form mds.1|||
+|ms_dispatch |mds.0.cache handle_cache_rejoin_ack done, still need to gather rejoin or rejoin ack|||
+|fn_anonymous |mds.0.cache rejoin_send_acks,  recovery_set: 1, rejoin_ack_sent: , need_resend_rejoin_ack|||
+|fn_anonymous |mds.0.cache rejoin_send_acks,  rejoin ack message sent to mds:1|||
+|fn_anonymous |mds.0.cache rejoin_gather_finish done, after rejoin_send_acks, rejoin_gather: (), rejoin_ack_gather: ()|||
+|fn_anonymous |mds.0.cache rejoin_gather_finish done, after rejoin_send_acks, rejoin_sent: (1), rejoin_ack_sent: (1)|||
+|fn_anonymous |request_state up:active||request_state|
+|ms_dispatch |handle_mds_map state change up:rejoin --> up:active|||
+|ms_dispatch |recovery_done|||
+|ms_dispatch |active_start|||
 
-    通过scatter_tick的日志可以看到，mds tick的线程是safe_timer线程
-    
-#### tick 的周期是多少
-  
-    默认情况下是5秒，可以通过日志看到。
-    
-#### tick 的调用流程
+##　mds recovery 过程
+## replay 过程
 
-     MDSDaemon::tick()-> mds_rank->tick()
+* 回放日志，是相对简单的过程。
+* 读取元数据信息到缓存中，用以恢复失败MDS中还没有来得及提交的元数据，元数据没提交，日志已经提交。
+
+## resolve
+
+* 用于确定权威元数据在MDS的位置，解决跨多个MDS出现权威元数据分歧的场景，只是确定权威元数据所属的MDS。
+* 恢复中的MDS会向所有的其他MDS广播Resolve消息，消息内容包括权威子树信息，在失败时导入的未知位置的子树信息，向目标节点发送的的更新请求。
+* 恢复中的MDS更新自己的缓存来反应其他节点上已经明确声明的权威子树。
+* 恢复中的MDS对不明确的更新请求信息进行交叉检查，由不同的MDS进行，正常MDS也会回复replay给恢复中的MDS。
+* 恢复中的MDS会裁剪掉非权威元数据，保留权威元数据以及相关约束祖先元数据。
+* 正常MDS也会发送类似的Resolve消息到每一个恢复中的MDS。
+
+## reconnect
+
+* 文件状态并不和其他MDS共享，也就是说，一个客户端和一个MDS交互，交互信息并不共享到其他MDS。
+* 恢复中的MDS会和原有的客户端建立连接，为了查询之前客户端发布的句柄，重新在缓存中创建一致性功能和锁状态。
+* MDS不会在client打开文件时同步记录这些信息，为了减少打开的延时，但是MDS会将最近打开的inode写入日志, 为了再恢复时加快速度。
+* 如果客户端打开的文件并不在恢复中的MDS缓存中，MDS会根据文件名和inode到目录树中索引得到。
+
+## rejoin
+
+* 恢复中的MDS发送Weak Rejoin消息给正常的MDS，送的是自己恢复了哪些元数据。
+* 正常的MDS会发送Strong Rejoin给恢复中的MDS，回复的是它拥有的元数据副本信息以及锁状态。
+* 最终完成分部署缓存以及锁状态。
 
 
-## mds
+|字段|说明|
+|:-|:-|
+|rejoin_sent| 我发送rejoin给这些rank||
+|rejoin_ack_sent| 我需要发送rejoin ack给这些rank|
+|rejoin_gather|我从这些rank收集rejoin（也就是这些rank会向当前rank 发送 rejpoin） |
+|rejoin_ack_gather| 我从这些rank收集rejoin ack（也就是这些rank会向当前rank 发送 rejoin ack） |
 
-https://docs.ceph.com/docs/master/cephfs/health-messages/
+|接口|接口|接口||
+|:-|:-|:-|:-|
+|rejoin_start||||
+||rejoin_joint_start|||
 
-#### mds 和 mon之间的心跳
-
-mds主动发送给mon，mds收到回应，并计算rtt (round-trip time)时间，从mds发出报文开始，到收到mon回复为止。  
-seq_stamp中记录每一次的发送时间，当收到一条ack时，就会拿这条信息的发送时间去更新last_acked_stamp。
-last_acked_stamp 记录的是最近一条得到ack回复的心跳的mds的发送时间。
-然后计算rrt，发送的时间和当前收到消息时间之差。
-如果mds的时钟出现回退，mds会把自己标记为laggy，mds日志里也会有显示。
-
-#### mds 发送给 mon 心跳间隔是几秒
-```
-mds_beacon_interval = 4
-```
-
-#### mds 发送给 mon 心跳宽限期是几秒
-```
-mds_beacon_grace = 15s
-```
-
-#### mds 状态 replay
-
-#### mds 状态 resolve
+## mds 状态 replay
+## mds 状态 resolve
 
 resolve阶段是多活mds才有的阶段，用来解决跨多个MDS出现权威元数据分歧场景。对服务端侧来说，包括子树分布，Anchor表更新等功能。
 客户端侧包括rename，unlink等操作。resolve用于确定日志中还不明确的事务，每个恢复MDS向所有其他MDS广播resolve消息。
@@ -438,7 +287,7 @@ resolve阶段是多活mds才有的阶段，用来解决跨多个MDS出现权威�
 这个阶段主要是处理分布式事务未提交成功的事件。
 代码里分析来看，先是处理rollback_uncommitted_fragments，即回滚未提交的日志段，然后处理adjust_subtree_auth，即调整mds的子树权威，最后向其他mds做同步mdcache->send_resolves()
 
-#### MDS 状态 reconnect
+## MDS 状态 reconnect
 
 这里主要处理cephfs客户端重连任务，mds向monitor申请更新为reconnect状态后，monitor会向cephfs客户端发送当前active的mds信息，cephfs客户端在ceph_mdsc_handle_mdsmap中更新当前mdsmap，并向当前提升的mds发送reconnect请求。mds收到客户端重连请求后会将该客户端加入客户端列表中，并赋予相关caps。若客户端在mds_reconnect_timeout时间内未重新连接，mds会丢弃该客户端，若该客户端重连会被mds拒绝。
 
@@ -446,102 +295,158 @@ resolve阶段是多活mds才有的阶段，用来解决跨多个MDS出现权威�
 
 主要是实现mds之间缓存的同步，caps还有锁状态的同步。
 
-#### ceph 的 mon 命令
+## 请求构造
+## 一个请求的生命周期是怎样的？
+|操作|接口|说明|
+|:-|:-|:-|
+|产生Message|AsyncConnection::process||
+||Messenger::ms_deliver_dispatch||
+||MDSDaemon::ms_dispatch(Message \*m)|获取mds_lock，handle_core_message() or ds_rank->ms_dispatch(m)|
+||MDSRankDispatcher::ms_dispatch(Message \*m)|mds_rank->ms_dispatch(m)|
+||MDSRank::\_dispatch(Message \*m, bool new_msg)||
+||MDSRank::handle_deferrable_message(Message \*m)||
+|将Message转为MClientRequest|Server::dispatch()||
+|将MClientRequest转为mdr|MDCache::request_start(MClientRequest \*req)||mdr存放在active_requests中
+|清理mdr|MDCache::request_finish(MDRequestRef& mdr)||
+||MDCache::request_cleanup(MDRequestRef& mdr)||
 
-ceph mds 开头的常用命令不多，这在ceph -h中称为 monitor命令，因为这些命令都是通过和mon交互进行的。
+注意：只有到 Server::dispatch() 才把 Message转为 MClientRequest。
 
-#### 查看帮助都是用 -h
+## 请求中的tid是什么？
 ```
-ceph -h
-ceph mds -h
-``` 
-#### 将整形转为 caps
+client.125255315:2877811973
 ```
-ceph mds caps <caps_int>
+|字段|字段|
+|:-|:-|
+|125255315|client id|
+|2877811973|tid，transcation id|
+
+## 分发
+## mds laggy 时会 dispatch 么？
+
+不会，MDSRank::\_dispatch() 中会判断，如果是 laggy，那么就把 message放到 waiting_for_nolaggy 队列。
+
 ```
-#### 启动多mds
+if (beacon.is_laggy()) {
+    dout(10) << " laggy, deferring " << *m << dendl;
+    waiting_for_nolaggy.push_back(m);
+}
 ```
-ceph mds set max_mds <val>
+
+## 锁相关
+## 如果获取锁失败，怎么触发再次尝试
+
 ```
-#### 查看当前那几个mds是active
+Locker::rdlock_start 中有 SimpleLock::WAIT_STABLE
+lock->add_waiter(wait_on, new C_MDS_RetryRequest(mdcache, mut));
 ```
-ceph mds stat  // stat = status
-ceph fs status
+
+## 在目录下创建文件所需要的cap是pAsLsXsFs
+
+在92节点的/data目录下创建文件，内核客户端需要的cap是：
 ```
+{
+"client_id": 1328753,
+"pending": "pAsLsXsFs",
+"issued": "pAsLsXsFs",
+"wanted": "pAsLsXsFsx",
+"last_sent": 47
+}
+{
+"client_id": 6837004,
+"pending": "pAsLsXs",
+"issued": "pAsLsXs",
+"wanted": "-",
+"last_sent": 3
+}
+// last sent 47 是cap的int值，the caps of 47 is pAsxLx，不清楚为什么有Ax和Lx
+```
+然后在91节点的/data目录下创建文件，会观察到cap的转移：
+```
+{
+"client_id": 1328753,
+"pending": "pAsLsXsFs",
+"issued": "pAsLsXsFs",
+"wanted": "-",
+"last_sent": 47
+},
+{
+"client_id": 6837004,
+"pending": "pAsLsXsFs",
+"issued": "pAsLsXsFs",
+"wanted": "AsLsXsFsx",
+"last_sent": 5
+}
+```
+
+## 处理
+## ino 分配
+
+分配inode的接口：Server::alloc_inode_id()
+
+## 检查 slow request的接口
+
+```
+check_ops_in_flight()
+```
+
+## 心跳
+## mds 和 mon之间的心跳
+
+mds主动发送给mon，mds收到回应，并计算rtt (round-trip time)时间，从mds发出报文开始，到收到mon回复为止。  
+seq_stamp中记录每一次的发送时间，当收到一条ack时，就会拿这条信息的发送时间去更新last_acked_stamp。
+last_acked_stamp 记录的是最近一条得到ack回复的心跳的mds的发送时间。
+然后计算rrt，发送的时间和当前收到消息时间之差。
+如果mds的时钟出现回退，mds会把自己标记为laggy，mds日志里也会有显示。
+
+## mds 发送给 mon 心跳间隔是几秒
+```
+mds_beacon_interval = 4
+```
+
+## mds 发送给 mon 心跳宽限期是几秒
+```
+mds_beacon_grace = 15s
+```
+## mds因为心跳导致的 respawn 原因
+
+heartbeat_handle_d 中有一个timeout 和 suicide_timeout, timeout是当前时间加上grace， suicide_timeout 是当前时间加上suicide_grace。
+现在的代码中，reset_timeout(hb, g_conf->mds_beacon_grace, 0)， mds_beacon_grace是15秒，suicide_grace 为0，就是没有设置。
+suicide_grace为0，所以suicide_timeout也为0，所以 HeartbeatMap::_check() 中就不会触发自杀（如果配置自杀宽限时间，是通过SIGUSR1信号来触发respawn）。
+
+为什么mds会respawn？ 因为mds中的Beacon的_send接口中会去判断，cct->get_heartbeat_map()->is_healthy()，如果不健康就不发心跳。
+不发心跳，4秒一次，所以日志skipping beacon, heartbeat map not healthy 也4秒出现一次，就会让mds认为自己 laggy。
+mds 自己检查是不是laggy是通过tick周期，如果是laggy，mds 就会在tick中跳过很多工作而不执行。
+
+同时不给mon发心跳，mon就会给mds发mdsmap消息，把你移除，mds在MDSDaemon::handle_mds_map() 处理时就会自己respawn。
+
+## session 的状态
+```
+enum {
+STATE_CLOSED = 0,
+STATE_OPENING = 1,   // journaling open
+STATE_OPEN = 2,
+STATE_CLOSING = 3,   // journaling close
+STATE_STALE = 4,
+STATE_KILLING = 5
+};
+```
+
+## tick 流程
+## tick 的工作线程是哪个？
+
+通过scatter_tick的日志可以看到，mds tick的线程是safe_timer线程
     
-#### 找到某个epoch的 mds map
-```
-ceph fs dump <epoch>
-```
-目前不清楚为什么 ceph mds dump <epoch> 返回的都是最新的版本
-
-#### 通过rank值找到节点的mds的元信息（最常用的是找到主机名）
-找到rank值为0的mds节点信息
-
-```
-ceph mds metadata 0
-```
-
-mds的很多功能都是通过ceph dameon 进行查询，ceph daemon 命令属于 local命令，估计h和这些命令都是查询某个特定mds/osd/mon有关。
-ceph daemon mds.mdsX 的帮助和 ceph 以及 ceph mds不同，不是用的-h，而是 ceph daemon mds.mdsX help，原因是这已经需要通过守护进程自己处理。
-
-#### 查询 mds 的 id
-```
-ceph daemon mds.mdsX status
-```
+## tick 的周期是多少
+  
+默认情况下是5秒，可以通过日志看到。
     
-mds的id一般在mds的日志中很少体现，主要用在mon中处理mds的心跳时，标记是哪个mds。这个是用来标记mds唯一性的，不容时间的rank值相同的两个mds，id也是不一样的。所以，这是一个mds的实例id，用来唯一标记某个mds实例。
-
-#### 怎么看文件系统角度的性能
+## tick 的调用流程
 ```
-ceph daemonperf mds.mds* 
+MDSDaemon::tick()-> mds_rank->tick()
 ```
 
-#### MDS给mon的心跳异常超时时间
-```
-mds_beacon_grace = 10s
-```
-
-#### ceph中默认的单个文件最大大小
-
-```
-Option("mds_max_file_size", Option::TYPE_UINT, Option::LEVEL_ADVANCED)
-.set_default(70368744177664)
-.set_description("")
-```
-
-70368744177664 = 64T
-    
-#### 刚写入的文件没有layout和parent属性是为什么
-
-元数据没有下刷，flush journal 一下就可以：
-```
-ceph daemon mds.mdsX flush journal
-```
-
-#### 文件的layout信息是存放在什么地方？
-
-存在放文件的第一个数据对象的xattr中，可以通过以下命令看到：
-```
-$ rados -p <data_pool> listxattr 100000003f2.00000000
-layout
-parent
-```
-
-#### 文件的layout信息怎么看
-
-文件一旦创建就会有一个layout信息，可以通过以下命令查看：
-
-    getfattr -n ceph.file.layout test_file
-
-其中一般信息是：
-    
-     ceph.file.layout="stripe_unit=4194304 stripe_count=1 object_size=4194304 pool=.data.pool0
-
-文件的layout和parent信息是放在数据池的第一个对象中的，而目录的这两个信息是在元数据池中的。
-
-#### 目录分片
-
+## 目录分片
 目录分片合并大小： 
 ```
 mds_bal_merge_size = 50
@@ -565,385 +470,16 @@ flags e
 ```
 e = 1110 允许分片 
 
-
-#### 进程管理
-
-respawn mds
-```
-ceph tell mds.0 respawn
-```
-#### mds 性能
-```
-ceph daemon mds.0 perf dump [mds|mds_cache|mds_log|mds_server|mds_sessions|objecter]
-```
-
-## mon
-
-查看mon状态
-```
-ceph mon dump
-ceph mon_status
-ceph quorum_status
-```
-
-主mon
-```
-ceph mon stat # 输出中有leader相关信息
-```
-## mgr
-
-#### mgr 的作用
-
-从L版本开始(12.x)，这是一个要求的组件。mon维护各种map信息，而mgr维护除此之外的监控和管理。
-  
-#### mgr 提供的信息
-
-  * pool的数目，pg数目
-  * object的数目，存储的bytes
-  * 存储使用率，性能指标，负载
-  * pg健康状况
-  
-#### 缺少mgr
-
-ceph -s 会有告警。data部分也会缺少部分信息，ceph health 会无法输出。
-
-## osd
-
-#### 停止某个osd
-```
-systemctl stop ceph-osd@2
-```
-
-#### 停止osd之后避免拉起
-
-```
-touch /var/lib/ceph/shell/watch_maintaining
-```
-
-##### 怎么查看某个版本的osd map
-
-```
-ceph osd dump <epoch>
-```
-
-#### 一个4M的对象，纠删码2+1时怎么存？
-
-```
-一共三片，为2M + 2M + 2M，三个对象
-```
-
-#### down 掉一部分osd 之后 inactive 的 PG 在一段时间后会减少
-
-OSD reweight之后，部分pg的map会进行修改。
-
-#### 三副本 down 掉数据池 3个 osd 之后，文件系统中的 inactive pg
-
-对于三副本来说，stale的 pg 就是包含那三个 osd 的 pg
-
-#### down 和 out 什么区别
-
-osd中down只是临时性故障，不会触发PG迁移。而out是mon检测到某个osd处于down超过一段时间，mon将其设置为out，即为永久性故障。  
-
-#### mon把osd标记为out的日志
-
-```
-Marking osd.* out
-```
-  
-#### OSD 和 MON 之间的心跳延时 
-
-```
-osd_heartbeat_grace = 20s
-```
-
-#### 怎么找到一个文件对应的对象
-
-先找出文件的inode号：
-
-```
-$ ll -i
-1099511628786 -rw-r--r-- 1 root root 6291456 test_file
-```
-在数据池中找到所有对应的对象：
-  
-```
-$ rados -p <data_pool> ls
-100000003f2.00000000
-100000003f2.00000001
-```
-100000003f2 就是文件 file0 的inode号的16进制表示
-
-#### 查看一个pool中的所有object
-
- ```
- rados -p <pool_name> ls
- ```
-
-#### 查看一个对象的stat信息
- 
- ```
- rados -p <pool_name> stat 10000003f2.00000000
- ```
- 
-#### osd向mon报告其他osd挂掉时的最少上报次数
-
- ```
-"mon_osd_min_down_reporters": "2"
- ```
- 
-#### 查看stale 的pg
-
- ```
- ceph pg dump_stuck stale
- ```
-
-#### 查看某个pool的 io
- 
-```
-ceph osd pool stats
-```
- 
-#### 创建pool
-
- ```
- ceph osd pool create mypool 16 16
- ```
- 
-#### 设置pool副本数
-
- ```
- ceph osd pool set mypool size 4
- ```
-   
-一般setsize 之后，pool的PG对应的osd会马上发生变化。
-
-#### 往池内写入一个文件
-
-```
-rados -p mypool put thekey pri_key
-```
-
-#### 查看池内所有文件
-
-```
-rados –p mypool ls
-```
- 
-####  把池添加到文件系统中
-
-```
-ceph mds add_data_pool <pool> 
-ceph fs add_data_pool <fs_name> <pool>
-```
-
-#### 指定目录的layout，属性叫ceph.dir.layout.pool
-
-```
-setfattr -n ceph.dir.layout.pool -v 5 ecpool
-```
-
-####  查看pool相关信息
-
-ceph没有提供ceph pool的命令集，pool的相关操作在osd 下。
-
-```
-ceph osd pool ls
-```
-    
-但是rados 提供直接针对pool的相关操作：
-
-```
-rados lspools
-```
-
-####  查看集群内所有pool状态
-
-```
-ceph df 
-ceph df deatil
-```
-
-#### 查看一个pg开始scrub的时间
-
-```
-ceph pg <pg_id> query
-```
-  
-#### mds_max_purge_ops_per_pg
-
-平均每个pg进行purge操作的上限？
-
-#### pool 的几个属性
-
-* pool type：池的类型定义了数据持久化方式。
-* Placement Groups：
-* CRUSH Ruleset：
-* Durability：可靠性
-
-### 集群要做的事
-
- * 数据持久化： 副本或者纠删码
- * 数据完整性： 通过 scrubbing or CRC checks
- * 数据备份
- * 数据平衡
- * 数据恢复
- 
-#### crash做的事
-
-* 把一个对象所在的pg算出来
-* 把一个pg对应的acting set 算出来。
-
-
-## rados
-
-查看某个目录的所有对象：
-```
-[root@node11 dirfrag]# rados -p .capfs.metadata.Metadata ls | grep 10000000003
-```
-
-目录对象的omap是空：
-```
-[root@node11 data]# rados -p .capfs.metadata.Metadata listomapkeys 10000000003.00000000
-[root@node11 data]#
-```
-
-目录对象的xattr是：
-```
-[root@node11 data]# rados -p .capfs.metadata.Metadata listxattr 10000000003.00000000
-layout
-parent
-```
-
-分片对象的omap是：
-```
-[root@node11 data]# rados -p .capfs.metadata.Metadata listomapkeys 10000000003.03200000  | head -2
-file10020_head
-file10023_head
-```
-
-分片对象的xattr是：
-```
-[root@node11 data]# rados -p .capfs.metadata.Metadata listxattr 10000000003.03200000
-[root@node11 data]#
-```
-
-查看目录分片系数和大小：
-```
-[root@node12 ~]# ceph daemon mds.mds1 config show | grep split_bits
-    "mds_bal_split_bits": "3",
-[root@node12 ~]# ceph daemon mds.mds1 config show | grep split_size
-    "mds_bal_split_size": "10000",
-[root@node12 ~]#
-```
-#### pg 各种状态的含义
-
-http://docs.ceph.com/docs/master/rados/operations/monitoring-osd-pg/
-
-pg 的外部状态（蓝书146页）：
-
-* active： 活跃状态，此时可以正常处理客户端的读写请求。
-
-* clean：干净状态，不存在待修复对象，存在指定的副本数，acting-set 和 up-set 内容一致（蓝书）。
-
-* perring：peer一个PG，就是ceph让这个pg中的osd，对这个pg中所有object的状态和元数据达成一致。状态的一致，不代表所有object的副本都为最新的数据。要注意的是，一个三副本的pg，因为一个osd down掉，此时只有两个osd up，那peering的过程就是保证这两个osd数据一致的过程，而不是等到另外选取一个osd后让这三个osd数据一致的过程。
-
-* peered：peering已经完成, 但是acting-set规模小于最小副本数（注意是最小副本数，不是副本数）
-
-* degraded：如果这个pg中的osd有一个down掉，或者找不到对应的osd，此时osd数目小于副本数，那么这个pg就会标记为degraded状态。同时，当写一个对象时，主osd写入之后，备osd返回完成写入之前的这段时间，这个PG也处于degraded状态，直到主osd收到osd的写入完成ack。
-
-
-* recovering：一个osd因为某种原因down掉一段时间后重新up，此时的内容可能已经落后于最新的版本，所以这个osd就需要和最新的副本同步，此时反应到pg层的状态就是recovering，正在恢复。
-
-* backfilling：回填，和恢复类似，只是这个osd是新加入的，一般回填在后台进行。（蓝书上说，backfillin总数在recovery完成之后进行？为什么？）
-
-* incomplete：recovering或者backfilling失败，比如容量不够等。
-
-* remapped：一般是pg对应的acting set发生变化，数据需要迁移。因为迁移需要时间，所以需要原有的set先服务一段时间，等下新的set数据迁移完成可以提供服务之后，就会启用新的acting set。在这段时间内，这个pg处于remapped状态？？？？
-
-* stale：pg中的主osd没有上报pg统计信息给monitor时，就会被mon标记为stale状态，或者pg中的其他osd上报主osd已经down掉时。这个pg会被标记为stale。
-
-其他不太常见的外部状态：
-
-* Deep：总是和Scrubbing成对出现，表明将对PG中的对象执行深度扫描（即同时扫描对象的元数据和用户数据）。
-
-* PG的down状态
-
-PG的down：当前在线的osd不足以完成数据恢复，就会把一个pg表为down。和osd的down不一样。
-
-其他问题：
-
-* degraded 这个和undersized的区别是什么？undersized存储是acting-set小于存储池的副本数，而degraded可能是发现某个PG实例存在不一致（需要被同步或者修复），acting-size小于副本数只是导致degraded的一种原因。
-
-
-#### 日志中的字段
+## 日志
+## 日志中的字段
 ```
 7fa20d3fe700 2094980 2 DEBUG
 pthread_t, syscall(SYS_gettid), sched_getcpu(), -1:ERROR 0:WARNING 1:INFO >1: DEBUG
 ```
 
+|thread ID |task id|运行的cpu号| 日志等级|
+|:-|:-|:-|:-|
+|7fa20d3fe700 |2094980 |2|DEBUG|
+|pthread_t|syscall(SYS_gettid)|sched_getcpu()| -1:ERROR 0:WARNING 1:INFO >1: DEBUG|
+
 这个是后续版本添加的。
-
-#### 为什么在dir目录下的touch操作不需要dir目录inode的 Fx 权限
-问题： 因为在dir下创建dentry，相当于写dir的inode，似乎需要Fx权限。
-
-client的wanted权限是AsLsXsFsx，但是issued的是pAsLsXsFs。handle_client_openc中的接口rdlock_path_xlock_dentry()中说明：
-/path/to/dir里的所有dentry都是rdlock，新创建的dentry需要xlock。应该是对dentry获取独占锁就可以，以保证不会被其他客户端占用。
-
-
-#### mds 状态 replay
-
-#### mds 状态 resolve
-
-resolve阶段是多活mds才有的阶段，用来解决跨多个MDS出现权威元数据分歧场景。对服务端侧来说，包括子树分布，Anchor表更新等功能。
-客户端侧包括rename，unlink等操作。resolve用于确定日志中还不明确的事务，每个恢复MDS向所有其他MDS广播resolve消息。
-消息内容包括权威子树信息，失败是导入未知位置子树信息。
-
-这个阶段主要是处理分布式事务未提交成功的事件。
-代码里分析来看，先是处理rollback_uncommitted_fragments，即回滚未提交的日志段，然后处理adjust_subtree_auth，即调整mds的子树权威，最后向其他mds做同步mdcache->send_resolves()
-
-#### MDS 状态 reconnect
-
-这里主要处理cephfs客户端重连任务，mds向monitor申请更新为reconnect状态后，monitor会向cephfs客户端发送当前active的mds信息，cephfs客户端在ceph_mdsc_handle_mdsmap中更新当前mdsmap，并向当前提升的mds发送reconnect请求。mds收到客户端重连请求后会将该客户端加入客户端列表中，并赋予相关caps。若客户端在mds_reconnect_timeout时间内未重新连接，mds会丢弃该客户端，若该客户端重连会被mds拒绝。
-
-#### MDS 状态 rejoin
-
-主要是实现mds之间缓存的同步，caps还有锁状态的同步。
-
-
-#### 刚写入的文件没有layout和parent属性是为什么
-
-元数据没有下刷，flush journal 一下就可以：
-```
-ceph daemon mds.mdsX flush journal
-```
-
-#### 进程管理
-
-respawn mds
-```
-ceph tell mds.0 respawn
-```
-
-#### pool 的几个属性
-
-* pool type：池的类型定义了数据持久化方式。
-* Placement Groups：
-* CRUSH Ruleset：
-* Durability：可靠性
-
-### 集群要做的事
-
- * 数据持久化： 副本或者纠删码
- * 数据完整性： 通过 scrubbing or CRC checks
- * 数据备份
- * 数据平衡
- * 数据恢复
- 
-#### crash做的事
-
-* 把一个对象所在的pg算出来
-* 把一个pg对应的acting set 算出来。
-
-
-#### mds
-https://docs.ceph.com/docs/master/cephfs/health-messages/
