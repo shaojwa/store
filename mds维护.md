@@ -1,3 +1,18 @@
+## 问题
+
+#### 刚写入的文件没有layout和parent属性是为什么
+
+元数据没有下刷，flush journal 一下就可以：
+```
+ceph daemon mds.mdsX flush journal
+```
+#### 为什么在dir目录下的touch操作不需要dir目录inode的 Fx 权限
+问题： 因为在dir下创建dentry，相当于写dir的inode，似乎需要Fx权限。
+
+client的wanted权限是AsLsXsFsx，但是issued的是pAsLsXsFs。handle_client_openc中的接口rdlock_path_xlock_dentry()中说明：
+/path/to/dir里的所有dentry都是rdlock，新创建的dentry需要xlock。应该是对dentry获取独占锁就可以，以保证不会被其他客户端占用。
+
+
 #### 重新加载 mds 进程
 ```
 ceph tell mds.0 respawn 
