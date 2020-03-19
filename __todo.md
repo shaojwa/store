@@ -1,3 +1,7 @@
+####
+
+gather.new_sub() 什么设计？
+
 #### code
 ```
 #include <boost/thread/shared_mutex.hpp> shared_mutex 什么作用
