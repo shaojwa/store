@@ -1,11 +1,9 @@
-####
-
+#### done
+```
 gather.new_sub() 什么设计？
+#include <boost/thread/shared_mutex.hpp> 其中shared_mutex是一种读写锁
+```
 
-#### code
-```
-#include <boost/thread/shared_mutex.hpp> shared_mutex 什么作用
-```
 #### 打快照需要持有哪些锁？
 
 #### io超时为什么需要respawn
