@@ -1,3 +1,11 @@
+
+#### bluestore的对象的元数据存储在什么地方
+rocksdb
+```
+$ ceph daemon mds.mds0 config show | grep kvbackend
+"bluestore_kvbackend": "rocksdb"
+```
+
 #### 停止某个osd
 ```
 systemctl stop ceph-osd@2
