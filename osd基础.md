@@ -1,3 +1,8 @@
+#### 显示所有的命令用
+```
+ceph osd --help
+```
+用 ceph osd help 只显示一部分。
 
 #### bluestore的对象的元数据存储在什么地方
 rocksdb
