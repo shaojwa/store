@@ -5,6 +5,7 @@ rocksdb
 $ ceph daemon mds.mds0 config show | grep kvbackend
 "bluestore_kvbackend": "rocksdb"
 ```
+rocksdb 基于BlueFS写入裸设备。
 
 #### 停止某个osd
 ```
