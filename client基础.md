@@ -1,4 +1,24 @@
-#### pah_walk 流程
+#### client 中的基础函数
+|函数名|基本功能|
+|:-|:-|
+|may_create|检查是否有权限create|
+|may_open|检查时候有权限open|
+|_create| 实际发送请求给mds去create文件|
+|_open|实际发送请求给mds去open文件|
+
+## client侧open流程
+
+1. 得到要打开的文件，比如/data/test/file
+1. 执行path_walk，查看这个文件能不能找到，本地缓存没有的，向mds发请求找。
+1. 如果文件已经存在，而且flag中有O_CREAT和O_EXCL，那么oepn返回-EEXIST错误。
+1. 如果文件不存在，而且有flag有0_CREAT标记，那么就去创建。如果其他错误，比如文件不存在，又没有o_CREAT，那么就返回出错。
+1. 如果要创建文件，那么就先path_walk到父目录的inode。
+   1. 如果父目录不存在那就报错退出。
+   1. 如果存在就检查目录是否允许在其中创建文件，其中会通过_getattr(dir_inode)得到目录inode中的信息。
+   1. 拿到之后通过inode_permission()判断权限是否足够。
+   1. 通过_create()完成创建，这里面做主要的工作。
+1. 如果不需要created，即文件已经存在，那么我们就会尝试调用may_open去检查是否有权限打开。
+## pah_walk 流程
 
 比如path_walk /data/wsh/file40, 一开始没有cache任何inode，所以需要从/data开始找：
 
