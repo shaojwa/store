@@ -1,4 +1,4 @@
-## pah_walk 流程
+#### pah_walk 流程
 
 比如path_walk /data/wsh/file40, 一开始没有cache任何inode，所以需要从/data开始找：
 
@@ -53,7 +53,7 @@ path_walk done for relpath, r=-2 // 最终path_walk告诉我们 file40找不到
 // 最后的file41需要发请求给mds，最后等到时间大约240微秒。
 
 ```
-## client请求处理
+#### client请求处理
 
 |业务线程|分发线程|说明|
 |:-|:-|:-|
@@ -72,11 +72,11 @@ path_walk done for relpath, r=-2 // 最终path_walk告诉我们 file40找不到
 |reply->get_result()|||
 |Client::insert_readdir_results|||
 
-## insert_trace() 用处
+#### insert_trace() 用处
 
 把收到的响应，放入缓存。
 
-## client请求中的tid是什么？
+#### client请求中的tid是什么？
 ```
 client.125255315:2877811973
 ```
@@ -97,14 +97,91 @@ dirty cap 是什么含义？
 * 最初 dirtied = 0
 * atime, dirtied |= CEPH_CAP_FILE_EXCL
 
-
 #### client 写数据的大概流程
-
-    参考这里：https://docs.ceph.com/docs/master/architecture/
-        
+参考这里：https://docs.ceph.com/docs/master/architecture/
 
 #### client和pool的连接
 
     集群通信的时候，是一定和一个pool链接的。
     
 #### client 调试
+#### 配额相关问题
+```
+// size 也通过cap 进行交互
+ceph_write_iter()
+    ceph_get_caps()
+        check_max_size()
+             ceph_check_caps()
+        try_get_cap_refs()
+        add_wait_queue()
+        wait_woken()
+         
+```
+几个接口
+```
+// 等待mds回复caps (包括max_size)
+ceph_get_caps
+
+//
+// 判断是否需要申请更大的max_size
+static void check_max_size(struct inode *inode, loff_t endoff)
+// endoff // 将要写到的偏移
+// ceph_inode_info.i_max_size        mds授权的 max_size
+// ceph_inode_info.i_wanted_max_size 客户端希望可以写入的大小
+
+// 如果写入的偏移大于MDS授权给的最大大小，也大于之前想写入的大小
+// 那么需要修改i_wanted_max_size, 此时 i_wanted_max_size >= i_max_size。
+// 如果 i_wanted_max_size 大于不包括等于 i_max_size 那么需要重新发请求获取更大的i_max_size
+ceph_check_caps()
+```
+#### 内核客户端中cap的超时时间
+
+s_cap_ttl: cap 的超时时间，正常等于最后一次发送renew请求的时间加上1分钟。
+s_renew_requested： 
+ 
+正常流程：
+发送renew cap：设置 s_renew_requested，设置为发送的当前时间。
+收到renew cap：设置 并设置 s_cap_ttl
+
+#### client 调试
+#### 客户端重连问题
+#### 判断底层socket状态
+```
+[546255.865385] libceph: mds0 172.87.60.52:6800 socket closed (con state CONNECTING)
+// 显示 connection的状态是, 接口是 con_sock_closed()
+// 链接关闭
+```
+dmesg中可以查看日志
+
+#### 内核客户端需要收集的日志
+
+* dmesg
+* /sys/kernel/debug/ceph/ caps debug_command mdsc osdc
+
+#### 查看内核客户端中inode相关信息
+
+```
+echo inode=1099511627781 > debug_command
+
+inode 1099511627781 caps(summary): used - issued pAsLsXsFscr implemented pAsLsXsFscr revoking - mds_wanted - file_wanted - retain p
+// used         -
+// issued       pAsLsXsFscr // mds分发给的
+// implemented  pAsLsXsFscr // client中实际的
+// revoking     -           // implemented - issued
+// mds_wanted   -           // client 向 MDS申请的（不确定）
+// file_wanted  -           // 根据文件mode需要申请的（不确定）
+```
+接口：
+```
+// fs/ceph/debugfs.c
+inode_info_show()
+```
+
+#### 内核打桩模拟不回复mds的revoking-caps消息
+内核回复调用流程:
+
+```
+ceph_handle_caps ->
+handle_cap_grant (CEPH_CAP_OP_REVOKE or CEPH_CAP_OP_GRANT) ->
+ceph_check_caps
+```
