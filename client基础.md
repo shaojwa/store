@@ -53,6 +53,37 @@ path_walk done for relpath, r=-2 // 最终path_walk告诉我们 file40找不到
 // 最后的file41需要发请求给mds，最后等到时间大约240微秒。
 
 ```
+## client请求处理
+
+|业务线程|分发线程|说明|
+|:-|:-|:-|
+|ceph_link()|| // 对外接口|
+|Client::link()||// 业务接口|
+|Client::\_link|||
+|Client::get_or_create()|| // 操作dir的inode，session等需要对象内部锁|
+|Client::make_request()||// 内部持有c_request_lock, client_lock锁|
+|\_open_mds_session()|||
+|send_request()|||
+|request->dispatch_cond->Signal()|| // 唤醒handle线程|
+||ms_dispatch发送消息给mds||
+||ms_dispatch线程调用 handle_client_reply()|// 处理mds回复的响应|
+||ms_dispatch线程调用 insert_trace()|// 处理mds回复的响应|
+||ms_dispatch线程调用 insert_readdir_results|// 唤醒业务线程|
+|reply->get_result()|||
+|Client::insert_readdir_results|||
+
+## insert_trace() 用处
+
+把收到的响应，放入缓存。
+
+## client请求中的tid是什么？
+```
+client.125255315:2877811973
+```
+|字段|字段|
+|:-|:-|
+|125255315|client id|
+|2877811973|tid，transcation id|
 
 #### client 缓存 mds 分配的caps
 #### dirty cap 相关
@@ -75,3 +106,5 @@ dirty cap 是什么含义？
 #### client和pool的连接
 
     集群通信的时候，是一定和一个pool链接的。
+    
+#### client 调试
