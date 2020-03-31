@@ -1,4 +1,5 @@
-#### client 中的基础函数
+## client 中的基础函数
+
 |函数名|基本功能|
 |:-|:-|
 |may_create|检查是否有权限create|
@@ -18,6 +19,7 @@
    1. 拿到之后通过inode_permission()判断权限是否足够。
    1. 通过_create()完成创建，这里面做主要的工作。
 1. 如果不需要created，即文件已经存在，那么我们就会尝试调用may_open去检查是否有权限打开。
+
 ## pah_walk 流程
 
 比如path_walk /data/wsh/file40, 一开始没有cache任何inode，所以需要从/data开始找：
@@ -73,7 +75,7 @@ path_walk done for relpath, r=-2 // 最终path_walk告诉我们 file40找不到
 // 最后的file41需要发请求给mds，最后等到时间大约240微秒。
 
 ```
-#### client请求处理
+## client请求处理
 
 |业务线程|分发线程|说明|
 |:-|:-|:-|
@@ -92,11 +94,11 @@ path_walk done for relpath, r=-2 // 最终path_walk告诉我们 file40找不到
 |reply->get_result()|||
 |Client::insert_readdir_results|||
 
-#### insert_trace() 用处
+## insert_trace() 用处
 
 把收到的响应，放入缓存。
 
-#### client请求中的tid是什么？
+## client请求中的tid是什么？
 ```
 client.125255315:2877811973
 ```
@@ -105,8 +107,8 @@ client.125255315:2877811973
 |125255315|client id|
 |2877811973|tid，transcation id|
 
-#### client 缓存 mds 分配的caps
-#### dirty cap 相关
+## client 缓存 mds 分配的caps
+## dirty cap 相关
 
 dirty cap 是什么含义？
 
@@ -117,15 +119,15 @@ dirty cap 是什么含义？
 * 最初 dirtied = 0
 * atime, dirtied |= CEPH_CAP_FILE_EXCL
 
-#### client 写数据的大概流程
+## client 写数据的大概流程
 参考这里：https://docs.ceph.com/docs/master/architecture/
 
-#### client和pool的连接
+## client和pool的连接
 
     集群通信的时候，是一定和一个pool链接的。
     
-#### client 调试
-#### 配额相关问题
+## client 调试
+## 配额相关问题
 ```
 // size 也通过cap 进行交互
 ceph_write_iter()
@@ -154,7 +156,7 @@ static void check_max_size(struct inode *inode, loff_t endoff)
 // 如果 i_wanted_max_size 大于不包括等于 i_max_size 那么需要重新发请求获取更大的i_max_size
 ceph_check_caps()
 ```
-#### 内核客户端中cap的超时时间
+## 内核客户端中cap的超时时间
 
 s_cap_ttl: cap 的超时时间，正常等于最后一次发送renew请求的时间加上1分钟。
 s_renew_requested： 
@@ -163,9 +165,9 @@ s_renew_requested：
 发送renew cap：设置 s_renew_requested，设置为发送的当前时间。
 收到renew cap：设置 并设置 s_cap_ttl
 
-#### client 调试
-#### 客户端重连问题
-#### 判断底层socket状态
+## client 调试
+## 客户端重连问题
+## 判断底层socket状态
 ```
 [546255.865385] libceph: mds0 172.87.60.52:6800 socket closed (con state CONNECTING)
 // 显示 connection的状态是, 接口是 con_sock_closed()
@@ -173,12 +175,12 @@ s_renew_requested：
 ```
 dmesg中可以查看日志
 
-#### 内核客户端需要收集的日志
+## 内核客户端需要收集的日志
 
 * dmesg
 * /sys/kernel/debug/ceph/ caps debug_command mdsc osdc
 
-#### 查看内核客户端中inode相关信息
+## 查看内核客户端中inode相关信息
 
 ```
 echo inode=1099511627781 > debug_command
@@ -197,7 +199,7 @@ inode 1099511627781 caps(summary): used - issued pAsLsXsFscr implemented pAsLsXs
 inode_info_show()
 ```
 
-#### 内核打桩模拟不回复mds的revoking-caps消息
+## 内核打桩模拟不回复mds的revoking-caps消息
 内核回复调用流程:
 
 ```
