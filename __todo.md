@@ -5,7 +5,11 @@ gather.new_sub() 什么设计？
 ```
 
 #### todo
+
 ```
+ceph::unordered_map<string, Dentry*> dentries;
+unordered_multimap
+compact_map
 lsm-tree (rocksdb, leveldb)
 https://www.cnblogs.com/hukey/p/11910741.html
 ```
