@@ -1,6 +1,6 @@
 #### done
 ```
-gather.new_sub() 什么设计？
+gather.new_sub() 什么设计模式？
 #include <boost/thread/shared_mutex.hpp> 其中shared_mutex是一种读写锁
 ```
 
