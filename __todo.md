@@ -7,6 +7,7 @@ gather.new_sub() 什么设计模式？
 #### todo
 
 ```
+要实现根据校验有无来决定是否创建对象的接口，如何命名？
 ceph::unordered_map<string, Dentry*> dentries;
 unordered_multimap
 compact_map
