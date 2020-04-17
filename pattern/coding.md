@@ -19,6 +19,10 @@ void submit_entry(LogEvent *e, MDSLogContextBase *c = 0)
 virtual void set_object_info(MDSCacheObjectInfo &info) { ceph_abort(); }
 ```
 
+## 多态函数中无法操作派生类中的成员
+
+因为传入的是基类的指针，虚函数是通用接口，操作积累中共有的元素。派生类中特有的成员应该用派生类中的接口单独处理。
+
 ## 工作函数中不获取锁，接口函数中获取锁
 ```
 Journaler::wait_for_flush() -> _wait_for_flush()
