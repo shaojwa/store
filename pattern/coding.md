@@ -11,6 +11,14 @@ void start_entry(LogEvent *e) {}
 void submit_entry(LogEvent *e, MDSLogContextBase *c = 0) 
 ```
 
+## 多态函数的定义
+
+多态函数参数一定是基类类型，派生类override虚函数的时候，派生类中的接口参数也还是基类的参数。
+
+```
+virtual void set_object_info(MDSCacheObjectInfo &info) { ceph_abort(); }
+```
+
 ## 工作函数中不获取锁，接口函数中获取锁
 ```
 Journaler::wait_for_flush() -> _wait_for_flush()
