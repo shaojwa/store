@@ -23,6 +23,11 @@ virtual void set_object_info(MDSCacheObjectInfo &info) { ceph_abort(); }
 
 因为传入的是基类的指针，虚函数是通用接口，操作积累中共有的元素。派生类中特有的成员应该用派生类中的接口单独处理。
 
+
+## 派生类中override的虚函数也无法访问基类中的private成员
+
+应该只能由基类的虚函数来访问。
+
 ## 工作函数中不获取锁，接口函数中获取锁
 ```
 Journaler::wait_for_flush() -> _wait_for_flush()
