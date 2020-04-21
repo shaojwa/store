@@ -1,3 +1,5 @@
+## 内核客户端参数配置：
+
 配置目录：
 ```
 /sys/kernel/debug/ceph/c0845e32-9b5c-412d-9a06-cbf5aa1493f2.client679318
@@ -12,4 +14,9 @@ echo inode=1099511627781 > debug_command
 echo show page inode=1099511627781 > debug_command
 echo caps_delayed_interval=100 > debug_command
 echo caps_delayed_limit=100 > debug_command
+```
+
+## client 缓存数目配置
+```
+cct->_conf->client_cache_size;
 ```
