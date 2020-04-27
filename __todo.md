@@ -7,6 +7,7 @@ gather.new_sub() 什么设计模式？
 #### todo
 
 ```
+内核客户端下发的IO块大小最大多大怎么查看？
 https://github.com/ceph/ceph/pull/31817
 https://github.com/ceph/ceph/pull/32816/commits 
 
