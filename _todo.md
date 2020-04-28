@@ -7,6 +7,7 @@ gather.new_sub() 什么设计模式？
 #### todo
 
 ```
+了解下RDMA： https://zhuanlan.zhihu.com/p/37669618 
 删除一个文件之后，inode的回收怎么做？
 内核客户端下发的IO块大小最大多大怎么查看？
 https://github.com/ceph/ceph/pull/31817
