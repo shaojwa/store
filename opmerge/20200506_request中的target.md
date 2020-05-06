@@ -1,1 +1,4 @@
-request中的target在发送请求的时候，是null的，但是verify_reply_trace中的会存在非空的情况，应该是分段发送的情况。
+request中的target在发送请求的时候，是null的。但是verify_reply_trace中的会存在非空的情况。
+原因是，在handle_client_reply的时候，会把request->target进行设置，这个是ms_dispatch处理线程干的事。
+
+这个handle_client_reply的ms_dispatch线程和用户线程不是同一个。
