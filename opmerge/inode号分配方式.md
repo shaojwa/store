@@ -16,12 +16,13 @@ MDS在通过接口Server::alloc_inode_id()分配inode时，会按照session为�
 1. projected_free： inotable中获取的话，优先从这里拿。
 1. free
 
-```
-首先根据不同的命名空间，分三种：
+## 小结：
+
+inode根据不同的命名空间，分三种：
 （a）全局的InoTable下有两个，一个是projected_free和free
 （b）session中的info中的，pending_prealloc_inos，prealloc_inos 和used_inos。
 （c）mdr中的prealloc_inos，
-```
+
 
 （1）如果当前session的状态不是正在打开（opening），那么就认为是允许预分配的，在这个情况下会去看预分配的集合中还有没有可用的inode。此时take_ino() 的入参useino比较重要，take_inode就是从预分配的inode集合中获取inode。
 注意这里的预先分配就是从session.info.prealloc_inos中获取，这部分ino是已经记日志分配给这个session的。
@@ -31,7 +32,6 @@ MDS在通过接口Server::alloc_inode_id()分配inode时，会按照session为�
 如果prealloc_ino中没有，那么就标记ino，目的是触发第二步再次分配一个。
 
 这里的问题是，为什么会出现这个情况? 以及为什么不认为这个是之前分配出去的ino，而要重新分配？看下面分析
-
 
 （b）如果这个useino为0，表示client没有收到unsafe回应中分配inode值，这个应该是大部分情况，那么就会从prealloc_inode中拿出一个ino，并把这个ino放到used_inos中。
 
