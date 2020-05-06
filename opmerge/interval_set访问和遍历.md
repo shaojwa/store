@@ -13,5 +13,8 @@ for (interval_set<inodeno_t>::const_iterator p = prealloc_inos.begin();
 
 ## interval_set 元素遍历：
 ```
-用next，待补充
+for (interval_set<inodeno_t>::const_iterator p = prealloc_inos.begin();
+  p != prealloc_inos.end(); ++p) {
+  // do something
+}
 ```
