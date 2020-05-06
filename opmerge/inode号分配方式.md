@@ -1,16 +1,18 @@
 # Inode allocate
 
-## 分配的顺序
-
-MDS在通过接口Server::alloc_inode_id()分配inode时，会按照session为单位预先分配一部分inode号。
+## MDS在通过接口Server::alloc_inode_id()分配inode时的顺序
 
 1. 先从session.info.prealloc_inos拿。
-1. session中没有可用的就从inotable中take_ino()拿。
+1. 再从inotable中take_ino()拿。
 
 ## session中关键的inode集合：
 1. session.info.prealloc_inos    ：分配给这个session的，可以使用的inode，已经记入日志。
-1. session.info.used_inos        ：这个session的，已经使用的inode，注意是已经使用。
+1. session.info.used_inos        ：这个session的，已经使用的inode，注意是已经使用，注意没有记日志。
 1. session.pending_prealloc_inos ：多个请求都可能触发预分配申请，还没记入日式日志。
+
+## mdr中的ino
+1. used_prealloc_ino：某个请求用到的ino，在请求处理过程中记录，请求处理完成后，需要从session.info.used_inos中移除。
+1. 
 
 ## InoTable中关键的inode集合：
 1. projected_free： inotable中获取的话，优先从这里拿。
