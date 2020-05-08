@@ -1,5 +1,1 @@
-默认情况下，程序崩溃是不会生成corefile，因为被操作系统限制。可以通过命令： ulimit -c 来查看，如果值为0则表示被限制。打开的方式很简单，运行:
-
-```
-ulimit -c unlimited
-```
+默认情况下，程序崩溃是不会生成corefile，因为被操作系统限制。可以通过命令： ulimit -c 来查看，如果值为0则表示被限制。打开的方式很简单，运行: `ulimit -c unlimited`，永久生效的话配置/etc/security/limits.conf。
