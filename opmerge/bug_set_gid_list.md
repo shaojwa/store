@@ -12,4 +12,7 @@
 #9  Client::build_client_request (this=this@entry=0x7f37c6d73000, request=request@entry=0x7f37bac2c600)
 ````
 
-perm 不能用引用，因为之前的请求梳理之后perm会释放。
+perm 不能用引用，因为之前的请求处理之后perm会释放，所以不要用引用。
+```
+const UserPerm perms;
+```
