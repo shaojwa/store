@@ -1,0 +1,7 @@
+```
+lockdep = true
+pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_ERRORCHECK);
+```
+错误检测：
+1. 线程重复lock
+1. 线程重复unlock
