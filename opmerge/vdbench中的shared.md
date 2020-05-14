@@ -1,2 +1,0 @@
-多slave和多host运行vdbench时，在多个主机之间关于一个文件的状态的通信是困难的。所以，FSD并不允许用户在多个host之间进行shared。
-FSD中的shared是什么意思，这个shared不是真正的shared，而是每个slave只能访问特定的一部分file（文件序号对slave数量取余）。
