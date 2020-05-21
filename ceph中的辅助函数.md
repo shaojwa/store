@@ -1,0 +1,11 @@
+# ceph 中的辅助函数
+## ceph中有strict_strtol系列函数将string转为整数
+``` 
+int level = (int) strict_strtol(levelstr.c_str(), 10, &err);
+```
+
+## ceph中有get_str_vec接口来处理将string分割为vector
+```
+vector<string> kvs;
+get_str_vec(config, ",",  kvs);
+```
