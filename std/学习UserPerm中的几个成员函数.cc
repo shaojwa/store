@@ -16,4 +16,4 @@
     return *this;
   }
   
-  // 注意，operator= 也是构造函数
+  // 注意，operator= 不是构造函数，只是默认的赋值操作符重载。
