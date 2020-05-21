@@ -1,3 +1,10 @@
+
+#### 设置池的副本数为1
+```
+ceph osd pool set .capfs.metadata.Metadata size 1
+ceph osd pool set .capfs.data.datapool0 size 1
+```
+
 #### 显示所有的命令用
 ```
 ceph osd --help
