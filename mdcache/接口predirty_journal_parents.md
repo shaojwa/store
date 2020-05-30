@@ -1,6 +1,5 @@
 predirty_journal_parents
 
-```
 1. flag 如果有 PREDIRTY_PRIMARY 就表示，dentry是primary，primay的判断看linkage中的ino和remote_ino中谁不为0。
 如果是primary，那么是需要调整nested的计数的。
  
@@ -56,4 +55,3 @@ predirty_journal_parents
     然后处理快照。
     调用父目录dir的resync_accounted_rstat接口（为什么这么做???）。
     project_rstat_inode_to_frag()
-   ```
