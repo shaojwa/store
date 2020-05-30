@@ -7,7 +7,7 @@ AsyncConnection::process // 产生Message
 Messenger::ms_deliver_dispatch 
 MDSDaemon::ms_dispatch(Message *m) //获取mds_lock，handle_core_message() or ds_rank->ms_dispatch(m)
 MDSRankDispatcher::ms_dispatch(Message *m) // mds_rank->ms_dispatch(m)
-MDSRank::_dispatch(Message *m, bool new_msg) // 只有到 Server::dispatch() 才把 Message转为 MClientRequest。
+MDSRank::_dispatch(Message *m, bool new_msg) // 只有到Server::dispatch()才把Message转为 MClientRequest。
 MDSRank::handle_deferrable_message(Message *m)
 Server::dispatch() // 将Message转为MClientRequest
 MDCache::request_start(MClientRequest *req) // 将MClientRequest转为mdr，mdr存放在active_requests中
