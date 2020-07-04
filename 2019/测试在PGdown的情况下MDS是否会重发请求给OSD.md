@@ -1,4 +1,4 @@
-#### 测试在PG down的情况下MDS是否会重发请求给OSD
+#### 测试在PGdown的情况下MDS是否会重发请求给OSD
 
      ceph daemon mds.mds1 dump_blocked_ops
 
