@@ -8,4 +8,5 @@ Messenger *msgr = Messenger::create()
 ```
 // ceph_mds.cc
 mds = new MDSDaemon(g_conf->name.get_id().c_str(), msgr, &mc);
+r = mds->init();
 ```
