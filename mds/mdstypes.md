@@ -1,4 +1,4 @@
-## fnode_t
+#### fnode_t
 
 目录分片的元数据，fnode_t就和inode一样，只是这个里的信息是目录分片的元数据信息，参见mdstypes.h中的struct fnode_t结构。
 
