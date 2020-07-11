@@ -11,8 +11,10 @@
 1. 节点扩容。
 1. dse进程各个engine实例中，各个流程的IO信息统计。
 1. dse进程中engine实例相关调试命令。
+----
 1. UserObj的ROW支持重删压缩（写重定向，分布式RocksDB，重删，预缩）。
 1. UserObj的IO操作。
+----
 1. ROW支持垃圾回收。
 1. ROW故障切换与恢复
 
