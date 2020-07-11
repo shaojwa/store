@@ -11,12 +11,20 @@
 1. 节点扩容。
 1. dse进程各个engine实例中，各个流程的IO信息统计。
 1. dse进程中engine实例相关调试命令。
+1. dse进程部署、升级。
 ----
 1. UserObj的ROW支持重删压缩（写重定向，分布式RocksDB，重删，预缩）。
 1. UserObj的IO操作。
 ----
 1. ROW支持垃圾回收。
-1. ROW故障切换与恢复
+1. ROW故障切换与恢复。
+1. ROW扩容。（部分数据会有新的engine来处理，此时就需要考虑一致性问题）
+1. 快照支持。（ROW必然支持快照，DCache支持么？）
+1. ROW内部个流程的IO信息统计。
+1. ROW调试定位命令。
+----
+IPv4和IPv6支持。
+
 
 #### 问题
  
@@ -25,3 +33,8 @@
  1. 什么是ROW的重删。
  1. 什么是ROW的数据压缩？为什么需要数据压缩？
  1. ROW中的对象的垃圾量，有效数据是什么概念？有多少个单位被标记为垃圾？
+ 1. ROW必然支持快照，DCache支持么？
+ 1. UserObj的数据，attr，omap的信息存储如何实现？
+ 
+ #### 说明
+ 1. UserObject Hash 到 bucket(类似于PG)， bucket 再通过类似CRUSh映射到engine（类似于OSD），节点增加后，部分bucket就会映射到新的engine。
