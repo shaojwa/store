@@ -1,6 +1,10 @@
 #### done
 ```
 gather.new_sub() 什么设计模式？
+```
+建造者(builder)模式，这种模式下，构建者自己来管理构建出来的实例。
+
+```
 #include <boost/thread/shared_mutex.hpp> 其中shared_mutex是一种读写锁
 ```
 
