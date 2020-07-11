@@ -1,4 +1,7 @@
-predirty_journal_parents
+
+#### MDCache::path_traverse()
+
+#### MDCache::predirty_journal_parents()
 
 ```
 1. flag 如果有 PREDIRTY_PRIMARY 就表示，dentry是primary，primay的判断看linkage中的ino和remote_ino中谁不为0。
