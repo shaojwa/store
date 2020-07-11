@@ -4,7 +4,7 @@
 1. Engine进程中实现，dcache，row，重删，压缩功能。
 1. ROW就是将多个随机小IO合并成一个顺序大IO，提高写性能。
 
-#### 功能需求
+#### 系统
 1. dse进程中，每个存储池4个engine实例，实例上的bucket数量和平均值误差在1/10以内。
 1. dse进程中存在op分发模块。
 1. dse进程故障后，其中的engine实例需要重新分配。dse进程故障导致业务归零时间在15秒以内。
@@ -25,6 +25,12 @@
 1. 部署、升级。
 1. IPv4和IPv6支持。
 
+#### 功能
+
+1. dse中engine的部署，触发条件包括节点的增减，还包括存储池的增减。
+1. engine的故障切换，是指框架部分的业务处理，不包括dcache，ROW，dedup等子模块的处理。
+
+
 #### 问题
  
  1. dse进程故障时，engine实例的迁移，是所有的engine都会迁到一个节点上还是以实例为单位分散到不同的节点上？
@@ -34,6 +40,7 @@
  1. ROW中的对象的垃圾量，有效数据是什么概念？有多少个单位被标记为垃圾？
  1. ROW必然支持快照，DCache支持么？
  1. UserObj的数据，attr，omap的信息存储如何实现？
+ 1. 什么是ROCKDB compaction流程？
  
  #### 说明
  1. UserObject Hash 到 bucket(类似于PG)， bucket 再通过类似CRUSh映射到engine（类似于OSD），节点增加后，部分bucket就会映射到新的engine。
