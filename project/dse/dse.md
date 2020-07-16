@@ -53,4 +53,3 @@
  1. engine id 全集群唯一。
  1. engineClient类似osdc，在engine模块上层的service模块找。
  1. 一个engine实例目前规划四个线程。
- 1. 线程免锁设计的思路是：
