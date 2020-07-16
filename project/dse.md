@@ -46,7 +46,11 @@
  1. 大快照时候的逻辑对象是指什么？ 是UserObj而不是RowObj的意思吧？
  1. UserObj的数据，attr，omap的信息存储如何实现？
  1. 什么是ROCKDB compaction流程？
+ 1. 将需要处理的IO按照访问区域进行空间隔离，保证多线程间访问的区域相互隔离而不会产生冲突。怎么做到？
  
  #### 说明
  1. UserObject Hash 到 bucket(类似于PG)， bucket 再通过类似CRUSh映射到engine（类似于OSD），节点增加后，部分bucket就会映射到新的engine。
  1. engine id 全集群唯一。
+ 1. engineClient类似osdc，在engine模块上层的service模块找。
+ 1. 一个engine实例目前规划四个线程。
+ 1. 线程免锁设计的思路是：
