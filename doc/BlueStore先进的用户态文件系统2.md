@@ -20,5 +20,17 @@ https://zhuanlan.zhihu.com/p/46362124
 1. RocksDB文件主要包含：st文件，CURRENT文件，manifest文件，log文件，LOG文件和LOCK文件。
 1. log文件是rocksdb的write ahead log，就是在写db之前写的数据日志文件。
 1. LOG文件是一些日志信息，是供调试用的。
-1. LOCK是打开db锁，只允许同时有一个进程打开db ；
+1. LOCK是打开db锁，只允许同时有一个进程打开db。
 
+#### BlueFS 对外提供的接口
+
+1. RocksDB对于BlueFS的需求主要在于文件目录的操作，如文件目录的创建删除、目录的遍历、文件重命名、文件追加写、文件的预读接口和随机写接口、数据的sync等；
+1. 而BlueStore则需要对BlueFS进行初始化、分配块设备空间、查询文件系统信息等，因此也需要提供相应的接口。
+
+#### BlueFS的文件系统的元数据
+
+ 在superblock中的log_fnode区域。注意这里放的不是文件的元数据，而是文件系统的元数据。
+ 
+#### BlueFS 中的日志区
+
+在BlueFS中的journal区域，该区域存放文件系统中的所有文件的元数据。BlueFS启动的时候，将journal中的数据逐条读取回放，最终加载到内存中。
