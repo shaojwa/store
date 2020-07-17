@@ -31,6 +31,13 @@ https://zhuanlan.zhihu.com/p/46362124
 
  在superblock中的log_fnode区域。注意这里放的不是文件的元数据，而是文件系统的元数据。
  
-#### BlueFS 中的日志区
+#### BlueFS中的日志区
 
 在BlueFS中的journal区域，该区域存放文件系统中的所有文件的元数据。BlueFS启动的时候，将journal中的数据逐条读取回放，最终加载到内存中。
+
+#### BlueFS 系统加载
+#### BlueFS 日志压缩
+#### BlueFS 写数据
+BlueFS只提供append操作，所有文件都是追加写入。
+#### BlueFS 读数据
+所有的元数据都在内存中，直接读，没有读放大。
