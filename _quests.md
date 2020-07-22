@@ -10,3 +10,4 @@
 ```
 if(mutex.is_locked_by_me()) {mutex.unlock();} 
 ```
+1. 模块状态机需要分NONE,INIT，ACTIVE等多个状态么？是否尽可能简单比较好？
