@@ -12,4 +12,15 @@ void *entry() override {
   }
 ```
 #### 为什么是protected
-c++ primer中有说过，protected可以想象为private和public的混合，它是类的使用者不可见的。
+c++ primer中有说过，protected可以想象为private和public的混合，它只能在派生类中访问。
+为什么设置为protected，因为需要多态，所以是virtual，但是为了在外部调用，所以要么private，要么protected。
+
+
+#### 顺序
+```
+t.create() ->
+t.try_create() ->
+static Thread._entry_func() ->
+t.entry_wrapper() ->
+t.entry()
+```
