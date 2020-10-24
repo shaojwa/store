@@ -1,13 +1,3 @@
-## boost中的侵入式指针
-
-typedef boost::intrusive_ptr<Inode> InodeRef 的 get()
-```  
-void intrusive_ptr_add_ref(Inode *in) {
-  in->get();
-}
-```
-什么时候会调用intrusive_ptr_add_ref(), intrusive_ptr递增一个非空指针上的引用计数时。
-
 ## std 容器插入原则
 
 容器都有insert系列接口。
@@ -81,3 +71,13 @@ http://www.gotw.ca/gotw/008.htm
 
 注意：
 * 空list的pop行为是undefined，也就是说不可控，实际情况在linux下是 abort。
+
+## boost中的侵入式指针
+
+typedef boost::intrusive_ptr<Inode> InodeRef 的 get()
+```  
+void intrusive_ptr_add_ref(Inode *in) {
+  in->get();
+}
+```
+什么时候会调用intrusive_ptr_add_ref(), intrusive_ptr递增一个非空指针上的引用计数时。
