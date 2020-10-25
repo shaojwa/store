@@ -1,15 +1,6 @@
-#### done
-```
-gather.new_sub() 什么设计模式？
-```
-建造者(builder)模式，这种模式下，构建者自己来管理构建出来的实例。
+#### 问题
 
-```
-#include <boost/thread/shared_mutex.hpp> 其中shared_mutex是一种读写锁
-```
-
-#### todo
-
+1. 文件系统的目录分片存放在什么地方? 内存中，有修改写入日志。
 ```
 了解下RDMA： https://zhuanlan.zhihu.com/p/37669618 
 删除一个文件之后，inode的回收怎么做？
@@ -21,6 +12,16 @@ unordered_multimap
 compact_map
 lsm-tree (rocksdb, leveldb)
 https://www.cnblogs.com/hukey/p/11910741.html
+```
+
+#### done
+```
+gather.new_sub() 什么设计模式？
+```
+建造者(builder)模式，这种模式下，构建者自己来管理构建出来的实例。
+
+```
+#include <boost/thread/shared_mutex.hpp> 其中shared_mutex是一种读写锁
 ```
 
 #### 打快照需要持有哪些锁？
