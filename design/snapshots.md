@@ -27,3 +27,17 @@ OSDC通过SnapContext这个结构把信息给OSD，SnapContext的信息主要包
 1. clones_snaps，一个clone对应的快照集合，比如 clone_snaps(<3, (3,2)>, <5, (5,4)>)
 
 因为只有当有写操作的时候，才会把Snap信息下发到OSD，OSD就会进行clone，所以当写操作到OSD的时候，OSD会把最新的snap号作为clone中的snap号。
+
+#### 快照的创建
+1. 通过在SnapContext中构造新的的seq号，和snaps来实现，但是一直到有写操作时，才下发SnapContext到OSD侧。
+
+#### 快照的删除
+1. 删除快照时，会先通知MON，MON会通过OSDMap消息推送给OSD，OSD后台有trim线程做这个工作。
+1. 删除操作通过携带删除的seq号，告诉OSD，比对SnapSet，更新snaps和clone_snaps，当一个clone的snaps集合为空的时候，这个clone就可以删掉。
+
+#### 文件快照
+1. 对一个文件来说，打快照是基于文件的，但是一个文件可能由多个快照组成，那么只有对某个对象的写操作才会触发对象快照的创建。
+1. 所以，OSDC中的SnapContext是维护整个的，一次快照，seq就增加。这个SnapContext会下发到具体的某个对象，和对象内部的SnapSet进行比对。
+
+#### 文件目录的快照设计
+
