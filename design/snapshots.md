@@ -11,7 +11,7 @@ COW和ROW，ROW就是写时重定向，写的时候写到别的地方。COW，�
 1. 一个对象有多个克隆版本，这个克隆版本由对象id，和快照id来唯一确定，即oid+snapid。
 1. RADOS采用COW机制，就是拷贝原有的数据到别处，好处是，HED对象数据是覆盖写连续，缺点是，有写放大。
 
-#### 对象的克隆
+#### 对象的克隆 SnapContext 和 SnapSet
 OSDC通过SnapContext这个结构把信息给OSD，SnapContext的信息主要包括，seq号和snaps。
 
 #### SnapSet的理解
@@ -21,4 +21,3 @@ OSDC通过SnapContext这个结构把信息给OSD，SnapContext的信息主要包
 1. clones_snaps，一个clone对应的快照集合，比如 clone_snaps(<3, (3,2)>, <5, (5,4)>)
 
 因为只有当有写操作的时候，才会把Snap信息下发到OSD，OSD就会进行clone，所以当写操作到OSD的时候，OSD会把最新的snap号作为clone中的snap号。
-
