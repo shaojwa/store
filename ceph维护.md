@@ -1,9 +1,3 @@
-#### 集群版本
-```
-cat  /etc/onestor_external_version
-cat  /etc/onestor_internal_version
-```
-
 #### 停掉一个节点上的所有ceph服务
 
 ```
