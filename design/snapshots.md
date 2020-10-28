@@ -11,8 +11,14 @@ COW和ROW，ROW就是写时重定向，写的时候写到别的地方。COW，�
 1. 一个对象有多个克隆版本，这个克隆版本由对象id，和快照id来唯一确定，即oid+snapid。
 1. RADOS采用COW机制，就是拷贝原有的数据到别处，好处是，HED对象数据是覆盖写连续，缺点是，有写放大。
 
-#### 对象的克隆 SnapContext 和 SnapSet
+#### SnapContext 和 SnapSet
 OSDC通过SnapContext这个结构把信息给OSD，SnapContext的信息主要包括，seq号和snaps。
+
+#### SnapContext中seq值是不是等于SnapContext中的snaps集合中的最大值？
+不一定，快照删除是seq也会递增，此时seq 就比 snaps中的最大值要大。
+
+#### SnapSet中的seq值是不是等于SnapSet中snaps集合中的最大值？
+不一定，SnapSet中的seq也会比snaps中最大值大的情况，什么时候出现？暂时我还不知道。
 
 #### SnapSet的理解
 1. seq，最新的快照序号。
