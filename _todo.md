@@ -1,6 +1,8 @@
 #### 问题
 
 1. 文件系统的目录分片存放在什么地方? 内存中，有修改写入日志。
+1. 为什么有一个snapid叫CEPH_SNAPDIR
+
 ```
 了解下RDMA： https://zhuanlan.zhihu.com/p/37669618 
 删除一个文件之后，inode的回收怎么做？
