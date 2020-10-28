@@ -41,3 +41,8 @@ OSDC通过SnapContext这个结构把信息给OSD，SnapContext的信息主要包
 
 #### 文件目录的快照设计
 
+
+#### 为什么有一个snapid叫CEPH_SNAPDIR
+
+有同事说，是因为head对象被删掉，但是clone对象还在，snapset这个元数据需要存放，这个元数据本来存放在head对象的xattr中，现在head对象被删掉，需要有一个对象来存放原snapset数据。
+所以需要有这么个对象，OSD中的SNAPDIR和文件里的.snapdir没有关系，我不确定对不对。
