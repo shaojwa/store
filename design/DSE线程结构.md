@@ -1,0 +1,3 @@
+1. 一个DSE进程包含多个engine线程。一个pool在一个节点上会有8个engine线程。一个DSE进程拥有的线程数和这个节点上对应的pool数量有关系。
+1. 每个engine线程对应一个engine实例，一个engine实例中包含一个DCache实例，一个ROW实例，和一个Dup实例。
+1. DCache的实例中包括pool_id和engine_id，两者组合成一个实例id。
