@@ -1,7 +1,7 @@
 #### 总体概述
 1. Unistor 2.0 是全闪架构
-1. 在RADOS-Client和OSD之间，增加了Engine层，Engine是独立进程。
-1. Engine进程中实现，dcache，row，重删，压缩功能。
+1. 在RADOS-Client和OSD之间，增加了DSE层，DSE是独立进程。
+1. DSE进程中实现，dcache，row，重删，压缩功能。
 1. ROW就是将多个随机小IO合并成一个顺序大IO，提高写性能。
 
 #### 系统
