@@ -33,6 +33,16 @@
 1. dse中engine的部署，触发条件包括节点的增减，还包括存储池的增减。
 1. engine的故障切换，是指框架部分的业务处理，不包括dcache，ROW，dedup等子模块的处理。
 
+#### 聚合IO重定向写
+
+#### ROW故障业务切换
+
+#### bucket迁移
+
+#### 逻辑对象打快照
+
+#### 线程免锁设计的思路
+
 #### 问题
  
  1. dse进程故障时，engine实例的迁移，是所有的engine都会迁到一个节点上还是以实例为单位分散到不同的节点上？
@@ -48,8 +58,10 @@
  1. 什么是ROCKDB compaction流程？
  1. 将需要处理的IO按照访问区域进行空间隔离，保证多线程间访问的区域相互隔离而不会产生冲突。怎么做到？
  
+ 
  #### 说明
  1. UserObject Hash 到 bucket(类似于PG)， bucket 再通过类似CRUSh映射到engine（类似于OSD），节点增加后，部分bucket就会映射到新的engine。
  1. engine id 全集群唯一。
  1. engineClient类似osdc，在engine模块上层的service模块找。
  1. 一个engine实例目前规划四个线程。
+ 
