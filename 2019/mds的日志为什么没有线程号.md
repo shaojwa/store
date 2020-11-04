@@ -1,6 +1,6 @@
 #### 现象
 
-mds的日志显示的是pthread的线程好，但是不是task号
+mds的日志显示的是pthread的线程号，但是不是task号
 
 #### 分析
 
