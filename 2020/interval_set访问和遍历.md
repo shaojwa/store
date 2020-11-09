@@ -20,5 +20,5 @@ for (interval_set<inodeno_t>::const_iterator p = prealloc_inos.begin();
 ```
 ## interval_set 的元素遍历：
 ```
-用next，需要删除元素。
+用range_start() 接口能访问到下一个元素。
 ```
