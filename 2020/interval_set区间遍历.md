@@ -1,4 +1,4 @@
-## interval_set区间集合
+## interval_set 区间遍历
 区间集合的访问
 ```
 for (interval_set<inodeno_t>::const_iterator p = prealloc_inos.begin();
@@ -17,8 +17,4 @@ for (interval_set<inodeno_t>::const_iterator p = prealloc_inos.begin();
   p != prealloc_inos.end(); ++p) {
   // do something
 }
-```
-## interval_set 的元素遍历：
-```
-用range_start() 接口能访问到下一个元素。
 ```
