@@ -1,11 +1,19 @@
-#### 社区的ceph如何运行起来
+https://github.com/ceph/ceph
+#### pull
+#### build
+```
+[root@li984-80 ceph]# ./do_cmake.sh
++ git submodule update --init --recursive
++ test -e build
++ echo 'build dir already exists; rm -rf build and re-run'
+build dir already exists; rum -rf build and re-run
++ exit 1
+[root@li984-80 ceph]# cd build
+[root@li984-80 build]# make
+```
 
-#### pull 代码
-
-### build
-
-配置文件在 /root/ceph/build/ceph.conf
-
+#### run
+config: /root/ceph/build/ceph.conf
 ```
 RGW=0 MON=1 MDS=1 FS=0 ../src/vstart.sh -d -n -X --localhost --memstore --without-dashboard
 RGW=0 MON=1 MDS=1 FS=1 ../src/vstart.sh -d -n -X --memstore --without-dashboard
