@@ -1,3 +1,9 @@
+#### 社区的ceph如何运行起来
+
+#### pull 代码
+
+### build
+
 配置文件在 /root/ceph/build/ceph.conf
 
 ```
