@@ -7,3 +7,8 @@ enum {
   DM_STAT_FILLING = 0x08,
 };
 ```
+
+1. 这种写法专业么?
+```
+return (--_snap_to_objs[snap_id]);
+```
