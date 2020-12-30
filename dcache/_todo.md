@@ -1,3 +1,4 @@
+1. hash函数看看是否可以优化
 1. user_obj->pre_conflict_ops.push_back(op_node) 为什么需要引用。
 
 1. 如何在构造map是初始化元素(done)
