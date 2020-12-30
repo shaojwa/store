@@ -1,4 +1,11 @@
-1. hash函数看看是否可以优化
+1.ceph hash函数实现学习：
+```
+while (length--) {
+  unsigned char c = *str++;
+  hash = (hash + (c << 4) + (c >> 4)) * 11;
+}
+```
+1.hash函数看看是否可以优化
 1. user_obj->pre_conflict_ops.push_back(op_node) 为什么需要引用。
 
 1. 如何在构造map是初始化元素(done)
