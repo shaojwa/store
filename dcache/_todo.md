@@ -1,4 +1,5 @@
-1.ceph hash函数实现学习：
+1. ScatterLock.h代码学习
+1. ceph hash函数实现学习：
 ```
 while (length--) {
   unsigned char c = *str++;
