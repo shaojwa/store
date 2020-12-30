@@ -5,14 +5,11 @@ while (length--) {
   hash = (hash + (c << 4) + (c >> 4)) * 11;
 }
 ```
-1.hash函数看看是否可以优化
+1. hash函数看看是否可以优化，hash值带下来。
 1. user_obj->pre_conflict_ops.push_back(op_node) 为什么需要引用。
-
 1. 如何在构造map是初始化元素(done)
 1. int返回值是否为0怎么写(done)
 1. Mutex中的Lock/Unlock是void类型，而ptherad_mutex_lock是有返回值的，怎么做这个一层屏蔽转换？
-
-----
 1. decode接口有没有针对char指针的输出进行处理？
 1. 想用一套框架来处理不同的batch和task，那么自然，接口中都是用的基类指针。
 但是派生类的构造是不是只能独立于框架接口，不同的batch用batcher的工厂模式创建么？
