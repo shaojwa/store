@@ -1,18 +1,3 @@
-#### 后续工作
-1. opproc/DM/LSM 之间用同一个数据结构，do_transection在DM中做。
-1. RCache中的伪命中实现。
-1. RCache中根据写入数据的不同采用不同的淘汰队列。
-1. RCache中如果使用不同的淘汰队列，那么存储时可以使用不同的块大小。
-
-#### dm如何处理truncate的数据一致性问题
-truncate操作如何让ROW清除原有的数据。
-
-#### rcache中的伪命中率的定义问题
-
-#### rcache中的淘汰策略是否根据写入的类型区分对待
-
-#### RCache和DM中的chunk中可以考虑用数组来存放slab
-
 #### 线程结构
 1. 一个DSE进程拥有的线程数和这个节点上对应的pool数量有关系。
 1. 每一个pool会在一个节点上关联9个instance，也就会会一个DSE进程中创建8个与这个pool相关的线程。
@@ -41,6 +26,3 @@ object_id->bucket_id->processor_id
 ```
 1. 一个节点64个核，给dse32个核，32个核分割dcache，row，dedup
 ```
-
-### DM 多processor 实现参考
-参考get_data_obj_info() (cstore_template.h) 代码
