@@ -26,3 +26,12 @@ object_id->bucket_id->processor_id
 ```
 1. 一个节点64个核，给dse32个核，32个核分割dcache，row，dedup
 ```
+
+
+#### 部署扩容
+1. 创建dse文件夹
+1. 创建dse的keyring
+1. 修改目录和文件的权限
+1. 生成auth认证信息
+1. 启动dse进程
+
