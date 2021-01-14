@@ -1,4 +1,8 @@
 ```
+2021-01-14 19:50:24.330094 7f1d48bff700 3507751 1 WARNING Dcache_objecter:shutdown clearing up homeless session...
+```
+
+```
 2021-01-14 19:50:24.333500 7f1d46897700 3507752 8 DEBUG dcache_rcache:clearclear hash node, index 2392
 2021-01-14 19:50:24.333501 7f1d46897700 3507752 8 DEBUG dcache_rcache:clearclear hash node, index 2393
 2021-01-14 19:50:24.333501 7f1d46897700 3507752 8 DEBUG dcache_rcache:clearclear hash node, index 2394
