@@ -1,4 +1,4 @@
-#### task 的创建
+#### 创建 task
 ```
  scheduler->CreateTask(
   [this, shard_index, pg] { _remove_csdpg(shard_index, pg);}
@@ -14,4 +14,5 @@
     __LINE__)
 );
 ```
-#### 协程目前不支持销毁
+#### 是否支持销毁
+协程目前不支持销毁，目前看只能等task全部清零
