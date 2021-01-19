@@ -41,3 +41,13 @@
 1. destage触发的时间点有两个（1）有新的对象插入（2）刷盘完成之后的回调。
 1. destage的列表中，某个对象没有下刷，但是已经换过了prepare阶段，此时需要将对象再次放到队列尾部。
 1. destage刷盘完成之后，设置对象的min值，此时把min值告诉LSM去删除日志对象。
+
+
+#### DM 多processor 实现参考
+参考get_data_obj_info() (cstore_template.h) 代码
+
+#### dm如何处理truncate的数据一致性问题
+truncate操作如何让ROW清除原有的数据。
+
+#### 补齐读如何避免多次触发
+对slab进行filling标记
