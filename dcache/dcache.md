@@ -1,3 +1,4 @@
+#### 概要
 1. DCache是全闪系统的一部分，属于加速系统。
 1. 聚合小IO以及启用ROW来发挥后端盘的读写能力。
 
@@ -23,3 +24,12 @@
 1. RCache中的伪命中实现。
 1. RCache中根据写入数据的不同采用不同的淘汰队列。
 1. RCache中如果使用不同的淘汰队列，那么存储时可以使用不同的块大小。
+
+
+#### dcache的shutdown顺序问题
+1. 因为destage的shutdown将下刷所有帐数据，所以先shutdown destage。
+
+
+#### LSM后台task如何销毁
+
+#### DM 如何处理补齐读task的销毁
