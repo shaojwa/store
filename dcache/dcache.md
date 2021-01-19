@@ -52,3 +52,10 @@ truncate操作如何让ROW清除原有的数据。
 
 #### 补齐读如何避免多次触发
 对slab进行filling标记
+
+## RCache
+#### 定时器怎么分配线程？
+#### rcache 是旁路架构，还是层次架？
+#### rcache中的伪命中率的定义问题
+#### rcache中的淘汰策略是否根据写入的类型区分对待
+#### RCache和DM中的chunk中可以考虑用数组来存放slab
