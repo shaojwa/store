@@ -1,4 +1,4 @@
-#### 
+#### dse/dcache pools
 ```
 data: pool_a -> dcache.pool_a(dcache_log_pool for pool_a) + .pool_a.dse (pool for ROW)
 meta: .diskpool8.rbd-> dcache..diskpool8.rbd + ..diskpool8.rbd.dse
