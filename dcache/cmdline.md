@@ -29,7 +29,7 @@ rados -p 1 bench 1200 write -b 8192
 ```
 
 ```
-ceph daemon dse.node23 engine 12.4 congit set debug_engine 5
+ceph daemon dse.node23 engine 12.4 config set debug_engine 5
 ```
 
 ```
