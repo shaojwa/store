@@ -1,3 +1,8 @@
+#### instance_id
+```
+instance_id = poolid << 16 + engineid
+```
+
 #### engine dump
 ```
 ceph engine dump
