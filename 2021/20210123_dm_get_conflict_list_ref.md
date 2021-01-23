@@ -47,4 +47,9 @@ dm.cc:872
   ac00eb:       80 bf 48 06 00 00 00    cmpb   $0x0,0x648(%rdi)
   ac00f2:       0f 85 c8 00 00 00       jne    ac01c0 <DataManager::dm_get_conflict_list_ref(object_t const&)+0x110>
 ```
-dm中的cct未成功初始化。
+确认偏移：
+```
+test_cct addr(dm) 0x7fd4bc400000, addr(pdm->_cct)0x7fd4bd800100
+test_cct addr(cct) 0x7fd4be47c580, addr(cct->config) 0x7fd4be47c588
+```
+所以是，dm中的cct未初始化。
