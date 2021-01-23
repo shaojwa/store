@@ -16,3 +16,34 @@
  10: (make_fcontext()+0x21) [0x7f692b773fc1]
  NOTE: a copy of the executable, or `objdump -rdS <executable>` is needed to interpret this.  
 ```
+
+```
+0000000000ac00b0 T DataManager::dm_get_conflict_list_ref(object_t const&)
+```
+```
+0000000000ac00b0 <DataManager::dm_get_conflict_list_ref(object_t const&)>:
+DataManager::dm_get_conflict_list_ref(object_t const&)():
+dm.cc:871
+  ac00b0:       41 56                   push   %r14
+  ac00b2:       41 55                   push   %r13
+  ac00b4:       41 54                   push   %r12
+  ac00b6:       55                      push   %rbp
+  ac00b7:       48 89 f5                mov    %rsi,%rbp
+  ac00ba:       53                      push   %rbx
+  ac00bb:       48 89 fb                mov    %rdi,%rbx
+  ac00be:       48 81 ec 30 01 00 00    sub    $0x130,%rsp
+  ac00c5:       48 83 05 13 3b 26 01    addq   $0x1,0x1263b13(%rip)        # 1d23be0 <__gcov0._ZN11DataManager24dm_get_conflict_list_refERK8obje
+ct_t>
+  ac00cc:       01
+  ac00cd:       64 48 8b 04 25 28 00    mov    %fs:0x28,%rax
+  ac00d4:       00 00
+  ac00d6:       48 89 84 24 28 01 00    mov    %rax,0x128(%rsp)
+  ac00dd:       00
+  ac00de:       31 c0                   xor    %eax,%eax
+dm.cc:872
+  ac00e0:       48 8b 87 00 01 40 01    mov    0x1400100(%rdi),%rax
+  ac00e7:       48 8b 78 08             mov    0x8(%rax),%rdi
+  ac00eb:       80 bf 48 06 00 00 00    cmpb   $0x0,0x648(%rdi)
+  ac00f2:       0f 85 c8 00 00 00       jne    ac01c0 <DataManager::dm_get_conflict_list_ref(object_t const&)+0x110>
+  ```
+```
