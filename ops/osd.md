@@ -1,3 +1,9 @@
+#### 管理 osd daemon
+```
+systemctl start ceph-osd@2
+systemctl stop  ceph-osd@2
+systemctl restart ceph-osd@2
+```
 
 #### 设置池的副本数为1
 ```
@@ -19,10 +25,6 @@ $ ceph daemon mds.mds0 config show | grep kvbackend
 ```
 rocksdb 基于BlueFS写入裸设备。
 
-#### 停止某个osd
-```
-systemctl stop ceph-osd@2
-```
 
 #### 停止osd之后避免拉起
 ```
