@@ -74,3 +74,19 @@ ceph-dse.engine.64.4.log-2021-01-29-214110:2021-01-29 17:55:59.593085 7fd22daba7
 ceph-dse.engine.64.5.log-2021-01-29-214110:2021-01-29 17:55:59.593127 7fd22d2b9700 2905611 13  INFO Dcache_lsm:lsm_destroy start to destroy lsm.
 ```
 从日志看，触发segment fault的的是 7fd22d2b9700，也就是 7fd22d2b9700。而触发message中的是 2905610。
+
+还是怀疑重复释放的问题，走读代码：
+```
+ if (!destroy_eng.empty()) {
+    increase_task_tid();
+    ::co::TaskOpt opt = {MY_MID, 0, processer_alloc.get_processer(1), true, 0, 0, __func__, __FILE__, __LINE__};
+    coroutine_sched->CreateTask(
+      [destroy_eng, this]() {
+        this->shutdown_engine(destroy_eng, false);
+        this->delete_engine(destroy_eng);
+        this->decrease_task_tid();
+      },
+      opt
+    );
+  }
+```
