@@ -1,3 +1,8 @@
+
+#### 跑 FIO
+```
+fio -direct=1 -ioengine=rbd -group_reporting -name=mytest -bs=8K -iodepth 10 -numjobs 1 -size=10G -rw=randread -pool=.111.rbd -rbdname=test_10g5
+```
 #### dse/dcache pools
 ```
 data: pool_a -> dcache.pool_a(dcache_log_pool for pool_a) + .pool_a.dse (pool for ROW)
