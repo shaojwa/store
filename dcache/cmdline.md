@@ -1,3 +1,9 @@
+#### rdb 命令
+Command-line interface for managing Ceph RBD images.
+```
+rbd ls -p .111.rbd 
+rbd debug_ls -p .111.rbd
+```
 
 #### 跑 FIO
 ```
