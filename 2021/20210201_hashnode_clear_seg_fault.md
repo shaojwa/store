@@ -70,8 +70,10 @@ boost::intrusive::list_node_traits<void*>::get_previous(boost::intrusive::list_n
 #### 进一步分析
 engine64.4和 64.d 中的两个线程在destory lsm，几乎同时。
 ```
-ceph-dse.engine.64.4.log-2021-01-29-214110:2021-01-29 17:55:59.593085 7fd22daba700 2905610 3  INFO Dcache_lsm:lsm_destroy start to destroy lsm.
-ceph-dse.engine.64.5.log-2021-01-29-214110:2021-01-29 17:55:59.593127 7fd22d2b9700 2905611 13  INFO Dcache_lsm:lsm_destroy start to destroy lsm.
+ceph-dse.engine.64.4.log-2021-01-29-214110:2021-01-29 17:55:59.593085 7fd22daba700 2905610 3
+  INFO Dcache_lsm:lsm_destroy start to destroy lsm.
+ceph-dse.engine.64.5.log-2021-01-29-214110:2021-01-29 17:55:59.593127 7fd22d2b9700 2905611 13
+  INFO Dcache_lsm:lsm_destroy start to destroy lsm.
 ```
 从日志看，触发segment fault的的是 7fd22d2b9700，也就是 7fd22d2b9700。而触发message中的是 2905610。
 
