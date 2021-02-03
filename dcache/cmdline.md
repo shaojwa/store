@@ -1,3 +1,6 @@
+#### 全闪版本数据读取
+块的数据读取，都会先从Dcache读，DCache如果没有，就从ROW读。
+
 #### 预取的触发
 ```
 blk开启顺序流识别特性之后，会主动去预取，然后干两件事（1）写入Rcache（2）写入ROW
@@ -67,9 +70,6 @@ rados -p 1 bench 1200 write -b 8192
 
 ```
 ceph daemon dse.node23 engine 12.4 config set debug_engine 5
-```
-
-```
 ceph daemon dse.node23 engine all dcache desage get_info
 ceph daemon dse.node23 engine 12.4 dcache desage get_info
 
