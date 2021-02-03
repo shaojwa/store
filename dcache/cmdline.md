@@ -1,3 +1,6 @@
+#### 免高可用方式
+install完product在部署前，修改/etc/onestor/onestor.conf里handy_ha_needed = no，就可以不用配置handyha，完了执行supervisorctl restart all
+
 #### rdb 命令
 Command-line interface for managing Ceph RBD images.
 ```
