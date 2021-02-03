@@ -43,7 +43,7 @@
 #### CPU观测工具
 |工具|示例|说明|
 |:-|:-|:-|
-|top/atop|看空闲cpu = idle + wait，注意wait字段，这个状态也可以工作|
+|top/atop|看空闲cpu = idle + wait|注意wait字段，这个状态也可以工作|
 |trace-noschedule|https://github.comn/bytedance/trace-noschedule|因为优先级原因没有被调度走|
 
 #### CPU优化和排查
@@ -105,8 +105,7 @@
 |ping|比如集群内ping包超过0.1ms就明显有问题||
 |iperf|client: iperf -c 1.1.1.1 -P 5 -t 10  server: iperf -s|侧重带宽|
 |qperf|client: qperf 192.168.25.18 tcp_lat server: qperf |侧重时延|
-
-qperf，因为有时候协议栈的配置不对会影响性能，用来测试TCP/UDP协议，这个是ping做不到的，特别是在跑上业务的时候，用qperf打一下时延。
+|qperf|因为有时候协议栈的配置不对会影响性能，用来测试TCP/UDP协议，这个是ping做不到的|业务跑起来的时候用qperf打一下|
 
 #### 网络观测工具
 |工具|说明||
@@ -122,5 +121,22 @@ qperf，因为有时候协议栈的配置不对会影响性能，用来测试TCP
 |增大网卡ring buffer||硬件上的环形缓冲区，溢出就会丢包|
 
 #### 案例 kworder:H 导致网卡丢包问题
-
 kworker的优先级80，高于网卡软中断ksoftirq线程的60。
+
+## 软件IO模型分析
+#### 从客户进程IO分析
+|linux|||
+|:-|:-|:-|
+|strace|strace -c -fp <app pid>|各种系统调用的汇总，有一个全局了解|
+|strace|strace -o <output> -fp <app pid>||
+|tcpdump|用来分析nfs协议，由客户端发送的nfs请求大小||
+  
+#### 文件协议IO分析
+通用文件协议的daemon进程
+|协议||
+|:-|:-|
+|nfsd|基本不会有语义和请求上的放大。几乎只做转发工作，其模型可以不用关注，一般都与cephfs模型保持一致|
+|smbd|smbd经常会有请求放大操作。比如客户端的一个创建会对应好几个系统调用(lookup/create/setxattr)|
+
+#### kcephfs IO分析
+1. 利用内核日志查看查看IO大小。
