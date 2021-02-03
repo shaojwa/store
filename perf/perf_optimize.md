@@ -21,16 +21,18 @@
 #### 典型性能数据
 |项目|说明||
 |:-|:-|:-|
-||0||
+|寄存器读取|1ns||
+|上下文切换|1us||
 
 #### 网络延时
 |项目|时延|说明|
 |:-|:-|-:|
 |上下文切换|1us||
-|集群内部RTT|0.1ms||
 |RAID卡写入缓存|10-100us||
 |1M数据的内存拷贝|300us||
 |1M文件写(HDD)|20ms||
+|集群内部RTT|0.1ms||
+|杭州ping成都|20-30ms||
 
 #### CPU基准测试
 |工具|示例|说明|
@@ -54,7 +56,7 @@
 |工具|实例|说明|
 |:-|:-|:-|
 |dd|dd if=/dev/zero  of=/dev/null bs=1M count=100000|cpu和内存都可用用dd|
-|stream|需要自己编译https://github.com/jeffhammond/STREAM||
+|stream|https://github.com/jeffhammond/STREAM|需要自己编译|
 
 #### 内存观测工具
 |工具|说明|
@@ -103,6 +105,7 @@
 |ping|比如集群内ping包超过0.1ms就明显有问题||
 |iperf|client: iperf -c 1.1.1.1 -P 5 -t 10  server: iperf -s|侧重带宽|
 |qperf|client: qperf 192.168.25.18 tcp_lat server: qperf |侧重时延|
+
 qperf，因为有时候协议栈的配置不对会影响性能，用来测试TCP/UDP协议，这个是ping做不到的，特别是在跑上业务的时候，用qperf打一下时延。
 
 #### 网络观测工具
@@ -116,7 +119,7 @@ qperf，因为有时候协议栈的配置不对会影响性能，用来测试TCP
 |:-|:-|:-|
 |网卡中断绑核|||
 |增大TCP缓冲区|net.ipv4.tcp_wmem|有min，default，max，一般增大max足够，推荐大小=带宽×时延|
-|增大网卡ring buffer|硬件上的环形缓冲区，溢出就会丢包||
+|增大网卡ring buffer||硬件上的环形缓冲区，溢出就会丢包|
 
 #### 案例 kworder:H 导致网卡丢包问题
 
