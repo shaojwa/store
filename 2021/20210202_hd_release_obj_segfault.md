@@ -1,3 +1,4 @@
+liaoli环境
 ```
 ceph version 12.2.1-UniStorOS_V100R001B51 (557aad1b6b2d42bb7c0c9ce1583c3457e506df42) luminous (stable)
  1: (()+0x2e3f70) [0x559d4829cf70]
@@ -16,3 +17,4 @@ ceph version 12.2.1-UniStorOS_V100R001B51 (557aad1b6b2d42bb7c0c9ce1583c3457e506d
  14: (co::Task::StaticRun(long)+0x20) [0x7f0b52a96a4e]
  15: (make_fcontext()+0x21) [0x7f0b52b2d471]
 ```
+应该是destage刷盘这边没处理好，导致已经通知dm析构。
