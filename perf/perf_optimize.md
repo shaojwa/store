@@ -140,3 +140,34 @@ kworker的优先级80，高于网卡软中断ksoftirq线程的60。
 
 #### kcephfs IO分析
 1. 利用内核日志查看查看IO大小。
+
+
+#### smbstatus 工具
+#### 性能抖动监测工具 perf record 
+#### 通用profiling工具 perf
+|工具||
+|:-|:-|:-|
+|perf|perf top -p <pid>|进程实时性能统计信息|
+|perf|perf stat -ddd -p <pid>|分析进程整体性能概况，上下文切换次数，缺页次数，分支预测错误次数，TLB不命中次数等|
+|perf|perf record|https://github/com/brendangregg/FlameGraph|
+
+#### 通用 profiling工具 systemtap
+|工具||
+|:-|:-|:-|
+||不是所有的代码片段都可以打点，需要用 stap -L检查一下||
+||可以主动注入时延||
+|backtrace|||
+|call graph|||
+||缓存读命中率的统计||
+||缓存写命中率的统计||
+
+#### 通用 profiling工具 bcc/ebpf
+
+## 如果做性能优化
+1. 找到最大瓶颈
+1. 确认问题根因
+1. 找到什么可以tradeoff
+
+#### 问题
+因为kworker优先级高导致的丢包问题，是如何修改的，修改代码重新编译么
+
