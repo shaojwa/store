@@ -1,6 +1,6 @@
 #### 预取的触发
 ```
-blk 预取数据，然后下发写RCache的op给opproc
+blk开启顺序流识别特性之后，会主动去预取，然后干两件事（1）写入Rcache（2）写入ROW
 ```
 
 #### 每一种硬盘池都有一种属性
@@ -59,7 +59,6 @@ NAS V100R003B02D008
 ```
 
 #### IO
-
 ```
 rados -p 1 bench 1200 write -b 8192 
 // -p 1: pool
@@ -83,6 +82,4 @@ ceph daemon dse.node23 engine 12.4 dcache qm get_quota
 ceph osd lspools
 ceph osd pool ls
 ceph osd pool ls detail
-```
-
 ```
