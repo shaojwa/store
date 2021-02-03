@@ -1,5 +1,24 @@
-#### 免高可用方式
-install完product在部署前，修改/etc/onestor/onestor.conf里handy_ha_needed = no，就可以不用配置handyha，完了执行supervisorctl restart all
+#### 预取的触发
+```
+blk 预取数据，然后下发写RCache的op给opproc
+```
+
+#### 每一种硬盘池都有一种属性
+块，还是文件，还是对象。
+
+#### 块存储的硬盘池
+每个块存储硬盘池下最多只能创建一个pool。
+
+#### 块池的副本策略
+用3副本
+
+### 免高可用方式
+install完product在部署前，修改:
+```
+# /etc/onestor/onestor.conf
+handy_ha_needed = no
+```
+就可以不用配置handyha，完了执行supervisorctl restart all
 
 #### rdb 命令
 Command-line interface for managing Ceph RBD images.
