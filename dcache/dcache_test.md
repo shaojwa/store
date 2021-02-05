@@ -1,3 +1,12 @@
+#### op_cancel_dse engine_timeout
+
+在engine的日志中会出现`failed to open db` 说明底层数据混乱，多个dse操作同一个engine 的 rocksdb，需要重新创建pool。
+```
+3159819 60 ERROR row init failed to open db, r = -5
+3159819 51 ERROR row init failed to open db, r = -5
+```
+要发现这个问题，可以先看dse中有没有如下的日志`try_boot wait for`
+
 
 #### 全闪版本数据读取
 1. 块的数据读取，都会先从DCache读，DCache如果没有，就从ROW读。
