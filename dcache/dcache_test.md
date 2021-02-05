@@ -41,3 +41,15 @@ meta: .diskpool8.rbd-> dcache..diskpool8.rbd + ..diskpool8.rbd.dse
 ```
 instance_id = poolid << 16 + engineid
 ```
+
+#### env
+```
+[root@node231 etc]# cat onestor_external_version
+UniStorOS-E1151
+Release date 2020.10.22
+[root@node231 etc]# cat onestor_internal_version
+NAS V200R001B01D001
+ONEStor V300R001B05D001
+UniStorOS V100R001B51D001
+NAS V100R003B02D008
+```
