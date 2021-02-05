@@ -27,7 +27,8 @@ handy_ha_needed = no
 
 #### 跑 FIO
 ```
-fio -direct=1 -ioengine=rbd -group_reporting -name=mytest -bs=8K -iodepth 10 -numjobs 1 -size=10G -rw=randread -pool=.111.rbd -rbdname=test10g5
+fio -direct=1 -ioengine=rbd -group_reporting -name=mytest -bs=8K -iodepth 10 -numjobs 1 \
+  -size=10G -rw=randread -pool=.111.rbd -rbdname=test10g5
 ```
 
 #### dse/dcache pools
