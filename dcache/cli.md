@@ -1,7 +1,7 @@
 |模块|用例|说明|
 |:-|:-|:-|
 |rados|rados -p 1 bench 1200 write -b 8192  |rados io|
-||rados -p blkpool0 create rcache_obj||
+||rados -p .diskpool0 create rcache0||
 |ceph daemon |ceph daemon dse.node23 engine 12.4 config set debug_engine 5||
 ||ceph daemon dse.node23 engine all dcache desage get_info||
 ||ceph daemon dse.node23 engine 12.4 dcache desage get_info||
