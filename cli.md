@@ -1,9 +1,9 @@
 |模块|用例|说明|
 |:-|:-|:-|
-|rados|rados -p .diskpool0 create obj0| create object|
+|rados|rados -p .diskpool0.rbd bench 10 write -b 8192 |rados io, 10 = duration|
+||rados -p .diskpool0 create obj0| create object|
 ||rados -p .diskpool0 ls| list object|
 ||rados -p .diskpool0 stat obj0| lis object|
-|rados bench|rados -p .doskpool0 bench 1200 write -b 8192  |rados io|
 |ceph daemon |ceph daemon dse.node23 engine 12.4 config set debug_engine 5||
 ||ceph daemon dse.node23 engine all dcache desage get_info||
 ||ceph daemon dse.node23 engine 12.4 dcache desage get_info||
