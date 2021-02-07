@@ -1,3 +1,9 @@
+#### 日志一致性检测
+各位后面测试日志恢复相关用例的时候，在下IO之前，将日志一致性检测功能打开：
+```
+ceph daemon dse.node64 engine all dcache lsm plus_on
+```
+
 #### engine-id 中的 pool-id
 是系统中原生池的id，一个原生池对应一个dse池和一个dcache池，dcache池用来存储元数据的日志。dse池用来存储数据的日志。
 
