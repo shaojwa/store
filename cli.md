@@ -16,4 +16,5 @@
 |ceph osd|ceph osd lspools||
 ||ceph osd pool ls||
 ||ceph osd pool ls detail||
+||rados lspools||
 |ceh engine|ceph engine map||
