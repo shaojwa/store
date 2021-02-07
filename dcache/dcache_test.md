@@ -1,3 +1,6 @@
+#### engine-id 中的 pool-id
+是系统中原生池的id，一个原生池对应一个dse池和一个dcache池，dcache池用来存储元数据的日志。dse池用来存储数据的日志。
+
 #### op_cancel_dse engine_timeout
 
 在engine的日志中会出现`failed to open db` 说明底层数据混乱，多个dse操作同一个engine 的 rocksdb，需要重新创建pool。
