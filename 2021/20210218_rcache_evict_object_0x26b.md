@@ -24,3 +24,16 @@
 00000000011e0688 d RCache::rcache_evict_object(object_t const&)::_log_exp_length
 0000000000d05ed0 r RCache::rcache_evict_object(object_t const&)::__func__
 ```
+
+#### 代码：
+```
+/home/dcache/rcache/rcache.cc:377
+  7222d8:       48 8b 03                mov    (%rbx),%rax
+  7222db:       48 8b 78 08             mov    0x8(%rax),%rdi
+  7222df:       80 bf 48 06 00 00 00    cmpb   $0x0,0x648(%rdi)
+  7222e6:       0f 84 f4 fd ff ff       je     7220e0 <RCache::rcache_evict_object(object_t const&)+0x70>
+/home/dcache/rcache/rcache.cc:377 (discriminator 1)
+  7222ec:       48 81 c7 88 01 00 00    add    $0x188,%rdi
+  7222f3:       ba 03 00 00 00          mov    $0x3,%edx
+  7222f8:       be 3f 00 00 00          mov    $0x3f,%esi
+```
