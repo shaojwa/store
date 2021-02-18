@@ -19,7 +19,7 @@
 [root@qat154 wsh]# nm libdcache.so | grep rcache_evict_object | c++filt
 00000000014bf140 b __gcov0._ZN6RCache19rcache_evict_objectERK8object_t
 00000000011ef540 d __gcov_._ZN6RCache19rcache_evict_objectERK8object_t
-0000000000 T RCache::rcache_evict_object(object_t const&)
+0000000000722070 T RCache::rcache_evict_object(object_t const&)
 00000000011e0690 d RCache::rcache_evict_object(object_t const&)::_log_exp_length
 00000000011e0688 d RCache::rcache_evict_object(object_t const&)::_log_exp_length
 0000000000d05ed0 r RCache::rcache_evict_object(object_t const&)::__func__
