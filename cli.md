@@ -8,7 +8,7 @@
 ||rados create -p .diskpool0  obj0| create object|
 ||rados ls -p .diskpool0 | list object|
 ||rados stat -p .diskpool0 obj0| stat object|
-
+||rados lspools||
 |ceph daemon |ceph daemon dse.node23 engine 12.4 config set debug_engine 5||
 ||ceph daemon dse.node23 engine all dcache desage get_info||
 ||ceph daemon dse.node23 engine 12.4 dcache desage get_info||
@@ -17,5 +17,4 @@
 |ceph osd|ceph osd lspools||
 ||ceph osd pool ls||
 ||ceph osd pool ls detail||
-||rados lspools||
 |ceh engine|ceph engine map||
