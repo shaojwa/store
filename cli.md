@@ -5,7 +5,7 @@
 ||rados bench -p .diskpool0.rbd 10 write -b 8192 --no-cleanup ||
 ||rados bench -p blkpool1 10 write -b 8192 --no-cleanup ||
 ||rados bench -p .diskpool0.rbd 10 seq ||
-||rados create -p .diskpool0  obj0| create object|
+|rados|rados create -p .diskpool0  obj0| create object|
 ||rados ls -p .diskpool0 | list object|
 ||rados stat -p .diskpool0 obj0| stat object|
 ||rados lspools||
