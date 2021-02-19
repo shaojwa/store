@@ -5,8 +5,8 @@
 ||rados bench -p blkpool0 10 rand |rados read rand|
 ||rados bench -p blkpool0 10 seq |rados read seq|
 |rados|rados create -p .diskpool0  obj0| create object|
-||rados ls -p .diskpool0 | list object|
-||rados stat -p .diskpool0 obj0| stat object|
+||rados ls -p blkpool0 | list object|
+||rados stat -p blkpool0 obj0| stat object|
 ||rados lspools||
 |ceph daemon |ceph daemon dse.node23 engine 12.4 config set debug_engine 5||
 ||ceph daemon dse.node23 engine all dcache desage get_info||
