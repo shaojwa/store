@@ -1,10 +1,9 @@
 |模块|用例|说明|
 |:-|:-|:-|
 |rados bench|rados bench -p .diskpool0.rbd 10 write -b 8192 |rados io, 10 = duration|
-||rados bench -p blkpool0 10 write -b 8192 --no-cleanup ||
-||rados bench -p .diskpool0.rbd 10 write -b 8192 --no-cleanup ||
-||rados bench -p blkpool1 10 write -b 8192 --no-cleanup ||
-||rados bench -p .diskpool0.rbd 10 seq ||
+||rados bench -p blkpool0 10 write -b 8192 --no-cleanup |rados write|
+||rados bench -p blkpool0 10 rand |rados read rand|
+||rados bench -p blkpool0 10 seq |rados read seq|
 |rados|rados create -p .diskpool0  obj0| create object|
 ||rados ls -p .diskpool0 | list object|
 ||rados stat -p .diskpool0 obj0| stat object|
