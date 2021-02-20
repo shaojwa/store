@@ -29,3 +29,8 @@
   71c554:       e8 d7 05 db ff          callq  4ccb30 <__stack_chk_fail@plt>
 ```
 看到这个，stack check似乎意味着，这个函数有循环调用？通过 `_enqueue_warm()` 内部的函数再次调用`_enqueue_warm()`。
+
+```
+dse.engine.6.6.log:2021-02-20 14:52:07.209245 7f5e56570700 2197109 6 DEBUG dcache_rcache:rcache_writercache_write 
+    obj obj_file4m1, snap_idhead, prefetch 0, off 0, len 4194304, align_from 0, algin_to 4194304, align_len 4194304
+```
