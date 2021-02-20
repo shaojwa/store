@@ -8,6 +8,7 @@
 ||rados ls -p blkpool0 | list object|
 ||rados stat -p blkpool0 obj0| stat object|
 ||rados lspools||
+||rados -p blkpool0 put object_file1 file1| add object|
 |ceph daemon |ceph daemon dse.node23 engine 12.4 config set debug_engine 5||
 ||ceph daemon dse.node23 engine all dcache desage get_info||
 ||ceph daemon dse.node23 engine 12.4 dcache desage get_info||
