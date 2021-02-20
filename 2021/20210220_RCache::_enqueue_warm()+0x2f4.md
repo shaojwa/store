@@ -1,5 +1,8 @@
 #### 现象
 ```
+2021-02-20 14:52:07.217925 7f5e56570700 2197109 6 ERROR *** Caught signal (Aborted) **
+ in thread 7f5e56570700 thread_name:Processer_4
+
 1: (()+0x4e7930) [0x558d8dc18930]
 2: (()+0xf6d0) [0x7f5e625a26d0]
 3: (gsignal()+0x37) [0x7f5e60d1d277]
