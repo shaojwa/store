@@ -7,7 +7,7 @@
 5: (()+0x2f096) [0x7f5e60d16096]
 6: (()+0x2f142) [0x7f5e60d16142]
 7: (RCache::_enqueue_warm(rcache_object_t&)+0x2f4) [0x7f5e64dd2554]
-8: (RCache::rcache_write(object_t const&, snapid_t, unsigned long long, unsigned long long, ceph::buffer::list&, bool)+0x192) [0x7f5e64ddb652]
+8: (RCache::rcache_write(object_t const&, )+0x192) [0x7f5e64ddb652]
 9: (DCacheOPProc::do_read(OSDOp&, DCacheOPProc::OpContext*)+0xe8f) [0x7f5e64d22c0f]
 10: (DCacheOPProc::do_dse_ops(DCacheOPProc::OpContext*, std::vector<OSDOp, std::allocator<OSDOp> >&)+0x949) [0x7f5e64d28ef9]
 11: (DCacheOPProc::dcache_do_op_proc(DCacheOPProc::OpContext*, std::vector<OSDOp, std::allocator<OSDOp> >&)+0x1fe) [0x7f5e64d2945e]
