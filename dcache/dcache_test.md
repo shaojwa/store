@@ -1,3 +1,8 @@
+#### 存储前端网段不能与RDMA卡上IP同网段
+```
+vim /opt/h3c/lib/python2.7/site-packages/onestor/plat/cm/cluster/cluster_util.py + 
+```
+
 #### 日志等级
 ```
 debug_engine = 4
