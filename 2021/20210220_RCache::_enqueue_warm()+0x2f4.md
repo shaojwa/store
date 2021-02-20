@@ -34,3 +34,20 @@
 dse.engine.6.6.log:2021-02-20 14:52:07.209245 7f5e56570700 2197109 6 DEBUG dcache_rcache:rcache_writercache_write 
     obj obj_file4m1, snap_idhead, prefetch 0, off 0, len 4194304, align_from 0, algin_to 4194304, align_len 4194304
 ```
+但是很明显，_enqueue_warm中并没有调用`__stack_chk_fail()`，那么是谁调用的？
+看起来，这个是gcc添加的，在函数_enqueue_warm()的开头，添加：
+```
+mov    %fs:0x28,%rax
+mov    %rax,0x128(%rsp)
+```
+在函数结束时添加：
+```
+71c54c: mov    0x128(%rsp),%rax
+71c554: xor    %fs:0x28,%rax
+71c55d: jne    71c794 <RCache::_enqueue_warm(rcache_object_t&)+0x2f4>
+...
+71c794: callq  4ccb30 <__stack_chk_fail@plt> 
+```
+这代码的意思是，`0x128(%rsp)`的值和`%fs:0x28`比较进行比较，如果不不相等，则跳转到`__stack_chk_fail`。
+七中xor会比较两个值xor之后的结果，并把结果存在rax中，如果想等，那么XOR的结果是0，就会设置eflags中的，Z标记。
+jcc系列指令会从检查OSZAC，其中的jne的语法直接字面理解就可以，不相等就跳转，应该就是看Z标记是否为0。
