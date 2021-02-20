@@ -25,4 +25,4 @@
 /src/dse/dcache/rcache/rcache.cc:832
   71c554:       e8 d7 05 db ff          callq  4ccb30 <__stack_chk_fail@plt>
 ```
-看到这个，stack check似乎意味着，这个函数有循环调用？通过 `_enqueue_warm()` 内部的函数再次调用_enqueue_warm()`。
+看到这个，stack check似乎意味着，这个函数有循环调用？通过 `_enqueue_warm()` 内部的函数再次调用`_enqueue_warm()`。
