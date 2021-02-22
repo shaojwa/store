@@ -1,3 +1,6 @@
+#### rcache中对象的evcit
+destage下刷完成之后，或者透写模式写入row之后，都会调用rcche的对象evict操作，粒度是对象，无法只evict部分数据（有接口但是没有调用）
+
 #### 存储前端网段不能与RDMA卡上IP同网段
 ```
 vim /opt/h3c/lib/python2.7/site-packages/onestor/plat/cm/cluster/cluster_util.py +426
