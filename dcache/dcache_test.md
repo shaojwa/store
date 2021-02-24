@@ -1,5 +1,17 @@
+#### 新池的数据
+```
+[root@node0]# rados -p blkpool0 df
+POOL_NAME USED OBJECTS CLONES COPIES MISSING_ON_PRIMARY UNFOUND DEGRADED RD_OPS RD WR_OPS WR SIZE_ACCURACY
+blkpool0     0       0      0      0                  0       0        0      0  0      0  0             0
+
+total_objects    269
+total_used       27053M
+total_avail      16730G
+total_space      16756G
+```
+
 #### rcache中对象的evcit
-destage下刷完成之后，或者透写模式写入row之后，都会调用rcche的对象evict操作，粒度是对象，无法只evict部分数据（有接口但是没有调用）
+destage下刷完成之后，或者透写模式写入row之后，都会调用rcche的对象evict操作，粒度是对象，无法只evict部分数据。
 
 #### 存储前端网段不能与RDMA卡上IP同网段
 ```
