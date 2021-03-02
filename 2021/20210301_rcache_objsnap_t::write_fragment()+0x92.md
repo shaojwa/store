@@ -1,6 +1,8 @@
 ####  现象
+```
 (rcache_objsnap_t::write_fragment(unsigned long long, unsigned long long, ceph::buffer::list&, bool)+0x92) 
-
+```
+stack
 ```
  (249e2bde69e3743815c19299888ab70bf7c155a4) luminous (stable)
  1: (()+0x5008f0) [0x559aab6d78f0]
@@ -32,3 +34,10 @@
 ```
 
 #### 分析
+log
+```
+ceph-dse.engine.9.7.log:2021-03-01 17:02:51.970529 7f001516f700 12269 49 DEBUG dcache_rcache:ercache_write
+obj 0x7efecf59e080, obj_id rbd_id.rbd0, snap_id head, prefetch 0, off 0, len 18, align_from 0, algin_to 0, align_len 0
+```
+
+
