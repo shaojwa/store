@@ -15,7 +15,7 @@ stack
  8: (()+0x5ec83) [0x7fabeb08fc83]
  9: (()+0x330c63) [0x7fabf04b1c63]
  10: (rcache_objsnap_t::write_fragment(unsigned long long, unsigned long long, ceph::buffer::list&, bool)+0x92) [0x7fabee860f72]
- 11: (RCache::rcache_write(object_t const&, snapid_t, unsigned long long, unsigned long long, ceph::buffer::list&, bool)+0x17f) [0x7fabee86301f]
+ 11: (RCache::rcache_write(object_t const&, snapid_t, unsigned long long, unsigned long long, ...)+0x17f) [0x7fabee86301f]
  12: (DCacheOPProc::do_read(OSDOp&, DCacheOPProc::OpContext*)+0xe8f) [0x7fabee79fa1f]
  13: (DCacheOPProc::do_dse_ops(DCacheOPProc::OpContext*, std::vector<OSDOp, std::allocator<OSDOp> >&)+0x949) [0x7fabee7a5d09]
  14: (DSEClassOperation::cls_read2_op(void*, int, int, ceph::buffer::list*, unsigned int)+0x88) [0x559aab469598]
