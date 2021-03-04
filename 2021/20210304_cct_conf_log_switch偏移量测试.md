@@ -6,6 +6,8 @@
 ```
 结果：
 ```
-_cct 0x7f805b420800, &(_cct->conf) 0x7f805b420808,
-_cct->_conf 0x7f805b630000, _cct->_conf->log_switch 0x7f805b630648
+_cct                    0x7f805b420800,
+&(_cct->conf)           0x7f805b420808,
+_cct->_conf             0x7f805b630000,
+_cct->_conf->log_switch 0x7f805b630648
 ```
