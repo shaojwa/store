@@ -4,4 +4,4 @@
 
 ----
 #### ceph
-[01 BlueStore的设计原则](BlueStore的设计原则.md)
+[01 BlueStore的设计原则](2019/BlueStore的设计原则.md)
