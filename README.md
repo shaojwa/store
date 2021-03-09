@@ -4,4 +4,6 @@
 - [存储的几个概念](2019/存储的几个概念.md)
 
 ## 第二部分 ceph
-- [BlueStore的设计原则](2019/BlueStore的设计原则.md)
+- rados 概述
+- store 概述
+  - [BlueStore的设计原则](2019/BlueStore的设计原则.md)
