@@ -1,3 +1,21 @@
+#### 部署顺序流识别
+
+/etc/ceph.conf文件
+```
+rbd_readahead2 = true
+```
+在改存储节点执行
+```
+kill -9 tgtd
+```
+
+#### 测试集群网络配置
+```
+管理网: 182.200.65.111/16
+前段网: 172.17.65.111/24
+存储网: 192.169.65.112/24
+```
+
 #### 新池的数据
 ```
 [root@node0]# rados -p blkpool0 df
@@ -87,7 +105,7 @@ meta: .diskpool8.rbd-> dcache..diskpool8.rbd + ..diskpool8.rbd.dse
 instance_id = poolid << 16 + engineid
 ```
 
-#### env
+#### ENV
 ```
 [root@node231 etc]# cat onestor_external_version
 UniStorOS-E1151
