@@ -13,4 +13,5 @@
   - [BlueStore的设计原则](2019/BlueStore的设计原则.md)
 
 ## 第三部分 分布式
-- [ACID和事务](/dist/consistency.md)
+- [ACID和事务](/dist/acid.md)
+- [分布式中的一致性](/dist/consistency.md)
