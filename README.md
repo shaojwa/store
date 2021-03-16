@@ -1,17 +1,17 @@
-# 目录
-## 第一部分：存储基础
-- [存储的基本特性](2019/存储的两个特性.md)
-  - [纠删码](/2019/erasure_code.md)
-  - [快照](/2019/snap.md)
-- [存储的基本概念](/2019/存储的几个概念.md)
-  - [存储的组成形态](/2019/store_types.md)
-  - [数据丢失类别](/2019/data_lose.md)
+# Table of Contents
+## Part I Storage Basics
+- [Storage basic properties](2019/存储的两个特性.md)
+  - [Erasure Code](/2019/erasure_code.md)
+  - [snapshot](/2019/snap.md)
+- [basic concepts](/2019/存储的几个概念.md)
+  - [storage types](/2019/store_types.md)
+  - [data lose](/2019/data_lose.md)
 
-## 第二部分RADOS
-- RADOS 概述
-- store 概述
-  - [BlueStore的设计原则](2019/BlueStore的设计原则.md)
+## Part II RADOS
+- RADOS Basics
+- Store Basics
+  - [principles of BlueStore](2019/bluestore_principles.md)
 
-## 第三部分 分布式
-- [ACID和事务](/dist/acid.md)
-- [分布式中的一致性](/dist/consistency.md)
+## Part III distributed
+- [transection and ACID](/dist/acid.md)
+- [consistenc](/dist/consistency.md)
