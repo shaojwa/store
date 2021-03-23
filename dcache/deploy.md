@@ -5,7 +5,7 @@
 
 #### 部署顺序流识别
 
-/etc/ceph.conf文件
+/etc/ceph/ceph.conf文件
 ```
 rbd_readahead2 = true
 ```
