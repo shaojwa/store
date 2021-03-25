@@ -7,7 +7,7 @@
  2: (()+0xf6d0) [0x7f33a22d26d0]
  3: (RCache::_evict_objects(boost::intrusive::list<rcache_object_t, ..., void, void, void>&)+0x8a) [0x7f33a4b088aa]
  4: (RCache::_lru_cold()+0x355) [0x7f33a4b08f65]
- 5: (RCache::_enqueue_cold(boost::intrusive::list<rcache_object_t, ..., void, void, void>&, unsigned long long)+0x319) [0x7f33a4b096c9]
+ 5: (RCache::_enqueue_cold(boost::intrusive::list<rcache_object_t, ..., )+0x319) [0x7f33a4b096c9]
  6: (RCache::_lru_warm()+0x370) [0x7f33a4b09b20]
  7: (RCache::_enqueue_warm(rcache_object_t&)+0xa4) [0x7f33a4b0ae34]
  8: (RCache::rcache_write(object_t const&, snapid_t, unsigned long long, unsigned long long, ceph:
