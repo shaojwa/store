@@ -48,7 +48,7 @@ dm_hash_node_t::hn_get_object(object_t const&, unsigned short, bool)():
   b9e1e4:       4c 89 e6                mov    %r12,%rsi
   b9e1e7:       48 89 c7                mov    %rax,%rdi
   b9e1ea:       48 89 c3                mov    %rax,%rbx
-  b9e1ed:       e8 0e f9 ff ff          callq  b9db00 <dm_user_obj_t::dm_user_obj_t(object_t const&, unsigned short, dm_hash_node_t*, DataManager*, Destage*)>
+  b9e1ed:       e8 0e f9 ff ff          callq  b9db00 <dm_user_obj_t::dm_user_obj_t(object_t const&, ...)>
   b9e1f2:       48 83 05 ee 8c ae 00    addq   $0x1,0xae8cee(%rip)        # 1686ee8 <__gcov0...>
 ```
 take a look, before call the new operator, we should setup 3 parameter
