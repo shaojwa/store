@@ -29,11 +29,29 @@
 ba1e19:       48 8b b3 a0 fe ff ff    mov    -0x160(%rbx),%rsi
 ```
 
-## nalyze
+## Analyze
 thread 1366740/7f50817f0700, file ceph-dse.engine.6.1.log-2021-03-25-154855
 ```
 target obj benchmark_data_node119_508101_object490569
 id benchmark_data_node119_508101_object366884
 id benchmark_data_node119_508101_object401042
+id benchmark_data_node119_508101_object490569
+hit id benchmark_data_node119_508101_object490569
 ```
+
+benchmark_data_node119_508101_object490569 is the one after benchmark_data_node119_508101_object401042
+```
+target obj benchmark_data_node119_508101_object490569
+id benchmark_data_node119_508101_object366884
+id benchmark_data_node119_508101_object401042
+```
+how to guess the cause-object???? read the ceph-dse.node.log, we got the target object is:
+```
+benchmark_data_node119_508101_object490569
+```
+when created:
+```
+hn_get_object create obj 0x7f4b58c544c8, id benchmark_data_node119_508101_object490569
+```
+
 
