@@ -53,9 +53,19 @@ when created:
 ```
 hn_get_object create obj 0x7f4b58c544c8, id benchmark_data_node119_508101_object490569
 ```
+## core file
+```
+-rw------- 1 ceph ceph 34017210368 Mar 25 15:41 core-Processer_5-1363277-1616657967
+Processer_5: executable filename
+1363277: PID of dumped process
+1616657967: time of dump, expressed as seconds since the Epoch
+```
+
 
 ## core file pattern
 ```
 cat /proc/sys/kernel/core_pattern
+/corefile/core-%e-%p-%t
 ```
+
 
