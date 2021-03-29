@@ -54,4 +54,8 @@ when created:
 hn_get_object create obj 0x7f4b58c544c8, id benchmark_data_node119_508101_object490569
 ```
 
+## core file pattern
+```
+cat /proc/sys/kernel/core_pattern
+```
 
