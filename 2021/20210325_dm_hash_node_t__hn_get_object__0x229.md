@@ -60,7 +60,7 @@ Processer_5: executable filename
 1363277: PID of dumped process
 1616657967: time of dump, expressed as seconds since the Epoch
 ```
-
+2021-03-25 14:43:56.432042 7f52219ad5c0 1363277 4 WARNING ... luminous (stable), process (unknown), pid 1363277
 
 ## core file pattern
 ```
