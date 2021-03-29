@@ -4,7 +4,7 @@ just give it the job file(2)
 $ fio [options] [jobfile] ...
 ```
 
-# Run fio with command line paramters
+# Run fio with command line parameters
 
 job file parameter`iodepth=2` is the same as `--iodepth 2 or --iodepth=2` in command line option.
 
