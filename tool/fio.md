@@ -15,10 +15,14 @@ job file parameter`iodepth=2` is the same as `--iodepth 2 or --iodepth=2` in com
 ## Parmeters in details
 - I/O engine
 - I/O type
-- I/O 
+- I/O depth
+- Block Size
 
-fio --name=vol_base_test --numjobs=1 --ioengine=rbd --rw=write --direct=1 --bs=256K --iodepth=1 --size=1G  --pool=.disk01.rbd -rbdname=vol0  --group_reporting=1
-
+## sample
+```
+fio --name=vol_base_test --numjobs=1 --ioengine=rbd --rw=write --direct=1 --bs=256K --iodepth=1 --size=1G
+    --pool=.disk01.rbd -rbdname=vol0  --group_reporting=1
+```
 ## --name=vol_base_test (Job description)
 job name
 
