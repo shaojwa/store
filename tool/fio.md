@@ -1,18 +1,18 @@
-# run fio with job file
+# Run fio with job file
 just give it the job file(2)
 ```
 $ fio [options] [jobfile] ...
 ```
 
-# run fio with command line paramters
+# Run fio with command line paramters
 
 job file parameter`iodepth=2` is the same as `--iodepth 2 or --iodepth=2` in command line option.
 
-## basic parameters
+## Basic parameters
 - **global section** defining shared parameters.
 - and one or more **job sections** describing the jobs involved. 
 
-## parmeters in details
+## Parmeters in details
 - I/O engine
 - I/O type
 - I/O 
