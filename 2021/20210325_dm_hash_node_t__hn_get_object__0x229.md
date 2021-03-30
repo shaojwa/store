@@ -1,8 +1,11 @@
 ## related bug
 202103251408
 
-## Logs
+## logs
 ```
+2021-03-25 15:39:24.259258 7f50817f0700 1366740 2 WARNING Dcache_qm:allocateQM: alloc quota 8192 of quota type 1.quota_used:1421033472
+2021-03-25 15:39:24.259741 7f5080fef700 1366742 0 WARNING Dcache_qm:allocateQM: alloc quota 8192 of quota type 1.quota_used:1421041664
+2021-03-25 15:39:24.267914 7f5080fef700 1366742 0 WARNING Dcache_qm:allocateQM: alloc quota 8192 of quota type 0.quota_used:1483214848
 2021-03-25 15:39:24.270093 7f50817f0700 1366740 5 ERROR *** Caught signal (Segmentation fault) **
  in thread 7f50817f0700 thread_name:Processer_5
 
@@ -19,7 +22,7 @@
 11: (co::Task::StaticRun(long)+0x20) [0x7f521838fde4]
 12: (make_fcontext()+0x21) [0x7f521842f361]
 ```
-## Function offset in text section
+## function offset in text section
 ```
 [root@node1 wsh]# nm dse | grep hn_get_object | c++filt | grep T
 0000000000ba1bf0 T dm_hash_node_t::hn_get_object(object_t const&, bool)
@@ -27,12 +30,12 @@
 ```
 0xba1bf0 + 0x229 = 0xba1f19
 
-## Cause instructions
+## cause instructions
 ```
 ba1e19:       48 8b b3 a0 fe ff ff    mov    -0x160(%rbx),%rsi
 ```
 
-## Analyze
+## analyze
 thread 1366740/7f50817f0700, file ceph-dse.engine.6.1.log-2021-03-25-154855
 ```
 target obj benchmark_data_node119_508101_object490569
@@ -56,6 +59,7 @@ when created:
 ```
 hn_get_object create obj 0x7f4b58c544c8, id benchmark_data_node119_508101_object490569
 ```
+
 ## core file
 ```
 -rw------- 1 ceph ceph 34017210368 Mar 25 15:41 core-Processer_5-1363277-1616657967
