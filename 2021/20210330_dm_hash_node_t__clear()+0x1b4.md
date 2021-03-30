@@ -31,3 +31,26 @@
  bc4fb4:       49 8d bf a8 fe ff ff    lea    -0x158(%r15),%rdi
  ```
  
+## shutdown thread
+7f0b45ff8700 2469499 
+
+## works of thread  2469499
+```
+2021-03-30 13:37:30.523691 7f0b45ff8700 2469499 11 WARNING Dcache_qm:allocateQM: alloc quota 12288 of quota type 0
+2021-03-30 13:37:30.535724 7f0b45ff8700 2469499 7 WARNING Dcache_qm:allocateQM: alloc quota 16384 of quota type 1
+2021-03-30 13:37:30.535774 7f0b45ff8700 2469499 7 WARNING Dcache_qm:releaseQM: release quota 8192 of quota type 1
+2021-03-30 13:37:30.538247 7f0b45ff8700 2469499 9 WARNING Dcache_qm:allocateQM: alloc quota 4096 of quota type 0
+2021-03-30 13:37:30.538580 7f0b45ff8700 2469499 9 WARNING Dcache_qm:releaseQM: release quota 131072 of quota type 1
+2021-03-30 13:37:30.538644 7f0b45ff8700 2469499 9 WARNING Dcache_qm:releaseQM: release quota 131072 of quota type 1
+2021-03-30 13:37:30.705427 7f0b45ff8700 2469499 0 WARNING Dcache_qm:allocateQM: alloc quota 16384 of quota type 1
+2021-03-30 13:37:30.705508 7f0b45ff8700 2469499 0 WARNING Dcache_qm:releaseQM: release quota 8192 of quota type 1
+2021-03-30 13:37:30.707496 7f0b45ff8700 2469499 1 WARNING Dcache_qm:allocateQM: alloc quota 8192 of quota type 0
+2021-03-30 13:37:30.733710 7f0b45ff8700 2469499 2 WARNING Dcache_qm:releaseQM: release quota 131072 of quota type 1
+```
+## search log file by 2469499
+ceph-dse.engine.3.1.log-2021-03-30-154125
+ 
+## shutdown
+```
+2021-03-30 13:37:30.713944 7f0b37fdc700 2469533 7 WARNING rocksdb: submit_transaction_sync engine is stopping, dropping task
+```
