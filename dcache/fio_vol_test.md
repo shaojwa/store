@@ -74,3 +74,64 @@ Disk stats (read/write):
           aggrticks=0/7720, aggrin_queue=7720, aggrutil=1.71%
   sda: ios=0/370, merge=0/5, ticks=0/7720, in_queue=7720, util=1.71%
 ```
+
+rcache
+```
+[root@node73 ~]# ceph daemon dse.node73 engine all dcache rcache stat | grep used_space_in_mb
+    "used_space_in_mb": 80,
+    "used_space_in_mb": 80,
+    "used_space_in_mb": 84,
+    "used_space_in_mb": 60,
+[root@node74 ~]# ceph daemon dse.node74 engine all dcache rcache stat | grep used_space_in_mb
+    "used_space_in_mb": 76,
+    "used_space_in_mb": 136,
+    "used_space_in_mb": 112,
+    "used_space_in_mb": 84,
+[root@node75 ~]# ceph daemon dse.node75 engine all dcache rcache stat | grep used_space_in_mb
+    "used_space_in_mb": 64,
+    "used_space_in_mb": 80,
+    "used_space_in_mb": 96,
+    "used_space_in_mb": 72,
+```
+total = 304 + 408 + 312 = 1024M, read again
+```
+[root@node74 ~]# fio --name=vol_base_test --numjobs=1 --ioengine=rbd --rw=read --direct=1 --bs=256K --iodepth=1 --size=1G
+                     --pool=.disk01.rbd --rbdname=vol0 --group_reporting=1
+vol_base_test: (g=0): rw=read, bs=256K-256K/256K-256K/256K-256K, ioengine=rbd, iodepth=1
+fio-2.2.10
+Starting 1 process
+rbd engine: RBD version: 1.12.0
+Jobs: 1 (f=1): [R(1)] [100.0% done] [250.6MB/0KB/0KB /s] [1001/0/0 iops] [eta 00m:00s]
+vol_base_test: (groupid=0, jobs=1): err= 0: pid=1723713: Tue Mar 30 09:28:09 2021
+  read : io=1024.0MB, bw=263859KB/s, iops=1030, runt=  3974msec
+    slat (usec): min=1, max=33, avg= 4.94, stdev= 3.70
+    clat (usec): min=788, max=4228, avg=963.99, stdev=210.03
+     lat (usec): min=792, max=4231, avg=968.93, stdev=211.58
+    clat percentiles (usec):
+     |  1.00th=[  804],  5.00th=[  812], 10.00th=[  820], 20.00th=[  844],
+     | 30.00th=[  876], 40.00th=[  900], 50.00th=[  916], 60.00th=[  932],
+     | 70.00th=[  964], 80.00th=[ 1032], 90.00th=[ 1128], 95.00th=[ 1272],
+     | 99.00th=[ 1720], 99.50th=[ 2160], 99.90th=[ 3280], 99.95th=[ 3472],
+     | 99.99th=[ 4256]
+    bw (KB  /s): min=226304, max=281088, per=100.00%, avg=264045.71, stdev=19765.04
+    lat (usec) : 1000=76.10%
+    lat (msec) : 2=23.32%, 4=0.56%, 10=0.02%
+  cpu          : usr=0.76%, sys=0.53%, ctx=4105, majf=0, minf=1
+  IO depths    : 1=100.0%, 2=0.0%, 4=0.0%, 8=0.0%, 16=0.0%, 32=0.0%, >=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, >=64=0.0%
+     issued    : total=r=4096/w=0/d=0, short=r=0/w=0/d=0, drop=r=0/w=0/d=0
+     latency   : target=0, window=0, percentile=100.00%, depth=1
+
+Run status group 0 (all jobs):
+   READ: io=1024.0MB, aggrb=263859KB/s, minb=263859KB/s, maxb=263859KB/s, mint=3974msec, maxt=3974msec
+
+Disk stats (read/write):
+    dm-0: ios=0/80, merge=0/0, ticks=0/15, in_queue=15, util=0.05%, aggrios=0/138, aggrmerge=0/9,
+          aggrticks=0/1311, aggrin_queue=1311, aggrutil=1.01%
+  sda: ios=0/138, merge=0/9, ticks=0/1311, in_queue=1311, util=1.01%
+```
+## conclusion
+
+
+    
