@@ -21,18 +21,12 @@
  15: (co::Task::StaticRun(long)+0x20) [0x7f0b5a59ade4]
  16: (make_fcontext()+0x21) [0x7f0b5a63a361]
  ```
- ## nm
- ```
-[root wsh]# nm dse | grep dm_hash_node_t| c++filt | grep clear
-0000000000bc4e00 T dm_hash_node_t::clear()
-```
- ## asm code
- ```
- bc4fb4:       49 8d bf a8 fe ff ff    lea    -0x158(%r15),%rdi
- ```
- 
+
 ## shutdown thread
 7f0b45ff8700 2469499 
+
+## search log file by 2469499
+ceph-dse.engine.3.1.log-2021-03-30-154125
 
 ## works of thread  2469499
 ```
@@ -47,8 +41,6 @@
 2021-03-30 13:37:30.707496 7f0b45ff8700 2469499 1 WARNING Dcache_qm:allocateQM: alloc quota 8192 of quota type 0
 2021-03-30 13:37:30.733710 7f0b45ff8700 2469499 2 WARNING Dcache_qm:releaseQM: release quota 131072 of quota type 1
 ```
-## search log file by 2469499
-ceph-dse.engine.3.1.log-2021-03-30-154125
  
 ## shutdown
 ```
@@ -60,3 +52,26 @@ ceph-dse.engine.3.1.log-2021-03-30-154125:2021-03-30 13:37:30.661702 7f0b42ff270
 ceph-dse.engine.3.1.log-2021-03-30-154125:2021-03-30 13:37:30.667536 7f0b42ff2700 2469507 9  INFO DCACHE_CTRL:DCache_shutdown:waite to finish shutdown.
 ```
 
+## ctrl thread
+thread 2469507 in ceph-dse.engine.3.1.log-2021-03-30-154125
+```
+2021-03-30 13:37:30.661702 7f0b42ff2700 2469507 9  INFO DCACHE_CTRL:DCache_shutdown:start to shutdown.
+2021-03-30 13:37:30.667536 7f0b42ff2700 2469507 9  INFO DCACHE_CTRL:DCache_shutdown:waite to finish shutdown.
+```
+
+## tow handle thread
+```
+2469499
+2710428
+```
+before crash, thread 2469499 handle the hn_get_object
+
+## nm
+```
+[root wsh]# nm dse | grep dm_hash_node_t| c++filt | grep clear
+0000000000bc4e00 T dm_hash_node_t::clear()
+```
+ ## asm code
+ ```
+ bc4fb4:       49 8d bf a8 fe ff ff    lea    -0x158(%r15),%rdi
+ ```
