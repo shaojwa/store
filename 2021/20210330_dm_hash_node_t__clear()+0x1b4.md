@@ -48,8 +48,8 @@ ceph-dse.engine.3.1.log-2021-03-30-154125
 ```
 in ceph-dse.engine.3.1.log-2021-03-30-154125 shutdown
 ```
-ceph-dse.engine.3.1.log-2021-03-30-154125:2021-03-30 13:37:30.661702 7f0b42ff2700 2469507 9  INFO DCACHE_CTRL:DCache_shutdown:start to shutdown.
-ceph-dse.engine.3.1.log-2021-03-30-154125:2021-03-30 13:37:30.667536 7f0b42ff2700 2469507 9  INFO DCACHE_CTRL:DCache_shutdown:waite to finish shutdown.
+2021-03-30 13:37:30.661702 7f0b42ff2700 2469507 9  INFO DCACHE_CTRL:DCache_shutdown:start to shutdown.
+2021-03-30 13:37:30.667536 7f0b42ff2700 2469507 9  INFO DCACHE_CTRL:DCache_shutdown:waite to finish shutdown.
 ```
 
 ## ctrl thread
