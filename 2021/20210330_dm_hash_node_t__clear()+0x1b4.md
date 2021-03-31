@@ -54,3 +54,9 @@ ceph-dse.engine.3.1.log-2021-03-30-154125
 ```
 2021-03-30 13:37:30.713944 7f0b37fdc700 2469533 7 WARNING rocksdb: submit_transaction_sync engine is stopping, dropping task
 ```
+in ceph-dse.engine.3.1.log-2021-03-30-154125 shutdown
+```
+ceph-dse.engine.3.1.log-2021-03-30-154125:2021-03-30 13:37:30.661702 7f0b42ff2700 2469507 9  INFO DCACHE_CTRL:DCache_shutdown:start to shutdown.
+ceph-dse.engine.3.1.log-2021-03-30-154125:2021-03-30 13:37:30.667536 7f0b42ff2700 2469507 9  INFO DCACHE_CTRL:DCache_shutdown:waite to finish shutdown.
+```
+
