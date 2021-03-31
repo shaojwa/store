@@ -3,9 +3,9 @@
 
 ## logs
 ```
-2021-03-25 15:39:24.259258 7f50817f0700 1366740 2 WARNING Dcache_qm:allocateQM: alloc quota 8192 of quota type 1.quota_used:1421033472
-2021-03-25 15:39:24.259741 7f5080fef700 1366742 0 WARNING Dcache_qm:allocateQM: alloc quota 8192 of quota type 1.quota_used:1421041664
-2021-03-25 15:39:24.267914 7f5080fef700 1366742 0 WARNING Dcache_qm:allocateQM: alloc quota 8192 of quota type 0.quota_used:1483214848
+2021-03-25 15:39:24.259258 7f50817f0700 1366740 2 WARNING Dcache_qm:allocateQM: alloc quota 8192 of quota type 1
+2021-03-25 15:39:24.259741 7f5080fef700 1366742 0 WARNING Dcache_qm:allocateQM: alloc quota 8192 of quota type 1
+2021-03-25 15:39:24.267914 7f5080fef700 1366742 0 WARNING Dcache_qm:allocateQM: alloc quota 8192 of quota type 0
 2021-03-25 15:39:24.270093 7f50817f0700 1366740 5 ERROR *** Caught signal (Segmentation fault) **
  in thread 7f50817f0700 thread_name:Processer_5
 
@@ -22,6 +22,9 @@
 11: (co::Task::StaticRun(long)+0x20) [0x7f521838fde4]
 12: (make_fcontext()+0x21) [0x7f521842f361]
 ```
+
+## engine log
+
 ## function offset in text section
 ```
 [root@node1 wsh]# nm dse | grep hn_get_object | c++filt | grep T
@@ -94,3 +97,5 @@ cat /proc/sys/kernel/core_pattern
 #11 DataManager::dm_write_obj_data (this=0x7f4def0007d0, hobj=..., oper=..., data=...)
    at /src/dse/dcache/dm/dm.cc:160
 ```
+
+## log 
