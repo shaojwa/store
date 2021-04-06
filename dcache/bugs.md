@@ -4,11 +4,10 @@
 1. rcache, the object still in cold-queue after reading by `rados get`
 
 
-DCache 项目bug分类
-## 组件使用类错误
-1. boost intrusive list 中 erase_and_dispose接口获取下一个迭代器用法错误。
+## intrusive list
+1. the way to get the next iterator of the intrusive list by erase_and_dispose() is incorrect, we should use the return value of the interface.
+2. dereference of the iterator after erase(iterator) is in risk, we should dereference the iterator before erasing.
+3. 
 
-## 逻辑错误
-1. dm中snap 的cache_intervals没有在chunk的filling_write之后同步更新。
-
-
+## logic error
+1. need  to update the cache_intervals of the snap after calling chunk.filling_write()
