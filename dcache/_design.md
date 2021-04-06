@@ -25,9 +25,19 @@ DSE::create_engine()
 DSE::init_engine()  // new task
 EngineService::init()
 dcache = new DCacheInstance()
+```
+
+## dcache init
+```
+DSE::ms_dispatch()
+DSE::handle_engine_map()
+DSE::create_engine()
+DSE::init_engine()  // new task
+EngineService::init()
+dcache = new DCacheInstance()
 EngineService::DCache_create_instance() // in dcache task
 DCacheInstance::DCache_start()
-DCacheInstance::DCacheModuleInstacne()
+DCacheInstance::DCache_module_init()
 ```
 
 ## dcache shutdown 
