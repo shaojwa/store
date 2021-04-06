@@ -9,12 +9,22 @@ EngineService::init()
 EngineService::start_boot() 
 ```
 
+log
+```
+grep handle_engine_map | grep "create engine" 
+```
+
 ## engine shutdown
 ```
 DSE::ms_dispatch()
 DSE::handle_engine_map()
 DSE::shutdown_engine() // new task, processer(1)
 DSE::delete_engine() // new task, processer(1)
+```
+
+log
+```
+grep handle_engine_map | grep "destroy engine" 
 ```
 
 ## dcache create
