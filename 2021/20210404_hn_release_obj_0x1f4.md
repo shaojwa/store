@@ -23,3 +23,6 @@
  15: (co::Task::StaticRun(long)+0x20) [0x7efe04b9cf64]
  16: (make_fcontext()+0x21) [0x7efe04c41981]
 ```
+
+## conclusion
+destage call **erase_and_dispose()** without erase the destage_obj from another list
