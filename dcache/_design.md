@@ -1,3 +1,10 @@
+## DSE thread-pattern
+1. handle_engine_map // one thread, log like handle_engine_map engine_map(24..24 src has 1..24) v1
+
+## dcache thread pattern
+1. multi-thread running in the same engine.
+
+
 ## engine start
 ```
 DSE::ms_dispatch()
@@ -62,11 +69,8 @@ DCacheInstance::DCache_shutdown()
 DCacheInstance::DCache_shutdown_instask() //  in dcache task
 ```
 
-## dcache thread pattern
-1. multi-thread running in the same engine.
 
-
-## DSE thread-pattern
+## 
 
 1. 一个DSE进程拥有的线程数和这个节点上对应的pool数量有关系。
 1. 每一个pool会在一个节点上关联9个instance，也就会会一个DSE进程中创建8个与这个pool相关的线程。
