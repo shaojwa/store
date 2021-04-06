@@ -1,4 +1,4 @@
-#### 现象
+## 现象
 版本
 ```
 6fb8e4e28eb803264994aa34f4af692d90672150
@@ -18,9 +18,9 @@ yinhuiyu
 9: (co::Task::Run()+0xba) [0x7f42f51cb2a6]
 10: (co::Task::StaticRun(long)+0x20) [0x7f42f51cba4e]
 ```
-在日志恢复是报错
+在日志恢复时报错
 
-#### 现象2
+## 现象2
 版本
 ```
 220a56e364df82a768647091ad645c10c7bb7dbb
@@ -34,7 +34,7 @@ wangzhaorong
  3: (gsignal()+0x37) [0x7fc92bce3277]
  4: (abort()+0x148) [0x7fc92bce4968]
  5: (ceph::__ceph_assert_fail(char const*, char const*, int, char const*)+0x185) [0x7fc935732ce5]
- 6: (DataManager::do_filling_read(hobject_t const&, snapid_t, unsigned short, unsigned long long, unsigned long long)+0x340d) [0x55b6e5d7a2ad]
+ 6: (DataManager::do_filling_read(hobject_t const&, snapid_t, unsigned short, ...)+0x340d) [0x55b6e5d7a2ad]
  7: (()+0xbc8ba9) [0x55b6e5d7aba9]
  8: (()+0x113f19) [0x7fc9350a3f19]
  9: (co::Task::Run()+0xba) [0x7fc9350a4066]
@@ -42,7 +42,5 @@ wangzhaorong
  11: (make_fcontext()+0x21) [0x7fc93513b231]
  ```
 
-#### 原因
+## 原因
 日志模块调用dm接口时，没有初始化hobject对象：
-```
-```
