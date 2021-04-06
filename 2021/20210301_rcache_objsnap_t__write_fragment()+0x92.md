@@ -23,7 +23,7 @@ stack
  16: (ClassHandler::ClassMethod::exec(void*, ceph::buffer::list&, ceph::buffer::list&)+0x34) [0x559aab461da4]
  17: (DCacheOPProc::do_call(OSDOp&, DCacheOPProc::OpContext*)+0x27d) [0x7fabee76e51d]
  18: (DCacheOPProc::do_dse_ops(DCacheOPProc::OpContext*, std::vector<OSDOp, std::allocator<OSDOp> >&)+0x336) [0x7fabee7a56f6]
- 19: (DCacheOPProc::dcache_do_op_proc(DCacheOPProc::OpContext*, std::vector<OSDOp, std::allocator<OSDOp> >&)+0x1fe) [0x7fabee7a626e]
+ 19: (DCacheOPProc::dcache_do_op_proc(DCacheOPProc::OpContext*, ...)+0x1fe) [0x7fabee7a626e]
  20: (DCacheOPProc::do_op_operation(boost::intrusive_ptr<DSEOpRequest>)+0x2d0d) [0x7fabee7a94ed]
  21: (()+0x69212d) [0x7fabee7ad12d]
  22: (()+0x114159) [0x7fabefe7e159]
@@ -39,5 +39,3 @@ log
 ceph-dse.engine.9.7.log:2021-03-01 17:02:51.970529 7f001516f700 12269 49 DEBUG dcache_rcache:ercache_write
 obj 0x7efecf59e080, obj_id rbd_id.rbd0, snap_id head, prefetch 0, off 0, len 18, align_from 0, algin_to 0, align_len 0
 ```
-
-
