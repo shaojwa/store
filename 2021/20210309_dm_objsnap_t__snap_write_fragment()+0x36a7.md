@@ -1,13 +1,13 @@
-####  环境
+##  环境
 ```
 chenhongzhou
 2021-03-09 16:38:56.729582
 182.200.70.112
 ```
-#### 版本
+## 版本
 7a78ea276207c4ab7d4bea08a59304e1c01f1232
 
-#### 现象
+## 现象
 ```
  0> 2021-03-09 16:44:56.499865 7f62637f0700 2334332 18 ERROR *** Caught signal (Aborted) **
  in thread 7f62637f0700 thread_name:Processer_6
@@ -21,7 +21,7 @@ chenhongzhou
  6: (dm_objsnap_t::snap_write_fragment(hobject_t const&, ...)+0x36a7) [0x558ef212a407]
  7: (DataManager::dm_write_obj_data(hobject_t const&, dm_data_oper_t const&, ceph::buffer::list const&)+0x125) [0x558ef212abd5]
  8: (DCacheLineSpaceManager::lsm_recovery_write_log(char*, unsigned short, unsigned long long)+0x3ae) [0x558ef213dbce]
- 9: (DCacheLineSpaceManager::lsm_do_recovery(char*, unsigned long long, unsigned long long&, unsigned long long)+0x92b) [0x558ef214871b]
+ 9: (DCacheLineSpaceManager::lsm_do_recovery(char*, unsigned long long, unsigned long long&, ...)+0x92b) [0x558ef214871b]
  10: (DCacheLineSpaceManager::lsm_recovery_by_csdobj(CSDObjId, unsigned long long)+0x15d) [0x558ef2148efd]
  11: (DCacheLineSpaceManager::lsm_recovery_log()+0x330) [0x558ef2149c20]
  12: (DCacheInstance::DCache_start(unsigned char)+0x7e7) [0x558ef215f5e7]
@@ -33,7 +33,7 @@ chenhongzhou
  NOTE: a copy of the executable, or `objdump -rdS <executable>` is needed to interpret this.
 ```
 
-#### 分析
+## 分析
 查看日志：
 ```
 /src/dse/dcache/dm/dm.cc: 1991: FAILED assert(data.length() >= length)
