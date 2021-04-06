@@ -1,3 +1,12 @@
+## engine start
+```
+EngineService::init()
+>>dcache = new DCacheInstance()
+>>this->DCache_create_instance()
+>>EngineService::start_boot() 
+```
+
+
 ## dcache thread pattern
 1. multi-thread running in the same engine.
 2. 
