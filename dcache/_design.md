@@ -1,10 +1,17 @@
 ## engine start
 ```
-EngineService::init()
->>dcache = new DCacheInstance()
->>this->DCache_create_instance()
->>EngineService::start_boot() 
+DSE::ms_dispatch()
+>>DSE::handle_engine_map()
+>>>>DSE::create_engine()
+>>>>>>DSE::init_engine()
+>>>>>>>>EngineService::init()
+>>>>>>>>>>dcache = new DCacheInstance()
+>>>>>>>>>>EngineService::che_create_instance() // in dcache task
+>>>>>>>>>>>>DCacheInstance::DCache_start()
+>>>>>>>>>>>>>>DCacheInstance::DCacheModuleInstacne()
+>>>>>>>>>>EngineService::start_boot() 
 ```
+## engine shutdown
 
 
 ## dcache thread pattern
