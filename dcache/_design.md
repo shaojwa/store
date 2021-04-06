@@ -1,4 +1,6 @@
 ## dcache thread pattern
+1. multi-thread running in the same engine.
+2. 
 
 
 ## DSE thread-pattern
