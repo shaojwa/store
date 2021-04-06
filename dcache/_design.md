@@ -1,22 +1,49 @@
-## engine start
+## engien start
 ```
 DSE::ms_dispatch()
->>DSE::handle_engine_map()
->>>>DSE::create_engine()
->>>>>>DSE::init_engine()
->>>>>>>>EngineService::init()
->>>>>>>>>>dcache = new DCacheInstance()
->>>>>>>>>>EngineService::che_create_instance() // in dcache task
->>>>>>>>>>>>DCacheInstance::DCache_start()
->>>>>>>>>>>>>>DCacheInstance::DCacheModuleInstacne()
->>>>>>>>>>EngineService::start_boot() 
+DSE::handle_engine_map()
+DSE::create_engine() 
+DSE::init_engine() // in new task, processer(0)
+EngineService::init()
+// create row, dcache, dedup, compress, gc
+EngineService::start_boot() 
 ```
-## engine shutdown
 
+## engine shutdown
+```
+DSE::ms_dispatch()
+DSE::handle_engine_map()
+DSE::shutdown_engine() // new task, processer(1)
+DSE::delete_engine() // new task, processer(1)
+```
+
+## dcache create
+```
+DSE::ms_dispatch()
+DSE::handle_engine_map()
+DSE::create_engine()
+DSE::init_engine()  // new task
+EngineService::init()
+dcache = new DCacheInstance()
+EngineService::DCache_create_instance() // in dcache task
+DCacheInstance::DCache_start()
+DCacheInstance::DCacheModuleInstacne()
+```
+
+## dcache shutdown 
+```
+DSE::ms_dispatch()
+DSE::handle_engine_map()
+DSE::shutdown_engine() // new task, processer(1)
+EngineService::shutdown()
+EngineService::try_shutdown()
+EngineService::_shutdown()
+DCacheInstance::DCache_shutdown()
+DCacheInstance::DCache_shutdown_instask() //  in dcache task
+```
 
 ## dcache thread pattern
 1. multi-thread running in the same engine.
-2. 
 
 
 ## DSE thread-pattern
