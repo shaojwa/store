@@ -1,5 +1,5 @@
 ## DSE thread-pattern
-1. handle_engine_map // one processor, log like handle_engine_map engine_map(24..24 src has 1..24) v1
+1. handle_engine_map // one processor, log contains "handle_engine_map engine_map(24..24 src has 1..24) v1"
 2. multi-thread running in the same engine.(dcache thread, row thread, dedup thread)
  
 ## DCache thread pattern
