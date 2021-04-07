@@ -75,3 +75,6 @@ before crash, thread 2469499 handle the hn_get_object
  ```
  bc4fb4:       49 8d bf a8 fe ff ff    lea    -0x158(%r15),%rdi
  ```
+
+## core file 
+no corefile, destage_obj_t has not earsed.
