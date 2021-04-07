@@ -1,10 +1,10 @@
 ## DSE thread-pattern
-1. handle_engine_map // one processor, log contains "handle_engine_map engine_map(24..24 src has 1..24) v1"
+1. handle_engine_map // one thread, log contains "handle_engine_map engine_map(24..24 src has 1..24) v1"
 2. multi-thread running in the same engine.(dcache thread, row thread, dedup thread)
  
 ## DCache thread pattern
 1. DCacheInstance inferfaces running in the dcache-processor.
-2. ctrlproc-code rnnning in the dcache-processor.
+2. ctrlproc-code rnnning in the dcache-processor. (init, destroy, migrate)
 3. opproc-code running in the dcache-processor.
 4. lsm-code running in the dcache-processor.
 5. destage-code running in the dcache-processor except the callbacks like **handle-destage-post()**
