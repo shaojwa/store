@@ -1,5 +1,6 @@
 ## time
-2021-04-07 hukedong
+2021-04-07 hukedong, delete the node from the handy at 04-07 15:21-19/15:23:20
+
 ## stack
 ```
 2021-04-07 15:23:05.235508 7fbe873f9700 1945207 6 ERROR *** Caught signal (Aborted) **
@@ -30,3 +31,26 @@
 
 ## thread_id
 7fbe873f9700
+
+## engine shutdown DCache
+```
+ceph-dse.engine.3.c.log-2021-04-07-154121:2021-04-07 15:23:04.305245 7fbe843f3700 1945213 17  INFO DCACHE_CTRL:DCache_shutdown:start to shutdown.
+ceph-dse.engine.3.d.log-2021-04-07-154121:2021-04-07 15:23:04.305254 7fbe83bf2700 1945214 1  INFO DCACHE_CTRL:DCache_shutdown:start to shutdown.
+ceph-dse.engine.3.e.log-2021-04-07-154121:2021-04-07 15:23:04.305272 7fbe833f1700 1945215 23  INFO DCACHE_CTRL:DCache_shutdown:start to shutdown.
+ceph-dse.engine.3.f.log-2021-04-07-154121:2021-04-07 15:23:04.305289 7fbe82bf0700 1945216 5  INFO DCACHE_CTRL:DCache_shutdown:start to shutdown.
+ceph-dse.engine.6.c.log-2021-04-07-154121:2021-04-07 15:23:04.305310 7fbe823ef700 1945217 2  INFO DCACHE_CTRL:DCache_shutdown:start to shutdown.
+ceph-dse.engine.6.d.log-2021-04-07-154121:2021-04-07 15:23:04.305374 7fbe81bee700 1945218 18  INFO DCACHE_CTRL:DCache_shutdown:start to shutdown.
+ceph-dse.engine.6.f.log-2021-04-07-154121:2021-04-07 15:23:04.305486 7fbe80bec700 1945220 1  INFO DCACHE_CTRL:DCache_shutdown:start to shutdown.
+```
+## dcache to shutdown
+```
+ceph-dse.engine.3.c.log-2021-04-07-154121:2021-04-07 15:23:04.305344 7fbe873f9700 1945207 6  INFO Dcache_opproc:  begin to destroy opproc
+ceph-dse.engine.3.f.log-2021-04-07-154121:2021-04-07 15:23:04.306785 7fbe873f9700 1945207 7  INFO Dcache_opproc:  begin to destroy opproc
+ceph-dse.engine.6.c.log-2021-04-07-154121:2021-04-07 15:23:04.306777 7fbe873f9700 1945207 7  INFO Dcache_opproc:  begin to destroy opproc
+ceph-dse.engine.6.f.log-2021-04-07-154121:2021-04-07 15:23:04.307817 7fbe873f9700 1945207 7  INFO Dcache_opproc:  begin to destroy opproc
+```
+
+## which engine cause the fault
+ceph-dse.engine.6.f.log in which there is no "dm shutdown OK"
+
+## 
