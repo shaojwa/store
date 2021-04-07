@@ -1,13 +1,17 @@
-## DSE thread-pattern
+## DSE threads
 1. handle_engine_map // one thread, log contains "handle_engine_map engine_map(24..24 src has 1..24) v1"
 2. multi-thread running in the same engine.(dcache thread, row thread, dedup thread)
  
-## DCache thread pattern
+## DCache threads
 1. DCacheInstance inferfaces running in the dcache-processor.
 2. ctrlproc-code rnnning in the dcache-processor. (init, destroy, migrate)
 3. opproc-code running in the dcache-processor.
 4. lsm-code running in the dcache-processor.
-5. destage-code running in the dcache-processor except the callbacks like **handle-destage-post()**
+5. destage-code running in the dcache-processor except the callbacks like **handle_destage_post()**
+
+## Destage threads
+1. **delete_operation()** in dcache-processor. // delete objs
+2. **destage_operation()** in dcache-processor. // destage objs
 
 
 ## engine start
@@ -74,6 +78,16 @@ DCacheInstance::DCache_shutdown()
 DCacheInstance::DCache_shutdown_instask() //  in dcache task
 ```
 
+## destage flow
+```
+DCache_ROW_ready()
+Destage::destage_start()
+Destage::destate_operation() // new task
+Destage::destate_objs() // new task
+Destage::do_destage()
+ROWInstance::ROW_dcache_flush() // callback is Destage::destage_obj_cb
+```
+destage_obj_cb() called in row-processor,
 
 ## 
 
