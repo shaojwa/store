@@ -83,7 +83,9 @@ nss-util-3.34.0-2.el7.x86_64 openssl-libs-1.0.2k-12.el7.x86_64 xz-libs-5.2.2-1.e
 #5  0x00007fbe91b0d968 in abort () from /lib64/libc.so.6
 #6  0x00007fbe91b05096 in __assert_fail_base () from /lib64/libc.so.6
 #7  0x00007fbe91b05142 in __assert_fail () from /lib64/libc.so.6
-#8  0x00005632f4bde2a8 in boost::intrusive::detail::destructor_impl<boost::intrusive::generic_hook<(boost::intrusive::algo_types)0, boost::intrusive::list_node_traits<void*>, bo                          ost::intrusive::member_tag, (boost::intrusive::link_mode_type)1, (boost::intrusive::base_hook_type)0> > (hook=...)
+#8  0x00005632f4bde2a8 in boost::intrusive::detail::destructor_impl<boost::intrusive::generic_hook
+    <(boost::intrusive::algo_types)0, boost::intrusive::list_node_traits<void*>,
+    boost::intrusive::member_tag, (boost::intrusive::link_mode_type)1, (boost::intrusive::base_hook_type)0> > (hook=...)
     at /build/boost/include/boost/intrusive/detail/generic_hook.hpp:48
 #9  0x00005632f4be3f64 in ~generic_hook (this=0x7fbe8b7e1a18, __in_chrg=<optimized out>)
     at /build/boost/include/boost/intrusive/detail/generic_hook.hpp:192
@@ -102,15 +104,19 @@ nss-util-3.34.0-2.el7.x86_64 openssl-libs-1.0.2k-12.el7.x86_64 xz-libs-5.2.2-1.e
     at /src/dse/dcache/dm/dm.cc:993
 #18 0x00005632f4be4310 in DataManager::dm_shutdown (this=this@entry=0x7fbe114007c0)
     at /src/dse/dcache/dm/dm.cc:134
-#19 0x00005632f4c4115f in DCacheInstance::DCache_shutdown_intask (this=0x7fbe10c00000, _sem=..., exist_pool=@0x7fb5e87052ec: true)
+#19 0x00005632f4c4115f in DCacheInstance::DCache_shutdown_intask
+    (this=0x7fbe10c00000, _sem=..., exist_pool=@0x7fb5e87052ec: true)
     at /src/dse/dcache/dcache_init.cc:217
 #20 0x00005632f4c422df in operator() (__closure=<optimized out>)
     at /src/dse/dcache/dcache_init.cc:244
-#21 std::_Function_handler<void(), DCacheInstance::DCache_shutdown(bool)::__lambda30>::_M_invoke(const std::_Any_data &) (__functor=...)
-    at /usr/include/c++/4.8.2/functional:2071
+#21 std::_Function_handler<void(), DCacheInstance::DCache_shutdown(bool)::__lambda30>::_M_invoke(const std::_Any_data &)
+    (__functor=...) at /usr/include/c++/4.8.2/functional:2071
 #22 0x00007fbe9aed3649 in co::Task::__lambda8::operator() (__closure=0x7fb6bc105f20)
     at /Libgo/libgo/task/task.cpp:37
 #23 0x00007fbe9aed3796 in co::Task::Run (this=0x7fbe09fc0c00) at /Libgo/libgo/task/task.cpp:48
 #24 0x00007fbe9aed3f64 in co::Task::StaticRun (vp=140454188026880) at /Libgo/libgo/task/task.cpp:79
 #25 0x00007fbe9af78981 in make_fcontext () at /Libgo/libgo/context/make_x86_64_sysv_elf_gas.S:64
 ```
+
+## conclusion
+destage_obj has not erase
