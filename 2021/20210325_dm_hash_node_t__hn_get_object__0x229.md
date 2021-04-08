@@ -104,4 +104,5 @@ cat /proc/sys/kernel/core_pattern
    at /src/dse/dcache/dm/dm.cc:160
 ```
 
-## log 
+## opertaion
+do_write transaction write
