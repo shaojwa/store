@@ -1,4 +1,4 @@
-## related bug
+## bug
 202103251408
 
 ## logs
@@ -23,11 +23,12 @@
 12: (make_fcontext()+0x21) [0x7f521842f361]
 ```
 
-## engine log
+## engine
+
 ceph-dse.engine.6.1.log-2021-03-25-154855
 
 ## hn_get_object
-all target obj in thread 1366740
+1366740， all target obj in thread 1366740
 
 
 ## function offset in text section
@@ -53,7 +54,7 @@ id benchmark_data_node119_508101_object490569
 hit id benchmark_data_node119_508101_object490569
 ```
 
-benchmark_data_node119_508101_object490569 is the one after benchmark_data_node119_508101_object401042
+benchmark_data_node119_508101_object490569  is the one after benchmark_data_node119_508101_object401042
 ```
 target obj benchmark_data_node119_508101_object490569
 id benchmark_data_node119_508101_object366884
