@@ -1,6 +1,6 @@
-[DSE instances](#DSE instance)
+[DSE instances](#DSE-instance)
 
-[DSE threads](#DSE threads)
+[DSE threads](#DSE-threads)
 
 ## DSE instances
 1. 8 instance per pool, instance is the independent unit of data.
