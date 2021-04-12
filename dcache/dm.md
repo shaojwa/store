@@ -1,10 +1,3 @@
-## DCache threads
-1. DCacheInstance inferfaces running in the dcache-processor.
-2. ctrlproc-code rnnning in the dcache-processor. (init, destroy, migrate)
-3. opproc-code running in the dcache-processor.
-4. lsm-code running in the dcache-processor.
-5. destage-code running in the dcache-processor except the callbacks like **handle_destage_post()**
-
 ## DM 如何处理补齐读task的销毁
 DM中的task创建之后，发送请求给ROW，同步等响应，得到响应之后写入DM之后就返回，没有task的销毁。
 
