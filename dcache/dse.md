@@ -1,12 +1,3 @@
-## DSE threads
-1. handle_engine_map  // log contains "handle_engine_map engine_map(24..24 src has 1..24) v1"
-2. mid_dse_control    // log contains "shutdown engine wait / flush_engine wait / flush_engine finish
-3. engine-threads
-4. dcache-threads
-5. row-threads
-6. dedup-threads
-
-
 ## 总体概述
 1. Unistor 2.0 是全闪架构
 1. 在RADOS-Client和OSD之间，增加了DSE层，DSE是独立进程。
@@ -73,3 +64,16 @@
  1. UserObj的数据，attr，omap的信息存储如何实现？
  1. 什么是ROCKDB compaction流程？
  1. 将需要处理的IO按照访问区域进行空间隔离，保证多线程间访问的区域相互隔离而不会产生冲突。怎么做到？
+
+## DSE threads
+1. handle_engine_map  // log contains "handle_engine_map engine_map(24..24 src has 1..24) v1"
+2. mid_dse_control    // log contains "shutdown engine wait / flush_engine wait / flush_engine finish
+3. engine-threads
+4. dcache-threads
+5. row-threads
+6. dedup-threads
+
+## DSE instances
+1. 8 instance per pool, instance is the independent unit of data.
+2. in each instance, there are several modules, include engine, dcache, row ,dedup.
+3. each instance will run on several processors, and each module run on the separated processors.
