@@ -32,11 +32,8 @@ int level = (int) strict_strtol(levelstr.c_str(), 10, &err);
 1. iterator的命名，是it_map还是map_it。
 1. 比较时常量宏写等号左边还是右边。
 1. ceph中如果嵌套比较深，会不会倾向用if把特例先continue掉，这样减少嵌套深度。
-
-
 1. string到int的hash算法。
-
-1 .接口函数和工作函数什么时候分离？工作函数被调用较多，或者接口函数需要处理锁操作的时候。
+1. 接口函数和工作函数什么时候分离？工作函数被调用较多，或者接口函数需要处理锁操作的时候。
 1. 模块处于STOPPED状态，无法处理请求，接口该如何返回错误码？
 1. new 之后要不要校验返回值是否为null？
 1. 一个指针数组空间的释放怎么实现最好？
@@ -46,7 +43,6 @@ int level = (int) strict_strtol(levelstr.c_str(), 10, &err);
 1. 一个外部接口调用另外一个外部接口，两个接口都有需要加锁的场景，怎么设计？ `if(mutex.is_locked_by_me()) { mutex.unlock(); } `
 1. 模块状态机需要分NONE，INIT，ACTIVE等多个状态么？是否尽可能简单比较好？
 1. 先设置状态还是，等所有操作之后再设置状态，比如STOP模块的时候？？
-
 1. 把枚举移动到类内部
 ```
 enum {
