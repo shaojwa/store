@@ -21,8 +21,6 @@ batch中的不同task又怎么在框架内构造？不同的派生task，派生b
 int level = (int) strict_strtol(levelstr.c_str(), 10, &err);
 ```
 
-----
-写法
 1. 边界怎么说？ bound，比如复杂度的上界，下界一般用lower bound， upper bound。
 1. 构造函数参数名和成员同名怎么区分？参数以下划线结束，比如param_，参见 MDSRank::MDSRank。
 1. 非公共成员函数怎么区别public成员函数？ 以下划线开始，比如_stop_local()，参见 class AsyncConnection。
@@ -35,12 +33,9 @@ int level = (int) strict_strtol(levelstr.c_str(), 10, &err);
 1. 比较时常量宏写等号左边还是右边。
 1. ceph中如果嵌套比较深，会不会倾向用if把特例先continue掉，这样减少嵌套深度。
 
-----
-算法
-1. string 到 int 的hash算法。
 
-----
-设计
+1. string到int的hash算法。
+
 1 .接口函数和工作函数什么时候分离？工作函数被调用较多，或者接口函数需要处理锁操作的时候。
 1. 模块处于STOPPED状态，无法处理请求，接口该如何返回错误码？
 1. new 之后要不要校验返回值是否为null？
@@ -51,8 +46,6 @@ int level = (int) strict_strtol(levelstr.c_str(), 10, &err);
 1. 一个外部接口调用另外一个外部接口，两个接口都有需要加锁的场景，怎么设计？ `if(mutex.is_locked_by_me()) { mutex.unlock(); } `
 1. 模块状态机需要分NONE，INIT，ACTIVE等多个状态么？是否尽可能简单比较好？
 1. 先设置状态还是，等所有操作之后再设置状态，比如STOP模块的时候？？
-
-
 
 1. 把枚举移动到类内部
 ```
