@@ -1,3 +1,10 @@
+## DCache threads
+1. DCacheInstance inferfaces running in the dcache-processor.
+2. ctrlproc-code rnnning in the dcache-processor. (init, destroy, migrate)
+3. opproc-code running in the dcache-processor.
+4. lsm-code running in the dcache-processor.
+5. destage-code running in the dcache-processor except the callbacks like **handle_destage_post()**
+
 ## dcache create
 ```
 DSE::ms_dispatch()
