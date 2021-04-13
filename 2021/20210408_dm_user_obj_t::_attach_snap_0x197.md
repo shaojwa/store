@@ -19,3 +19,9 @@
  13: (make_fcontext()+0x21) [0x7f5c14c19d21]
  NOTE: a copy of the executable, or `objdump -rdS <executable>` is needed to interpret this.
 ```
+
+## asm
+```
+c13450:       48 8b bb 10 01 00 00    mov    0x110(%rbx),%rdi
+c13457:       4c 8b 45 18             mov    0x18(%rbp),%r8
+```
