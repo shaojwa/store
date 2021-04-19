@@ -39,7 +39,7 @@ movzbl, Move Zero-Extended Byte to Long, the low 8 bits of the destination are r
 
 movzwl, Move Zero-Extended Word to Long, the low 16 bits of the destination are replaced by the source operand. the top 16 bits are set to 0. The source operand is unaffected.
 
-## code
+## source code
 ```
 classs DCacheInstance {
 private: 
@@ -55,7 +55,13 @@ public:
   scheduler * sched
   ...
   }
+
+sched->CreateTask() (
+...,
+::co::TaskOpt{UINT16_MAX, INSTANCE_ID, thread_id, true, 0, 0, __func__, __FILE__, __LINE__});
 ```
+
+## asm  code
 ```
 movzwl 0xc(%r15),%eax
 ```
@@ -67,3 +73,11 @@ mov    0x20(%r15),%rdx
 ```
 0x20 is 12 + 4 + 8 + 8, so mov sched to rdx.
 
+so, before call TaskOpt(), we got thread_id and instance_id, instance_id is cct->get_instance_id(), so we need cct.
+
+```
+uint8_t cct->get_instance_id() const {
+  return instance_id;
+  }
+```
+match the movzbl, so the 0x20 is the offset of cct, check,
