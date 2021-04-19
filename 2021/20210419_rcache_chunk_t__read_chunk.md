@@ -23,3 +23,11 @@
  18: (make_fcontext()+0x21) [0x7f46f6419331]
  NOTE: a copy of the executable, or `objdump -rdS <executable>` is needed to interpret this.
  ```
+
+## obj
+rbd_data.21.18fb5347768e95.0000000000003212
+
+## log file
+ceph-dse.engine.24.8.log-2021-04-19-165047.gz
+
+## 
