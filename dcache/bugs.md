@@ -7,7 +7,7 @@
 ## intrusive list
 1. the way to get the next iterator of the intrusive list by erase_and_dispose() is incorrect, we should use the return value of the interface.
 2. dereference of the iterator after erase(iterator) is in risk, we should dereference the iterator before erasing.
-3. 
 
 ## logic error
 1. need  to update the cache_intervals of the snap after calling chunk.filling_write()
+2. checking dcache status to filling_read (32931)
