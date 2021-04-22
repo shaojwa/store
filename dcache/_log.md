@@ -2,6 +2,7 @@
 1. DM/RCache多线程代码何如
 2. DM shutdown处理
 3. DM lsm quota计算
+4. object的hash不再计算，直接用object中的seed
 
 #### 20210129
 从下周(20210201)开始，测试那边就要开始投入测试，在过年前发现的问题不提单；年后发现的问题提简易单。
