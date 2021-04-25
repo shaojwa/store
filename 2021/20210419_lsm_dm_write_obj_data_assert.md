@@ -30,3 +30,8 @@ thread 7f9e08ff1700 time 2021-04-19 10:18:59.295960
  16: (make_fcontext()+0x21) [0x7f9f1d203331]
  NOTE: a copy of the executable, or `objdump -rdS <executable>` is needed to interpret this.
  ```
+ 
+ object
+ ```
+ rbd_data.3.a76a3da9ad55.000000000000b7b4
+ ```
