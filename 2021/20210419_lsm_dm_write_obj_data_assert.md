@@ -1,8 +1,8 @@
 ## desc
 
 ```
-
--1> 2021-04-19 10:18:59.295735 7f9e08ff1700 155093 26 DEBUG mid_dse_control 245 is_oid_belong_local_host rbd_data.3.a76a3da9ad55.000000000000b7b4 6 belong to engine:6.7 bucket:6.f6d
+-1> 2021-04-19 10:18:59.295735 7f9e08ff1700 155093 26 DEBUG mid_dse_control 245
+    is_oid_belong_local_host rbd_data.3.a76a3da9ad55.000000000000b7b4 6 belong to engine:6.7 bucket:6.f6d
 0> 2021-04-19 10:18:59.298558 7f9e08ff1700 155093 26 ERROR /src/dse/dcache/dm/dm.cc:
 In function 'void DataManager::dm_write_obj_data(const hobject_t&, const dm_data_oper_t&, const bufferlist&)'
 thread 7f9e08ff1700 time 2021-04-19 10:18:59.295960
