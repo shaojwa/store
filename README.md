@@ -14,4 +14,5 @@
 
 ## Part III Distributed
 - [Transection and ACID](/dist/acid.md)
-- [Consistenc](/dist/consistency.md)
+- [一致性](/dist/consistency.md)
+- [共识算法](/dist/consensus.md)
