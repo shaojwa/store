@@ -1,3 +1,10 @@
+## 集群
+```
+hukedong上报
+196.16.16.125/125/127
+20210428的版本
+```
+
 ## 现象
 ```
 (gdb) bt
@@ -7,11 +14,13 @@
 #3  <signal handler called>
 #4  0x00007efec19dc277 in raise () from /lib64/libc.so.6
 #5  0x00007efec19dd968 in abort () from /lib64/libc.so.6
-#6  0x00007efecca7d055 in ceph::__ceph_assert_fail (assertion=assertion@entry=0x558a8be9cf50 "oper.snap_seq >= obj->get_first_snapid()",
+#6  0x00007efecca7d055 in ceph::__ceph_assert_fail (
+    assertion=assertion@entry=0x558a8be9cf50 "oper.snap_seq >= obj->get_first_snapid()",
     file=file@entry=0x558a8be9cc00 "//src/dse/dcache/dm/dm.cc", line=line@entry=179,
     func=func@entry=0x558a8be9eac0 <DataManager::dm_write_obj_data(
-    hobject_t const&, dm_data_oper_t const&, ceph::buffer::list const&)::__PRETTY_FUNCTION__> "void DataManager::dm_write_obj_data(
-    const hobject_t&, const dm_data_oper_t& const bufferlist&)") at /src/common/assert.cc:66
+    hobject_t const&, dm_data_oper_t const&, ceph::buffer::list const&)::__PRETTY_FUNCTION__>
+    "void DataManager::dm_write_obj_data(const hobject_t&, const dm_data_oper_t& const bufferlist&)")
+    at /src/common/assert.cc:66
 #7  0x0000558a8bbdae1e in DataManager::dm_write_obj_data (this=0x7efb530009a0, hobj=..., oper=..., data=...)
     at /src/dse/dcache/dm/dm.cc:179
 #8  0x0000558a8bbec4eb in DCacheLineSpaceManager::lsm_recovery_write_log (
