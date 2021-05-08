@@ -12,20 +12,27 @@
     func=func@entry=0x558a8be9eac0 <DataManager::dm_write_obj_data(
     hobject_t const&, dm_data_oper_t const&, ceph::buffer::list const&)::__PRETTY_FUNCTION__> "void DataManager::dm_write_obj_data(
     const hobject_t&, const dm_data_oper_t& const bufferlist&)") at /src/common/assert.cc:66
-#7  0x0000558a8bbdae1e in DataManager::dm_write_obj_data (this=0x7efb530009a0, hobj=..., oper=..., data=...) at /src/dse/dcache/dm/dm.cc:179
-#8  0x0000558a8bbec4eb in DCacheLineSpaceManager::lsm_recovery_write_log (this=0x7efb528005c0, log=<optimized out>, bucket_id=<optimized out>, log_seq=2)
+#7  0x0000558a8bbdae1e in DataManager::dm_write_obj_data (this=0x7efb530009a0, hobj=..., oper=..., data=...)
+    at /src/dse/dcache/dm/dm.cc:179
+#8  0x0000558a8bbec4eb in DCacheLineSpaceManager::lsm_recovery_write_log (
+    this=0x7efb528005c0, log=<optimized out>, bucket_id=<optimized out>, log_seq=2)
     at /src/dse/dcache/lsm/lsm.cc:1383
 #9  0x0000558a8bbf3005 in DCacheLineSpaceManager::lsm_do_recovery (
-    this=this@entry=0x7efb528005c0, log=log@entry=0x7efb4c800010 "", read_size=read_size@entry=2543616, recovey_size=@0x7efdf27006c8: 0, log_seq=2)
+    this=this@entry=0x7efb528005c0, log=log@entry=0x7efb4c800010 "",
+    read_size=read_size@entry=2543616, recovey_size=@0x7efdf27006c8: 0, log_seq=2)
     at /src/dse/dcache/lsm/lsm.cc:1456
 #10 0x0000558a8bbf337b in DCacheLineSpaceManager::lsm_recovery_by_csdobj (
     this=this@entry=0x7efb528005c0, csd_obj_id=..., data_len=2543616, readLog=readLog@entry=0x7efb4c800010 "")
     at /src/dse/dcache/lsm/lsm.cc:1544
-#11 0x0000558a8bbf3d32 in DCacheLineSpaceManager::lsm_recovery_log (this=this@entry=0x7efb528005c0) at /src/dse/dcache/lsm/lsm.cc:1604
-#12 0x0000558a8bc027d9 in DCacheInstance::DCache_start (this=0x7efb52800010, type=type@entry=3 '\003') at /src/dse/dcache/dcache_init.cc:123
-#13 0x0000558a8b62084c in EngineService::DCache_create_instance (this=0x7efdd0abcc10, create_t=<optimized out>, step=INIT_STEP_FIRST)
+#11 0x0000558a8bbf3d32 in DCacheLineSpaceManager::lsm_recovery_log (this=this@entry=0x7efb528005c0)
+    at /src/dse/dcache/lsm/lsm.cc:1604
+#12 0x0000558a8bc027d9 in DCacheInstance::DCache_start (this=0x7efb52800010, type=type@entry=3 '\003')
+    at /src/dse/dcache/dcache_init.cc:123
+#13 0x0000558a8b62084c in EngineService::DCache_create_instance (
+    this=0x7efdd0abcc10, create_t=<optimized out>, step=INIT_STEP_FIRST)
     at /src/dse/engine/Engine.cc:371
-#14 0x00007efecc3d101d in co::Task::__lambda8::operator() (__closure=0x7efdf2700f20) at /Libgo/libgo/task/task.cpp:37
+#14 0x00007efecc3d101d in co::Task::__lambda8::operator() (__closure=0x7efdf2700f20)
+    at /Libgo/libgo/task/task.cpp:37
 #15 0x00007efecc3d116a in co::Task::Run (this=0x7efdcafd36c8) at /Libgo/libgo/task/task.cpp:48
 #16 0x00007efecc3d1938 in co::Task::StaticRun (vp=139628497417928) at /Libgo/libgo/task/task.cpp:79
 #17 0x00007efecc476331 in make_fcontext () at //Libgo/libgo/context/make_x86_64_sysv_elf_gas.S:64
