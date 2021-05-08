@@ -32,6 +32,9 @@
 ```
 
 ## 定位
+```
+gdb /opt/bin/dse core-Processer_5-762356-1620372143
+```
 assert时oper中的值：
 ```
 (gdb) p obj
