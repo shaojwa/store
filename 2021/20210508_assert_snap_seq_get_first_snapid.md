@@ -85,3 +85,5 @@ $6 (DataManager *) 0x7efb530009a0
 可以确认dm也是对的，所以user_obj中的数据应该是对的，进一步确认得到的snap地址0x7efb99274820应该也是对的。
 从snap结构，我们可以看到。这个snap是被delete，snap_seq是-2（18446744073709551614）
 
+## 原因
+原先版本delete_obj时传入的snap_seq是-2，加上日志记录，在恢复的时候就触发断言，修改方案，需要修改为msg中的snap_seq。
