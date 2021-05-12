@@ -67,8 +67,8 @@ gdb dse core-Processer_6-2344201-1617935900     (wd: /corefile)
 #19 0x000055789399327c in DCacheOPProc::do_op_operation (this=0x7f8ee3c00030, req=...)
     at /src/dse/dcache/opproc/opproc.cc:819
 #20 0x000055789399807d in operator() (__closure=<optimized out>) at /src/dse/dcache/opproc/opproc.cc:844
-#21 std::_Function_handler<void(), DCacheOPProc::do_op(DSEOpRequestRef)::__lambda33>::_M_invoke(const std::_Any_data &) (__functor=...)
-    at /usr/include/c++/4.8.2/functional:2071
+#21 std::_Function_handler<void(), DCacheOPProc::do_op(DSEOpRequestRef)::__lambda33>::_M_invoke(const std::_Any_data &)
+    (__functor=...) at /usr/include/c++/4.8.2/functional:2071
 #22 0x00007f90c6614649 in co::Task::__lambda8::operator() (__closure=0x7f8ca1105f20)
     at /Everyday_build/workspace/Everyday_build_ceph/UniStorOS-E1151-AF-ALL/Libgo/libgo/task/task.cpp:37
 #23 0x00007f90c6614796 in co::Task::Run (this=0x7f8d3e751d80)
