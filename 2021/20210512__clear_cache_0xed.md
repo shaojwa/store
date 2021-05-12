@@ -21,7 +21,7 @@ Wed May 12 14:25:22 CST 2021
 2021-05-12 14:25:03.375631 7f7d177f8700 3467757 8 ERROR *** Caught signal (Segmentation fault) **
  in thread 7f7d177f8700 thread_name:Processer_4
 
- ceph version 12.2.1-UniStorOS_V100R001B51 (4e999402cd1a3f998619b907b3c616a72d67e525) luminous (stable)
+ ceph version 12.2.1-V100R001B51 (4e999402cd1a3f998619b907b3c616a72d67e525) luminous (stable)
  1: (()+0x66d4e0) [0x55b1f0e774e0]
  2: (()+0xf6c0) [0x7f7d2ce1c6c0]
  3: (RCache::_clear_cache()+0xed) [0x55b1f1195add]
