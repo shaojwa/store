@@ -11,6 +11,11 @@ yangwenwen
 Wed May 12 14:25:22 CST 2021
 ```
 
+## operation
+```
+21-05-12 14:26:05 ## root pts/3 (196.16.102.8) ## /corefile ## ceph daemon dse.yww37 engine all dcache rcache clear
+```
+
 ## log stack
 ```
 2021-05-12 14:25:03.375631 7f7d177f8700 3467757 8 ERROR *** Caught signal (Segmentation fault) **
@@ -33,6 +38,3 @@ Wed May 12 14:25:22 CST 2021
  ```
  
  ## corefile stack
- 
- 
- 
