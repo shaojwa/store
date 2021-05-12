@@ -10,6 +10,17 @@ yangwenwen
 [root corefile]# date --date @1620800722
 Wed May 12 14:25:22 CST 2021
 ```
+dmesg -T no logs:
+```
+[Wed May 12 11:17:55 2021] XFS (sdi1): Mounting V5 Filesystem
+[Wed May 12 11:17:55 2021] XFS (sdi1): Ending clean mount
+[Wed May 12 11:18:02 2021] XFS (sdi1): Unmounting Filesystem
+[Wed May 12 11:18:02 2021] XFS (sdi1): Mounting V5 Filesystem
+[Wed May 12 11:18:02 2021] XFS (sdi1): Ending clean mount
+[Wed May 12 11:18:03 2021] systemd-sysv-generator[4090478]: Configuration file /usr/lib/systemd/
+[Wed May 12 11:18:03 2021] systemd-sysv-generator[4090588]: Configuration file /usr/lib/systemd/
+[Wed May 12 11:18:03 2021] systemd-sysv-generator[4090697]: Configuration file /usr/lib/systemd/
+```
 
 ## operation
 ```
