@@ -79,3 +79,25 @@ nss-util-3.34.0-2.el7.x86_64 openssl-libs-1.0.2k-12.el7.x86_64 xz-libs-5.2.2-1.e
 #19 0x0000000000000000 in ?? ()
 (gdb)
 ```
+
+## analyze
+boost/include/boost/intrusive/list.hpp:585
+```
+iterator erase(const_iterator i)
+{ return this->erase_and_dispose(i, detail::null_disposer()); }
+```
+boost/include/boost/intrusive/list.hpp:663
+```
+node_algorithms::unlink(to_erase)
+```
+iterator is 
+```
+(gdb) p i
+{static stateful_value_traits = false, members_ = {nodeptr_ = 0x7f7c3efeb3b0}}
+(gdb) info locals
+to_erase = 0x7f7c3efeb3b0
+(gdb) p (node_ptr*)0x7f7c3efeb3b0
+$4 = (boost::intrusive::list_impl<
+ boost::intrusive::mhtraits<rcache_object_t, boost::intrusive::list_member_hook<void, void, void>,
+ &rcache_object_t::lru_item>, unsigned long, true, void>::node_ptr *) 0x7f7c3efeb3b0
+```
