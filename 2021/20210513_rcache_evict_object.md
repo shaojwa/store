@@ -1,9 +1,9 @@
-##  rcach_evict_object  segment fault
+## rcach_evict_object  segment fault
 liyuehong
 
 core-Processer_4-39301-1620861817
 
-##
+## analyze
 
 ```
 2021-05-13 07:23:37.291550 7f4b367fa700 39394 7 ERROR *** Caught signal (Segmentation fault) **
@@ -21,4 +21,12 @@ core-Processer_4-39301-1620861817
  9: (co::Task::StaticRun(long)+0x2f) [0x7f4bd1528515]
  10: (make_fcontext()+0x21) [0x7f4bd15f9d61]
  NOTE: a copy of the executable, or `objdump -rdS <executable>` is needed to interpret this.
+```
+
+
+## result
+error nspace access by iter:
+```
+obj_iter = destage_views[i]->objs.erase(obj_iter);
+rcache->rcache_evict_object(temp_destage_obj->dm_user_obj->obj_id, obj_iter->dm_user_obj->nspace);
 ```
