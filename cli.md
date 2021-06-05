@@ -6,7 +6,7 @@
 ||ceph daemon dse.node0 engine all dcache qm get_quota||
 ||ceph daemon dse.node0 engine 12.4 dcache qm get_quota||
 ||ceph daemon dse.node0 engine 12.4 config show||
-||ceph daemon dse.node0 engine 12.4 config debug_dcache 1||
+||ceph daemon dse.node0 engine 12.4 config set debug_dcache 1||
 ||ceph daemon dse.node0 config show \| grep dcache_rc_total_quota_in_gb||
 ||ceph daemon dse.node0 config set dcache_rc_total_quota_in_gb 1||
 |ceph osd|ceph osd lspools||
