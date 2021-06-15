@@ -1,6 +1,7 @@
 #### 
 ```
 /opt/h3c/lib/python2.7/site-packages/onestor/cs/hostmanager.py +3533 
+```
 
 #### block seq 
 /etc/ceph/ceph.conf
@@ -20,6 +21,7 @@ cluster 172.17.65.111/24
 ```
 
 #### rados df
+```
 [root@node0]# rados -p blkpool0 df
 POOL_NAME USED OBJECTS CLONES COPIES MISSING_ON_PRIMARY UNFOUND DEGRADED RD_OPS RD WR_OPS WR SIZE_ACCURACY
 blkpool0     0       0      0      0                  0       0        0      0  0      0  0             0
@@ -31,7 +33,7 @@ total_space      16756G
 ```
 
 
-#### disable HA
+#### do NOT check nic
 ```
 vim /opt/h3c/lib/python2.7/site-packages/onestor/plat/cm/cluster/cluster_util.py +426
 ```
@@ -53,7 +55,7 @@ ceph daemon dse.node64 engine all dcache lsm plus_on
 3159819 51 ERROR row init failed to open db, r = -5
 ```
 
-#### ha
+#### disable HA
 ```
 $ vim /etc/onestor/onestor.conf
 handy_ha_needed = no
