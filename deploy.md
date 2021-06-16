@@ -2,9 +2,8 @@
 #### ERROR: Product is already installed in t hsi environment, Please uninstall the old version and try again!
 1. `install.sh`脚本中有`_check_install_record()`接口检查UniStor的安装情况。
 2. `_check_install_record()`接口的调用`get_install_record()`，而`get_install_record()`的定义在`unistor_utils.sh`中。
-3. 这个接口会检查PACKAGES_INFO_FILE文件，这个文件路径是：`/opt/hccc/packages.inbfo`。但是直接清空这个文件，或者删除其中的某一行记录没什么用。
-4. 正常的恢复环境，应该执行脚本:`bash install.sh --restore-env`。
-
+3. 这个接口会检查PACKAGES_INFO_FILE文件，这个文件路径是：`/opt/hccc/packages.inbfo`。
+4. 但是直接清空这个文件，或者删除其中的某一行记录没什么用。正常的恢复环境应该执行脚本:`bash install.sh --restore-env`。
 
 #### 主机"182.200.21.74/182.200.21.75" 软件安装失败
 在`/var/log/shell_util`下查看相关日志：
@@ -12,7 +11,6 @@
 install_soft.log
 ```
 显示`install module succeed`, 没发现什么异常, 然后查看`package.log`,似乎也没发现什么异常。
-
 
 #### block seq 
 /etc/ceph/ceph.conf
@@ -42,7 +40,6 @@ total_used       27053M
 total_avail      16730G
 total_space      16756G
 ```
-
 
 #### do NOT check nic
 ```
