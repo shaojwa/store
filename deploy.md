@@ -1,3 +1,6 @@
+
+#### ERROR: Product is already installed in t hsi environment, Please uninstall the old version and try again!
+
 #### 主机"182.200.21.74/182.200.21.75" 软件安装失败
 在`/var/log/shell_util`下查看相关日志：
 ```
