@@ -1,10 +1,9 @@
 
 #### ERROR: Product is already installed in t hsi environment, Please uninstall the old version and try again!
-`install.sh`脚本中有`_check_install_record()`接口检查UniStor的安装情况。
-`_check_install_record()`接口的调用`get_install_record()`，而`get_install_record()`的定义在`unistor_utils.sh`中。
-这个接口会检查PACKAGES_INFO_FILE文件，这个文件路径是：`/opt/hccc/packages.inbfo`。
-但是直接清空这个文件，或者删除其中的某一行记录没什么用。
-正常的恢复环境，应该执行脚本:`bash install.sh --restore-env`。
+1. `install.sh`脚本中有`_check_install_record()`接口检查UniStor的安装情况。
+2. `_check_install_record()`接口的调用`get_install_record()`，而`get_install_record()`的定义在`unistor_utils.sh`中。
+3. 这个接口会检查PACKAGES_INFO_FILE文件，这个文件路径是：`/opt/hccc/packages.inbfo`。但是直接清空这个文件，或者删除其中的某一行记录没什么用。
+4. 正常的恢复环境，应该执行脚本:`bash install.sh --restore-env`。
 
 
 #### 主机"182.200.21.74/182.200.21.75" 软件安装失败
