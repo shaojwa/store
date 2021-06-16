@@ -10,10 +10,13 @@
 install_soft.log
 ```
 显示`install module succeed`, 没发现什么异常, 然后查看`package.log`,似乎也没发现什么异常。
+leader的日志在`/var/log/supervisor`中, 在onestor-leader-stderr---supervisor-9LTjNc.log中有异常日志。
+提示找不到`/etc/ceph/ceph.conf`文件。据说新的版本日志在`/var/log/storage/PLATLEADER/PLATLEADER.log`中，但目前6月4日的版本还没有这个目录。
+
 
 ## block seq 
-/etc/ceph/ceph.conf
 ```
+/etc/ceph/ceph.conf
 rbd_readahead2 = true
 ```
 
