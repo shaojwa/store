@@ -1,4 +1,4 @@
-## ERROR: Product is already installed in t hsi environment, Please uninstall the old version and try again!
+## ERROR: Product is already installed in this environment, Please uninstall the old version and try again!
 1. `install.sh`脚本中有`_check_install_record()`接口检查UniStor的安装情况。
 2. `_check_install_record()`接口的调用`get_install_record()`，而`get_install_record()`的定义在`unistor_utils.sh`中。
 3. 这个接口会检查PACKAGES_INFO_FILE文件，这个文件路径是：`/opt/hccc/packages.inbfo`。
