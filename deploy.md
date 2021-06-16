@@ -1,7 +1,10 @@
-#### 
+#### 主机"182.200.21.74/182.200.21.75" 软件安装失败
+在`/var/log/shell_util`下查看相关日志：
 ```
-/opt/h3c/lib/python2.7/site-packages/onestor/cs/hostmanager.py +3533 
+install_soft.log
 ```
+显示`install module succeed`, 没发现什么异常, 然后查看`package.log`,似乎也没发现什么异常。
+
 
 #### block seq 
 /etc/ceph/ceph.conf
