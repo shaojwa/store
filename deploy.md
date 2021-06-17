@@ -1,3 +1,8 @@
+## dse commandline
+```
+/opt/h3c/bin/dse -f --cluster ceph --id node73 --setuser ceph --setgroup ceph
+```
+
 ## ERROR: Product is already installed in this environment, Please uninstall the old version and try again!
 1. `install.sh`脚本中有`_check_install_record()`接口检查UniStor的安装情况。
 2. `_check_install_record()`接口的调用`get_install_record()`，而`get_install_record()`的定义在`unistor_utils.sh`中。
