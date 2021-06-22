@@ -1,4 +1,14 @@
-## dse commandline
+## single-node destroy
+```
+onestor-cli destroy --host 182.200.21.74
+```
+
+## restore-env
+```
+./install.sh --restore-env
+```
+
+## dse boot
 ```
 /opt/h3c/bin/dse -f --cluster ceph --id node73 --setuser ceph --setgroup ceph
 ```
