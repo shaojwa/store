@@ -1,3 +1,13 @@
+## rados bench 基本参数
+|:-|:-|:-|
+|参数|值|说明|
+|并发IO数目|16|这个并发的数目，[网上说是线程数](https://tracker.ceph.com/projects/ceph/wiki/Benchmark_Ceph_Cluster_Performance)|
+|块大小|4M||
+
+
+## 全闪集群测试结果
+
+
 ## Benchmark a ceph storage cluster
 ```
 > rados bench -p test_pool 10 write --no-cleanup
@@ -74,5 +84,3 @@ Stddev Latency(s):      0.275154
 Max latency(s):         2.087
 Min latency(s):         0.438047
 ```
-
-## 全闪集群测试结果
