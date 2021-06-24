@@ -3,4 +3,4 @@
 ## 源码中的-t
 
 rados.cc 中`bencher.aio_bench()`中对应的参数是concurrent_ios，对应到obj_bencher.cc中的`write_bench()`，
-RadosBencher重载ObjBencher中的`completion_init()`可以看到，只是有这么多的Aio队列（comlitions）。
+RadosBencher重载ObjBencher中的`completion_init()`可以看到，只是有这么多的Aio队列（compitions）。
