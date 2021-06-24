@@ -1,6 +1,7 @@
 ## rados bench 基本参数
-|:-|:-|:-|
+
 |参数|值|说明|
+|:-|:-|:-|
 |并发IO数目|16|这个并发的数目，网上说是线程数，但是我并没有看到那么多线程|
 |块大小|4M||
 |Bandwidth||主要性能指标|
@@ -11,9 +12,6 @@
 |IOPS(Max)||主要性能指标|
 
 https://tracker.ceph.com/projects/ceph/wiki/Benchmark_Ceph_Cluster_Performance
-
-## 主要性能指标
-IO的主要性能指标就三个，带宽，IOPS，延时
 
 ## 全闪集群测试结果
 
