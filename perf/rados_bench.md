@@ -13,6 +13,8 @@
 
 https://tracker.ceph.com/projects/ceph/wiki/Benchmark_Ceph_Cluster_Performance
 
+## rados bench 中的 -t
+
 ## 全闪集群测试结果
 
 
