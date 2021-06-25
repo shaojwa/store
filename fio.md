@@ -1,3 +1,14 @@
+## 参数
+|||
+|:-|:-|
+|thread|意义不大，表示用pthread_create创建线程，而不是fork来创建进程|
+|numjobs|fio，log，service，admin_socket等等线程都翻倍为16|
+|iodepth|队列深度|
+|timebased|一直持续这么久，即使文件已经完成读写，也会重复执行|
+|slat|submit latency，提交时延，从创建到提交，其中stdev表示标准差|
+|clat|完成时延，从提交到完成，对于同步IO来说，政治几乎为0|
+|lat|从IO创建到完成，整个事件|
+
 ##  write (pre-store data)
 ```
 [root@node74 ~]# fio --name=vol_base_test --numjobs=1 --ioengine=rbd --rw=write --direct=1 --iodepth=1 --bs=256K --size=1G 
