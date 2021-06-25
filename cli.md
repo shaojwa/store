@@ -21,7 +21,7 @@
 ||rados stat -p blkpool0 obj0| stat object|
 ||rados lspools||
 ||rados -p blkpool0 put object_file1 file1| add object|
-|rados bench|rados bench -p .diskpool0.rbd 10 write -b 8192 |rados io, 10 = duration|
+|rados-bench|rados bench -p .diskpool0.rbd 10 write -b 8192 |rados io, 10 = duration|
 ||rados bench -p blkpool0 10 write -b 8192 --no-cleanup |rados write|
 ||rados bench -p blkpool0 10 rand |rados read rand|
 ||rados bench -p blkpool0 10 seq |rados read seq|
