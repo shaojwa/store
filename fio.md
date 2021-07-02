@@ -1,5 +1,5 @@
 ## 参数
-|||
+|参数|含义|
 |:-|:-|
 |thread|意义不大，表示用pthread_create创建线程，而不是fork来创建进程|
 |numjobs|fio，log，service，admin_socket等等线程都翻倍为16|
