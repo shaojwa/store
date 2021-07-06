@@ -25,4 +25,5 @@
 ||rados bench -p blkpool0 10 write -b 8192 --no-cleanup |rados write|
 ||rados bench -p blkpool0 10 rand |rados read rand|
 ||rados bench -p blkpool0 10 seq |rados read seq|
-|rbd|rbd -p blkpool0 \[detail\] ls |查看这个块池中的所有块设备|
+|rbd|rbd \[detail\] ls -p blkpool0 |查看这个块池中的所有块设备|
+|rbd|rbd du -p blkpool0 |查看这个块池中的所有块设备使用情况|
