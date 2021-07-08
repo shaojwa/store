@@ -1,5 +1,7 @@
 |命令|功能|说明|
 |:-|:-|:-|
+|ceph mds stat|||
+|ceph mds dump|||
 |ceph daemon mds.mds10 status|||
 |ceph daemon mds.mds10 dump cache|||
 |ceph daemon mds.mds10 ops|||
