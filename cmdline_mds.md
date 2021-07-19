@@ -2,6 +2,11 @@
 |:-|:-|:-|
 |ceph mds stat|||
 |ceph mds dump|||
+|ceph tell mds.* respawn |||
+|ceph tell mds.* injectargs --debug_mds |show value||
+|ceph tell mds.0 injectargs --mds_becon_interval 10 |set value||
+|ceph tell mds.* injectargs --mds_becon_interval 10 |set value||
+|ceph mds dump|||
 |ceph daemon mds.mds10 status|||
 |ceph daemon mds.mds10 dump cache|||
 |ceph daemon mds.mds10 ops|||
