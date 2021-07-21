@@ -1,10 +1,14 @@
-#### 维护命令
+#### 维护
 |命令|功能|说明|
 |:-|:-|:-|
 |ceph tell osd.* injectargs --debug_osd |show value||
 |ceph tell osd.0 injectargs --debug_osd 0/5 |set value||
 |ceph daemon osd.0 dump_mempools|||
-||||
+|ceph osd lspools||
+|ceph osd pool ls||
+|ceph osd pool ls detail||
+|ceph osd df|OSD id，weight，size，usage，PGs|
+
 
 #### dump_mempools
 
