@@ -15,15 +15,12 @@ https://docs.ceph.com/en/latest/man/8/ceph/
 |ceph daemon dse.node0 config set dcache_rc_total_quota_in_gb 1||
 |ceph daemon dse.node73 status|get status|
 |ceph daemonperf dse.node73 |Watch performance counters from a Ceph daemon.|
-|ceph engine map||
-|ceph engine ls| list engine IDs|
-|ceph engine dump [engine_id]|get engine details|
 |rados create -p .diskpool0  obj0| create object|
 |rados ls -p blkpool0 | list object|
 |rados stat -p blkpool0 obj0| stat object|
 |rados lspools||
 |rados -p blkpool0 put object_file1 file1| add object|
-|rados-bench|rados bench -p .diskpool0.rbd 10 write -b 8192 |rados io, 10 = duration|
+|rados bench -p .diskpool0.rbd 10 write -b 8192 |rados io, 10 = duration|
 |rados bench -p blkpool0 10 write -b 8192 --no-cleanup |rados write|
 |rados bench -p blkpool0 10 rand |rados read rand|
 |rados bench -p blkpool0 10 seq |rados read seq|
