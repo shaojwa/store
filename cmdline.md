@@ -1,6 +1,11 @@
+https://docs.ceph.com/en/latest/man/8/ceph/
+
 |模块|用例|说明|
 |:-|:-|:-|
-|ceph daemon |ceph daemon dse.node0 engine 12.4 config set debug_engine 5||
+|ceph health {detail} |||
+|ceph  |||
+|ceph daemon |Submit admin-socket commands.||
+||ceph daemon dse.node0 engine 12.4 config set debug_engine 5||
 ||ceph daemon dse.node0 engine all dcache desage get_info||
 ||ceph daemon dse.node0 engine 12.4 dcache desage get_info||
 ||ceph daemon dse.node0 engine all dcache qm get_quota||
@@ -9,10 +14,8 @@
 ||ceph daemon dse.node0 engine 12.4 config set debug_dcache 1||
 ||ceph daemon dse.node0 config show \| grep dcache_rc_total_quota_in_gb||
 ||ceph daemon dse.node0 config set dcache_rc_total_quota_in_gb 1||
-||ceph daemon dse.node73 status| get status|
-|ceph osd|ceph osd lspools||
-||ceph osd pool ls||
-||ceph osd pool ls detail||
+||ceph daemon dse.node73 status|get status|
+||ceph daemonperf dse.node73 |Watch performance counters from a Ceph daemon.|
 |ceph engine|ceph engine map||
 ||ceph engine ls| list engine IDs|
 ||ceph engine dump [engine_id]|get engine details|
