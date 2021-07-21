@@ -15,6 +15,7 @@ https://docs.ceph.com/en/latest/man/8/ceph/
 |ceph daemon dse.node0 config set dcache_rc_total_quota_in_gb 1||
 |ceph daemon dse.node73 status|get status|
 |ceph daemonperf dse.node73 |Watch performance counters from a Ceph daemon.|
+|ceph df \[deatil\]||
 |rados create -p .diskpool0  obj0| create object|
 |rados ls -p blkpool0 | list object|
 |rados stat -p blkpool0 obj0| stat object|
