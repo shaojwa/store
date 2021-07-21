@@ -1,0 +1,2 @@
+- [PG 的各种状态](pg_status.md)
+- [osd 的相关配置](osd_configs.md)
