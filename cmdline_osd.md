@@ -3,7 +3,8 @@
 |:-|:-|:-|
 |ceph tell osd.* injectargs --debug_osd |show value||
 |ceph tell osd.0 injectargs --debug_osd 0/5 |set value||
-|ceph daemon osd.0 dump_mempools|||
+|ceph tell osd.* config set rocksdb_deletion_entries 100000||
+|ceph tell osd.* config set rocksdb_deletion_key_score 0.999||
 |ceph osd lspools||
 |ceph osd pool ls||
 |ceph osd pool ls detail||
@@ -15,3 +16,4 @@
 |ceph osd pool stats|查看某个pool的 io|
 |ceph pg dump_stuck stale|查看stale的pg|
 |ceph pg <pg_id> query|查看一个pg开始scrub的时间|
+|ceph daemon osd.0 dump_mempools|||
