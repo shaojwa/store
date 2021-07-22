@@ -27,3 +27,14 @@ https://docs.ceph.com/en/latest/man/8/ceph/
 |rados bench -p blkpool0 10 seq |rados read seq|
 |rbd \[detail\] ls -p blkpool0 |查看这个块池中的所有块设备|
 |rbd du -p blkpool0 |查看这个块池中的所有块设备使用情况|
+
+
+#### 注意
+tell 命令可以直接用command来设置
+```
+ceph tell <name (type.id)> <command> [options…]
+```
+比如
+```
+ceph tell osd.* config set rocksdb_deletion_entries 10000000
+```
