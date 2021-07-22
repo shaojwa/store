@@ -1,0 +1,27 @@
+#### 一个实际集群中的compact配置
+```
+[admin@node02 wsh]$ sudo ceph daemon osd.159 config show | grep compact
+    "bluefs_compact_log_sync": "false",
+    "bluefs_log_compact_min_ratio": "5.000000",
+    "bluefs_log_compact_min_size": "16777216",
+    "bluestore_rocksdb_options": "compression=kNoCompression,max_write_buffer_number=4,min_write_buffer_number_to_merge=1,
+      recycle_log_file_num=4,write_buffer_size=134217728,writable_file_max_buffer_size=0,compaction_readahead_size=2097152,
+      max_background_compactions=1,max_background_flushes=1",
+    "filestore_rocksdb_options": "max_background_compactions=8,compaction_readahead_size=2097152,compression=kNoCompression",
+    "leveldb_compact_on_mount": "false",
+    "mon_compact_on_bootstrap": "false",
+    "mon_compact_on_start": "false",
+    "mon_compact_on_trim": "true",
+    "rocksdb_collect_compaction_stats": "false",
+    "rocksdb_hdd_background_compaction": "max_background_compactions=1",
+    "rocksdb_hdd_compaction_syncsize": "1048576",
+    "rocksdb_hdd_readahead_size": "compaction_readahead_size=2097152",
+    "rocksdb_hdd_sync_compaction": "1048576",
+    "rocksdb_hddssd_background_compaction": "max_background_compactions=1",
+    "rocksdb_hddssd_readahead_size": "compaction_readahead_size=131072",
+    "rocksdb_hddssd_sync_compaction": "131072",
+    "rocksdb_ssd_background_compaction": "max_background_compactions=3",
+    "rocksdb_ssd_compaction_syncsize": "1048576",
+    "rocksdb_ssd_readahead_size": "compaction_readahead_size=262144",
+    "rocksdb_ssd_sync_compaction": "65536",
+ ```
