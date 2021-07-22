@@ -11,3 +11,9 @@ mBlueStore 是ceph的一种新的存储后端，两倍的性能提升，算数�
 - 避免了FileStore中可能出现的吞吐量坍塌问题。
 - 使用librados的原生小文件顺序读性能有所下降，那是因为BlueStore本身没有实现预读，原因是基于BlueStore的上层模块有实现。
 - BlueStore使用COW，这个和FileStore不同。
+
+#### OSD 的职责
+OSD主要就干两件事情：(1) 将副本数据通过网络传到其他的OSD。（2）将数据存在本地设备上，比如硬盘，SSD，或者两者的混合。
+
+
+#### BlueStor如何工作
