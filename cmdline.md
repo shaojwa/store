@@ -2,8 +2,8 @@ https://docs.ceph.com/en/latest/man/8/ceph/
 
 |用例|说明|
 |:-|:-|
-|ceph health {detail} ||
-|ceph daemon |Submit admin-socket commands.||
+|ceph health \[detail\] ||
+|ceph daemon|submit admin-socket commands.||
 |ceph daemon dse.node0 engine 12.4 config set debug_engine 5||
 |ceph daemon dse.node0 engine all dcache desage get_info||
 |ceph daemon dse.node0 engine 12.4 dcache desage get_info||
@@ -30,7 +30,7 @@ https://docs.ceph.com/en/latest/man/8/ceph/
 
 
 #### 注意
-tell 命令可以直接用command来设置
+tell 命令可以直接用 config set 来设置config参数
 ```
 ceph tell <name (type.id)> <command> [options…]
 ```
