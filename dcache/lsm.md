@@ -1,0 +1,1 @@
+lsm_do_release_csdobj是一个单独的task，用来删除某个日志对象。
