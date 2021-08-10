@@ -1,8 +1,10 @@
 https://docs.ceph.com/en/latest/man/8/ceph/
 
+
 |用例|说明|
 |:-|:-|
-|ceph health \[detail\] ||
+|ceph tell dse.* injectargs --dcache_rc_enable||
+|ceph tell osd.* config set rocksdb_deletion_entries 10000000||
 |ceph daemon|submit admin-socket commands.||
 |ceph daemon dse.node0 engine 12.4 config set debug_engine 5||
 |ceph daemon dse.node0 engine all dcache desage get_info||
@@ -15,6 +17,7 @@ https://docs.ceph.com/en/latest/man/8/ceph/
 |ceph daemon dse.node0 config set dcache_rc_total_quota_in_gb 1||
 |ceph daemon dse.node73 status|get status|
 |ceph daemonperf dse.node73 |Watch performance counters from a Ceph daemon.|
+|ceph health \[detail\] ||
 |ceph df \[deatil\]||
 |rados create -p .diskpool0  obj0| create object|
 |rados ls -p blkpool0 | list object|
