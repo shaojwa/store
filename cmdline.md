@@ -1,5 +1,11 @@
 https://docs.ceph.com/en/latest/man/8/ceph/
 
+#### ceph 服务管理
+```
+ceph restart ceph.target
+```
+
+#### ceph 维护命令
 
 |用例|说明|
 |:-|:-|
