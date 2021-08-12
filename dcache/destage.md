@@ -15,6 +15,17 @@ ROWInstance::ROW_dcache_flush() // callback is Destage::destage_obj_cb
 ```
 destage_obj_cb() called in row-processor
 
+##  training
+20210812
+```
+destage_init()
+destage_operation()
+destage_start()
+destage_objs()
+do_destage()
+destage_obj_cb()
+```
+
 ## issues
 1. destage在prepare_destage的时候，不能从刷盘视图中删除，因为，删除够如果刷盘失败，那么就无法再次插入。
 1. 刷盘视图中的某个对象如果刷盘失败，下一次刷盘时，还会从这个对象开始刷。
