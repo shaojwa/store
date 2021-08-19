@@ -1,15 +1,34 @@
-块存储在硬盘池diskpool0中创建一个块池 blockpool0，那么就会有两个池：
+#### 节点池和硬盘池都不是存储池
+我在部署集群的时候，规划好节点池和硬盘池，部署好集群之后，运行`rados lspools`发现什么都没有。
+所以，节点池和硬盘池规划好之后，并没有创建存储池。
+
+#### 创建块池blockpool0
+这个池我是选择2+1的纠删码，条带大小8K，创建好之后就会有两个存储池，一个是`blockpool0`，这个是块的数据池。
+通过`ceph osd pool ls detail` 可以清楚看到，`blockpool0`是erasure池，size 3，min_size 2，stripe_size为8192。
+同时，还有一个是`.diskpool0.rbd`，可以看到，这个池是副本池，size 3，min_size是2，这里面存的是数据池中对象的元数据。
+
+#### 块池才是存储池
+块存储在硬盘池diskpool0中创建一个块池blockpool0，那么就会有两个池， 这两个池的 application属性都是 rbd：
 ```
 blockpool0
-diskpool0.rbd
+.diskpool0.rbd
 ```
 然后基于这两个池，就会有另外四个池，每个池衍生出两个：
 ```
 dcache.<pool_name>
-<pool_name>.dse
+.<pool_name>.dse
 ```
 例如
 ```
 dcache.blockpool0
 blockpool0.dse
 ```
+其中`dcache.<pool_name>`这个池用`ceph osd pool ls detail`命令查之后，会看到一个`dcache pool of <pool_id>`的说明，来表明这个池是哪个池的dcache_pool。
+也会标记最大的dcache对象大小是192M（`max_dcache_obj_size 201326592`），dcache 对象的对齐大小（`dcache_obj_align_size 4096`） 和使用的应用 dcache （application dcache）。
+而`.<pool_name>.dse` 这个池的应用是row（` application row`）。
+
+值得注意的是，数据池`blockpool0`对应的dcache池和dse池，最小副本数都是1，而元数据池`.diskpool0.rbd` 对应的dcache池和dse池的最小副本数都是2。原因需要去了解下。
+
+
+#### 集群搭建好之后的池
+块池
