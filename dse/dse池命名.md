@@ -31,4 +31,8 @@ blockpool0.dse
 
 
 #### 集群搭建好之后的池
-块池
+我们会看到，在全闪环境下，一个nvme盘，分为两部分，一个是是给dcache用的，一个是原存储池，dcache用的值有100G，其他的是数据池。
+而且dcache的osd-id不是和ceph-osd对应的，因为这是dse进程在用。所以，`ceph osd tree`中可以看到这些osd-id，但是`class`是空的。
+
+#### rados lspools 看不到 dcache池和dse池
+原因不清楚。
