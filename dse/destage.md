@@ -1,19 +1,40 @@
+#### destage的启动流程
+```
+EngineService::DCache_create_instance()
+DCacheInstance::DCache_ROW_ready()
+Destage::destage_start()
+CreateTask()
+destage_operation()
+delete_operation()
+```
+
+#### destage中的两个内置task
+在destage_start接口会为每个processor启动两个task，接口函数分别是：
+```
+destage_operation()
+```
+destage_operation() 等待可以下刷的对象，有对象可以刷之后，执行destage_objs()后，view_destage_sem.down()。
+和
+```
+delete_operation()
+```
+
+#### destage-task调用栈
+```
+Destage::destate_operation()
+Destage::destate_objs()
+Destage::do_destage()
+ROWInstance::ROW_dcache_flush() // callback is Destage::destage_obj_cb
+```
+destage_obj_cb() called in row-processor
+
+
+
 ## destage threads
 1. destage_object() // destage the specified object, running on the opproc-context
 2. do_destage()     // do the destage work, on the one of specified the dcache-processor
 3. delete_operation() // delete the object when the destage is done, running on the specified dcache-processor
 
-
-## destage 
-```
-DCache_ROW_ready()
-Destage::destage_start()
-Destage::destate_operation() // new task
-Destage::destate_objs() // new task
-Destage::do_destage()
-ROWInstance::ROW_dcache_flush() // callback is Destage::destage_obj_cb
-```
-destage_obj_cb() called in row-processor
 
 ##  training
 20210812
