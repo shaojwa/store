@@ -11,3 +11,10 @@ rdb -p <pool_name> ls
 ## tgt 是什么
 tgt 是一个独立的进程：
 
+
+#### TGT日志
+/var/log/storeage/TGT/TGT.log  # 相关块层面相关的日志，iSCSA。
+/var/log/storeage/TGT/ceph-client.tgt.log ##  可以看到  retcode， tid，engine_id， base_oid
+
+####
+
