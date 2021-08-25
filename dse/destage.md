@@ -8,6 +8,8 @@ destage_operation()
 delete_operation()
 ```
 
+#### destage 先关task
+
 #### destage中的两个内置task
 在destage_start接口会为每个processor启动两个task，接口函数分别是：
 ```
@@ -19,7 +21,8 @@ destage_operation() 等待可以下刷的对象，有对象可以刷之后，执
 delete_operation()
 ```
 
-#### destage-task调用栈
+#### destage-operation 相关
+调用栈
 ```
 Destage::destate_operation()
 Destage::destate_objs()
@@ -28,15 +31,49 @@ ROWInstance::ROW_dcache_flush() // callback is Destage::destage_obj_cb
 ```
 destage_obj_cb() called in row-processor
 
+等待sem：
+```
+view_destage_sem
+```
+
+sem唤醒接口：
+```
+wakeup_destage_task()
+```
+
+唤醒方式1：
+```
+insert_obj2_view()
+```
+唤醒方式2：
+```
+operate_filling_obj() 
+```
+唤醒方式3：
+```
+destage_ctx_cb()
+```
+唤醒方式4：
+```
+set_destage_stat()
+```
+唤醒方式5：
+```
+up_all_destage_view()
+```
 
 
-## destage threads
-1. destage_object() // destage the specified object, running on the opproc-context
-2. do_destage()     // do the destage work, on the one of specified the dcache-processor
-3. delete_operation() // delete the object when the destage is done, running on the specified dcache-processor
+#### delete_operation task
+当对象已经完成刷盘后，从刷盘试图上移除用。
 
 
-##  training
+#### 其他流程
+指定对象刷盘：
+```
+destage_object() // destage the specified object, running on the opproc-context
+```
+
+#### 培训
 20210812
 ```
 destage_init()
@@ -47,7 +84,7 @@ do_destage()
 destage_obj_cb()
 ```
 
-## issues
+####  问题
 1. destage在prepare_destage的时候，不能从刷盘视图中删除，因为，删除够如果刷盘失败，那么就无法再次插入。
 1. 刷盘视图中的某个对象如果刷盘失败，下一次刷盘时，还会从这个对象开始刷。
 1. destage触发的时间点有两个（1）有新的对象插入（2）刷盘完成之后的回调。
