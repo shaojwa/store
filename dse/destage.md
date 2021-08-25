@@ -8,9 +8,13 @@ destage_operation()
 delete_operation()
 ```
 
-## destage 相关task
+## 调动destage的其他模块task
+插入刷盘视图的opproc线程：
+```
+insert_obj2_view()
+```
 
-## destage中的两个内置task
+## 两个内置task
 在destage_start接口会为每个processor启动两个task，接口函数分别是：
 ```
 destage_operation()
