@@ -8,9 +8,15 @@ destage_operation()
 delete_operation()
 ```
 
-## 调动destage的其他模块task
+## 非destage模块task
 插入刷盘视图的opproc线程：
 ```
+EngineService::ms_fast_dispatch()
+DCacheOPProc::do_op()
+create task: DCacheOPProc::do_op_operation()
+DCacheOPProc::dcache_do_op_proc()
+DCacheOPProc::do_op_write_back()
+DCacheOPProc::do_transaction()
 insert_obj2_view()
 ```
 
