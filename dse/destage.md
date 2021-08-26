@@ -1,4 +1,4 @@
-## 主要流程
+## destage 主要涉及的流程
 1. destage启动流程
 2. 正常刷盘流程：destage_objs()
 3. DM补齐读完成之后唤醒刷盘流程：operate_filling_obj()
