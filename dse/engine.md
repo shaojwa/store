@@ -1,4 +1,12 @@
-## engine start
+# 概要
+ 1. engine id 全集群唯一。
+ 1. engineClient类似osdc，在engine模块上层的service模块找。
+ 1. 一个engine实例目前规划四个线程。
+
+## Engine 的多线程模型
+一个engine instance 会运行在多个线程上(processor)。
+
+## Engine 的启动
 ```
 DSE::ms_dispatch()
 DSE::handle_engine_map()
@@ -14,7 +22,7 @@ log
 grep handle_engine_map | grep "create engine" 
 ```
 
-## engine shutdown
+## Engine shutdown
 ```
 DSE::ms_dispatch()
 DSE::handle_engine_map()
@@ -28,3 +36,5 @@ grep handle_engine_map | grep "destroy engine"
 ```
 
 ## engine_create_state: migrate_new
+
+## engine_create_state: broken_new
