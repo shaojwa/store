@@ -20,14 +20,14 @@
 1. 支持DCache内部各流程的IO信息统计，支撑挂IO问题的定位以及后续性能的优化。（CPU占用率控制在1%以内）
 
 
-## DCache threads
+## DCache 线程模型
 1. DCacheInstance inferfaces running in the dcache-processor.
 2. ctrlproc-code rnnning in the dcache-processor. (init, destroy, migrate)
 3. opproc-code running in the dcache-processor.
 4. lsm-code running in the dcache-processor.
 5. destage-code running in the dcache-processor except the callbacks like **handle_destage_post()**
 
-## dcache create
+## dcache 创建 (create)
 ```
 DSE::ms_dispatch()
 DSE::handle_engine_map()
@@ -37,7 +37,7 @@ EngineService::init()
 dcache = new DCacheInstance()
 ```
 
-## dcache init
+## dcache 初始化 (init)
 ```
 DSE::ms_dispatch()
 DSE::handle_engine_map()
@@ -50,7 +50,7 @@ DCacheInstance::DCache_start()
 DCacheInstance::DCache_module_init()
 ```
 
-## dcache shutdown 
+## dcache 关闭 (shutdown) 
 ```
 DSE::ms_dispatch()
 DSE::handle_engine_map()
@@ -62,9 +62,6 @@ DCacheInstance::DCache_shutdown()
 DCacheInstance::DCache_shutdown_instask() //  in dcache task
 ```
 
-
-## shards in one engine
-16
 
 ## 调试
 #### process start
