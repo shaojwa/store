@@ -1,28 +1,34 @@
-# 总体概述
-1. Unistor 2.0 是全闪架构
-1. 在RADOS-Client和OSD之间，增加了DSE层，DSE是独立进程。
-1. DSE进程中实现，dcache，row，重删，压缩功能。
-1. ROW就是将多个随机小IO合并成一个顺序大IO，提高写性能。
+
+# 设计问题
+## 为什么需要 DSE ？
+（1）从总体架构上，使用全闪模式，总体提高性能。
+（2）对数据做串行化、聚合、以及数据存储效率方面做加速，串行化就是dcache+LSM，聚合加速就是ROW，存储效率就是重删压缩。
+所以，需要在用户数据和OSD之间加入一层控制，来解决上述问题。
+
+## DSE 有哪些组件？
+dse, engine, dcache, row, dedup, gc, csd
+
+## dcache 需要解决什么问题
+解决小IO的性能问题，将小IO先写入日志进行加速，随机写变成顺序写。
 
 
-## DSE 需要实现的基本需要求有哪些?
+## 需要ROW 的主要目的是什么？
+ROW 就是将多个小IO合并成一个顺序大IO，提高写性能。
 
-## DSE 中的op分发
+
+# 实现问题
+## DSE中的op分发怎么实现
 dse进程中存在op分发模块，对象op路由到指定的engine上进行处理。
 
 ## DSE需要做的故障处理
 dse进程故障处理（节点故障，或者进程重启，触发engine实例切换），其中的engine实例需要重新分配，dse进程故障导致业务归零时间在15秒以内。
 
 ## 节点扩容缩容和故障恢复
-
 1. 在新节点上创建engine，触发部分bucket迁移到新的engine上。
 2. 存储池的增减对应engine非变化。
 3. 节点故障导致的 engine的故障切换，是指框架部分的业务处理，不包括dcache，ROW，dedup等子模块的处理。
+
 ## dse进程各个engine实例中，各个流程的IO信息统计，调试命令。
-
-
-## DSE中的模块划分有哪些？
-dse, engine, dcache, row, dedup, gc, csd
 
 ## DSE的IO路径是怎样的？
 （DSE）：dse_client可以是kcephfs, libcephfs, rbd, rgw等等。以rbd为例，rbd拿到engine_map之后，和对应节点上的DSE发消息，DSE转发消息到engine上。
@@ -42,29 +48,7 @@ row_obj就是这些用户对象的的聚合对象。ROW然后写OSD，数据一�
 
 ## user_obj 映射到 engine的方法
 user_obj 中，计算出bucket_id，bucket_id 可以算出在哪个engine上。
-以后
 
-## 部署
-1. 创建dse文件夹
-1. 创建dse的keyring
-1. 修改目录和文件的权限
-1. 生成auth认证信息
-1. 启动dse进程
-1. 部署、升级。
-1. IPv4和IPv6支持。
-
-
-
-
-# DSE 线程模型
-- handle_engine_map  // log contains "handle_engine_map engine_map(24..24 src has 1..24) v1"
-- mid_dse_control    // log contains "shutdown engine wait / flush_engine wait / flush_engine finish
-- engine-threads
-- dcache-threads
-- row-threads
-- dedup-threads
-
-# 实现设计
 ## DSE进程的作用
 通过dse达到集群拓扑管理（节点增删，存储池增删）
 
@@ -79,7 +63,6 @@ ceph engine ls
 可以看到所有的引擎数量，除以节点数，就是每个节点上的引擎数量，然后除以每个节点上的池数量，就可以看到，目前一个节点上，单个池对应4个引擎。
 
 ## bucket的作用
-
 UserObject Hash 到 bucket(类似于PG)， bucket 再通过类似CRUSh映射到engine（类似于OSD），节点增加后，部分bucket就会映射到新的engine。
 DSE中的bucket，类似于RADOS中的PG概念，用来存放对象。hobject_t是CEPH原生的结构。 bucket_t是DSE新添加的结构。
 bucket_t是MEngineOp中的一个属性，MEngineOp定义在messages/MEngineOp.h中, 和 hobject_t hobj, engine_t engineid并列。
@@ -90,13 +73,3 @@ dse进程中存在op分发模块，对象op路由到指定的engine上进行处�
 
 ## DSE需要做的故障处理
 dse进程故障处理（节点故障，或者进程重启，触发engine实例切换），其中的engine实例需要重新分配，dse进程故障导致业务归零时间在15秒以内。
-
-#### 数据流程
-
-#### 聚合IO重定向写
-#### ROW故障业务切换
-#### bucket迁移
-#### 逻辑对象打快照
-#### 线程免锁设计的思路
-
-
