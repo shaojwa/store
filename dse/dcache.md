@@ -1,3 +1,9 @@
+# 设计
+## dcache中LSM对象的元数据和数据怎么管理？
+日志对象写入dcache池，日志对象里存储user_obj的操作（op，user_obj的元数据，user_obj的数据），让CSD收到CSDC的请求之后，cstore解决本地存储问题。
+在CSD访问磁盘的开始部用来写入LSM对象的元数据。举个例子，现在全闪版本每个NVME盘都有一个独立分分区100G，给CSD用，用来作为CSD的的物理存储。
+这个100G的开头部分，用来做存储元数据。
+
 ## dcache 概述
 1. DCache是全闪系统的一部分，属于加速系统。
 1. 聚合小IO以及启用ROW来发挥后端盘的读写能力。
@@ -61,7 +67,6 @@ EngineService::_shutdown()
 DCacheInstance::DCache_shutdown()
 DCacheInstance::DCache_shutdown_instask() //  in dcache task
 ```
-
 
 ## 调试
 #### process start
