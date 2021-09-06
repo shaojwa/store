@@ -5,7 +5,7 @@
 1. ROW就是将多个随机小IO合并成一个顺序大IO，提高写性能。
 
 
-# 基本需求
+## DSE 需要实现的基本需要求有哪些?
 
 ## DSE 中的op分发
 dse进程中存在op分发模块，对象op路由到指定的engine上进行处理。
@@ -20,6 +20,30 @@ dse进程故障处理（节点故障，或者进程重启，触发engine实例�
 3. 节点故障导致的 engine的故障切换，是指框架部分的业务处理，不包括dcache，ROW，dedup等子模块的处理。
 ## dse进程各个engine实例中，各个流程的IO信息统计，调试命令。
 
+
+## DSE中的模块划分有哪些？
+dse, engine, dcache, row, dedup, gc, csd
+
+## DSE的IO路径是怎样的？
+（DSE）：dse_client可以是kcephfs, libcephfs, rbd, rgw等等。以rbd为例，rbd拿到engine_map之后，和对应节点上的DSE发消息，DSE转发消息到engine上。
+在dse_client角度来说，看到的是user_obj，user_obj找到对应的engine。
+
+（ENGINE）：engine进行判断处理之后，传给dcache，dcache有两个选择，一个是回写缓存，那么走LSM 和 DM。 另外一个选择是透写走ROW。
+
+（LSM+DM+destage）：如果走LSM和DM，那么需要后端csd的支持，csdc和csd交互，存储日志，日志一般存在nvme设备中。destage异步把数据下刷到ROW中。
+日志LSM对象，写入dcache池，用户对象数据和元数据都在一起。现在常见的部署环境下，每个NVME盘都有一个100G的分区，用来给csd用。这些csd存储日志对象的数据。
+但是日志对象的元数据存在哪里呢？每个节点，本地都有一块共享的空间，用来存放LSM对象的元数据。csd在收到日志对象的数据和元数据之后，接下来就是本地存储的事情。
+
+
+（ROW）：如果是走透写，那么IO是同步的，会等待ROW的返回。ROW会把user_obj进行聚合。ROW主要干的事情就是对小的user_obj进行聚合存储，变成row_obj。
+row_obj就是这些用户对象的的聚合对象。ROW然后写OSD，数据一旦到了OSD，是本地存储的事情。row_obj聚合对象分两部分，一部分是元数据，一部分是数据。
+元数据写入rocksdb，需要bluefs支持。数据直接写入bluestore。
+
+
+## user_obj 映射到 engine的方法
+user_obj 中，计算出bucket_id，bucket_id 可以算出在哪个engine上。
+以后
+
 ## 部署
 1. 创建dse文件夹
 1. 创建dse的keyring
@@ -30,14 +54,7 @@ dse进程故障处理（节点故障，或者进程重启，触发engine实例�
 1. IPv4和IPv6支持。
 
 
-# 模块划分
-- dse
-- engine
-- dcache
-- row
-- dedup
-- gc
-- csd
+
 
 # DSE 线程模型
 - handle_engine_map  // log contains "handle_engine_map engine_map(24..24 src has 1..24) v1"
@@ -74,33 +91,12 @@ dse进程中存在op分发模块，对象op路由到指定的engine上进行处�
 ## DSE需要做的故障处理
 dse进程故障处理（节点故障，或者进程重启，触发engine实例切换），其中的engine实例需要重新分配，dse进程故障导致业务归零时间在15秒以内。
 
+#### 数据流程
+
 #### 聚合IO重定向写
 #### ROW故障业务切换
 #### bucket迁移
 #### 逻辑对象打快照
 #### 线程免锁设计的思路
 
-####
-1. 聚合IO重定向写（比如刷盘写，透写等）。
-1. UserObj的ROW支持重删压缩（重删，压缩，分布式RocksDB），RocksDB记录写产生的元数据的记录到RocksDB，RocksDB 有专门的元数据池。
-1. UserObj的IO操作（支持所有OP，性能优化）。
-1. ROW支持垃圾回收（垃圾回收，垃圾合并，回收对象选择，有效数据识别，有效数据转移，垃圾回收流控）。
-1. ROW故障切换与回切。
-1. ROW扩容。（部分数据会有新的engine来处理，此时就需要考虑一致性问题）
-1. ROW内部个流程的IO信息统计。
-1. ROW调试定位命令（UserObj元数据查询，attr，omap，快照上下文信息，到RowObj的映射查关系查询）。
-1. 快照读写回滚支持。ROW必然支持快照，DCache支持么？ROW支持读取某个时间点的对象快照创建。
 
-## 问题 
- 1. dse进程故障时，engine实例的迁移，是所有的engine都会迁到一个节点上还是以实例为单位分散到不同的节点上？
- 1. 一个pool对应的engine在一个节点上可能存在多个？
- 1. pool和engine是多对多的映射关系？
- 1. 什么是ROW的重删？去重么？
- 1. 什么是ROW的数据压缩？为什么需要数据压缩？
- 1. 删除，压缩都是针对写的？
- 1. ROW中的对象的垃圾量，有效数据是什么概念？有多少个单位被标记为垃圾？
- 1. ROW必然支持快照，DCache支持么？
- 1. 大快照时候的逻辑对象是指什么？ 是UserObj而不是RowObj的意思吧？
- 1. UserObj的数据，attr，omap的信息存储如何实现？
- 1. 什么是ROCKDB compaction流程？
- 1. 将需要处理的IO按照访问区域进行空间隔离，保证多线程间访问的区域相互隔离而不会产生冲突。怎么做到？
