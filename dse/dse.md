@@ -1,4 +1,3 @@
-
 # 设计问题
 ## 为什么需要 DSE ？
 （1）从总体架构上，使用全闪模式，总体提高性能。
@@ -6,15 +5,13 @@
 所以，需要在用户数据和OSD之间加入一层控制，来解决上述问题。
 
 ## DSE 有哪些组件？
-dse, engine, dcache, row, dedup, gc, csd
+dse_ctrl, engine, dcache, row, dedup, gc。其中 dcache又可以细分为 ctrlproc，opproc，dm，lsm，destage，，rcache。
 
-## dcache 需要解决什么问题
+## dcache 需要解决什么问题？
 解决小IO的性能问题，将小IO先写入日志进行加速，随机写变成顺序写。
-
 
 ## 需要ROW 的主要目的是什么？
 ROW 就是将多个小IO合并成一个顺序大IO，提高写性能。
-
 
 # 实现问题
 ## DSE中的op分发怎么实现
@@ -28,7 +25,6 @@ dse进程故障处理（节点故障，或者进程重启，触发engine实例�
 2. 存储池的增减对应engine非变化。
 3. 节点故障导致的 engine的故障切换，是指框架部分的业务处理，不包括dcache，ROW，dedup等子模块的处理。
 
-## dse进程各个engine实例中，各个流程的IO信息统计，调试命令。
 
 ## DSE的IO路径是怎样的？
 （DSE）：dse_client可以是kcephfs, libcephfs, rbd, rgw等等。以rbd为例，rbd拿到engine_map之后，和对应节点上的DSE发消息，DSE转发消息到engine上。
@@ -49,8 +45,6 @@ row_obj就是这些用户对象的的聚合对象。ROW然后写OSD，数据一�
 ## user_obj 映射到 engine的方法
 user_obj 中，计算出bucket_id，bucket_id 可以算出在哪个engine上。
 
-## DSE进程的作用
-通过dse达到集群拓扑管理（节点增删，存储池增删）
 
 ## DSE 中processor的分配
 DSE有内置的processer的数量，参见接口`parse_module_processer()`，另外也会读取配置文件中的`processer_allocation`配置。
@@ -68,8 +62,10 @@ DSE中的bucket，类似于RADOS中的PG概念，用来存放对象。hobject_t�
 bucket_t是MEngineOp中的一个属性，MEngineOp定义在messages/MEngineOp.h中, 和 hobject_t hobj, engine_t engineid并列。
 bucket_t的实际作用是将hobject路由到正确的engine_id上。实例上的bucket数量和平均值偏差应该控制在在1/10以内。
 
-## DSE 中的 op分发模块
+## DSE 中的op分发模块
 dse进程中存在op分发模块，对象op路由到指定的engine上进行处理。
 
-## DSE需要做的故障处理
+## DSE 需要做的故障处理
 dse进程故障处理（节点故障，或者进程重启，触发engine实例切换），其中的engine实例需要重新分配，dse进程故障导致业务归零时间在15秒以内。
+
+## DSE 进程各个engine实例中，各个流程的IO信息统计，调试命令。
