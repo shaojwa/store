@@ -1,3 +1,10 @@
+#### 全闪大IO处理
+ROW在一定聚合时间内，会等待，等到到满4M，如果不满，就补齐到条带对齐后写入（比如条带大小是128K）。
+
+#### 全闪小IO
+小IO先写dcache，然后等待下刷。
+
+
 #### 从组建角度看 onestor架构
 onestor的架构中组件较多，分一下几层：
 1. pool层概念，这个pool是分布式的，所以有metapool，datapool，还有一个为了加速用的cachepool(为了避免混乱，现在已经不叫cachetier)。在这里，就有一个加速，就是cachepool是给datapool加速用的。
