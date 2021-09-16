@@ -16,3 +16,8 @@
 ```
 #### 是否支持销毁
 协程目前不支持销毁，目前看只能等task全部清零
+
+#### 设置日志
+```
+ceph daemon dse.<hostname> coro_setlog <n>
+```
