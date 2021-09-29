@@ -1,0 +1,1 @@
+libgo中processor_id=11，对应的thread，就是进程中processor_11对应的thread。
