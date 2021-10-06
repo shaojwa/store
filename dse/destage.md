@@ -1,3 +1,9 @@
+## 刷盘时，返回-ESHUTDOWN，destage如何处理？
+destage可以直接将ESHUTDOWN返回，这个没有问题。问题是。ROW在什么场景下返回ESHUTDOWN，什么场景下不返回ESHUTDOWN。
+如果是对应的OSD重启，或者关闭，那么返回ESHUTDOWN是合理的。但是如果只是因为user_obj对应的bucket并不是由当前的engine处理。
+那么就不应该返回ESHUTDOWN。
+
+
 ## destage 主要涉及的流程
 1. destage启动流程
 2. 正常刷盘流程：destage_objs()
@@ -22,7 +28,6 @@ delete_operation()
 Destage::insert_obj2_view()
 Destage::start_destage_task()
 ```
-
 
 ## 指定对象刷盘流程
 ```
@@ -83,7 +88,6 @@ destage_operation() 等待可以下刷的对象，有对象可以刷之后，执
 ```
 delete_operation()
 ```
-
 
 ## destage-operation task
 调用栈
