@@ -1,3 +1,4 @@
+```
 read_op(snap = HEAD or n)
 snap 1
 write_op(snap = HEAD, snap_seq = 1) // COW1->clone1, write->head
@@ -18,3 +19,4 @@ replay
 data1 read_row(hobject_t(snap = 2)) 
 -----
 write(snap = HEAD, snap_seq = 0) data:bbb 
+```
