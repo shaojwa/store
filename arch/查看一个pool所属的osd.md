@@ -34,3 +34,12 @@ ceph osd crush dump
      }
  ]
 ```
+或者指定rule name：
+```
+ceph osd crush dump diskpool0_rule
+```
+但是还是看不到pool对应的osd，所以，估计需要先找出pg：
+```
+ceph pg ls_by_pool .diskpool0.rbd
+```
+然后可以看到这些pg对应的osd。可以通过awk过滤出所有的osd，就可以看到是否一致。
