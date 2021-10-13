@@ -15,3 +15,9 @@ engine会告诉dcache，以参数的范式传入`dcache_bucket_migrate()`.
 先把需要下刷的bucket放到destage_view中的buckets_to_destage集合中。
 
 然后调用do_destage_bucket()去把涉及到的processer对应的destage_view的destage_sem唤醒，触发启动下刷。
+
+#### bucket没有刷下的一个问题
+
+原因分析：
+因为多个destage_view同时下刷对应bucket，但是只有在destage_bucket_sum为0时，才会把对应的view中的need_destage_bucket为false。
+这导致，多个view中，只有一个view结束指定对象刷盘，其他的view 都因为need_destage_bucket标记依然为true而导致无法启动正常的对象下刷。
