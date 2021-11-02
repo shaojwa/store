@@ -16,4 +16,5 @@
 |ceph osd pool stats|查看某个pool的 io|
 |ceph pg dump_stuck stale|查看stale的pg|
 |ceph pg <pg_id> query|查看一个pg开始scrub的时间|
-|ceph daemon osd.0 dump_mempools|||
+|ceph daemon osd.0 dump_mempools||
+|ceph tell osd.5 purge_data||
