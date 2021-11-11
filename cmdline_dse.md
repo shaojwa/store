@@ -30,3 +30,6 @@ ceph daemon dse.node73 engine 65539.0 perf dump rcache
 ```
 
 #### csd
+```
+ceph tell osd.5 purge_data
+```
