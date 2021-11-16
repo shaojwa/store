@@ -8,6 +8,7 @@ ceph daemon dse.node73 status
 ceph engine map
 ceph engine ls
 ceph engine dump [epoch_id]
+ceph engine dump 390
 ceph engine dump [epoch_id] | grep modify  # 查看 modify 信息
 ```
 
