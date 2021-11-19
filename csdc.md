@@ -1,9 +1,11 @@
+#### 流程
 ```
 LSM->
 CSDC(生MCSDCOp)->
 Build Session->
-sen_op
+send_op
 ```
+
 #### CSDC的对外接口
 ```
 csdc_obj_write()
