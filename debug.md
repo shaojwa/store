@@ -1,3 +1,6 @@
+#### plat-leader 调用rcache stat的频率
+15分钟一次
+
 ## engine
 #### engine 启动标记
 ```
