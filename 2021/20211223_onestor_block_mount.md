@@ -1,11 +1,11 @@
-## 先在【卷管理】下创建卷
+## 1. 先在【卷管理】下创建卷
 在存储池`blkpool0`下创建两个卷`lun0`,`lun1`
 
-## 然后在[卷映射]中依次如下配置
+## 2. 然后在[卷映射]中依次如下配置
 
-####  配置业务主机
-1. 选择【创建业务主机】，设置【名称】blkhost0，选择操作系统【linux】，【Agent IP】和【描述】都不用写。
-2. 填写【启动器】，启动器的查询命令如下：
+####  a. 配置业务主机
+-. 选择【创建业务主机】，设置【名称】blkhost0，选择操作系统【linux】，【Agent IP】和【描述】都不用写。
+-. 填写【启动器】，启动器的查询命令如下：
 ```
 [SDS_Admin@node60 dev]$ cat /etc/iscsi/initiatorname.iscsi
 InitiatorName=iqn.1994-05.com.redhat:4a4d75cfd042
@@ -15,10 +15,10 @@ InitiatorName=iqn.1994-05.com.redhat:92fb21dd818
 ```
 将`InitiatorName`填进去。
 
-#### 配置业务主机组
+#### b 配置业务主机组
 选择【新建】然后选择名称`blkhostgroup1`，创建成功。
 
-#### 映射管理
+#### c 映射管理
 选择业务主机组`blkhostgroup1`然后选择【添加】，吧`lun0`,`lun1`也添加到主机组`blkhostgroup1`中。
 
 在主机中组`blkhostgroup1`中的主机182.200.21.73上运行
@@ -28,7 +28,7 @@ $ sudo iscsiadm -m discovery -t st -p 172.16.21.60
 172.16.21.60:3260,1 iqn.2018-01.com.h3c.onestor:20c5611213f64c0d9500f7096d9f390e
 ```
 
-#### 配置完成之后的挂载和卸载
+#### d 配置完成之后的挂载和卸载
 挂载
 ```
 sudo iscsiadm -m node -T iqn.2018-01.com.h3c.onestor:20c5611213f64c0d9500f7096d9f390e -l
