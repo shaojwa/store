@@ -19,7 +19,7 @@ InitiatorName=iqn.1994-05.com.redhat:92fb21dd818
 选择【新建】然后选择名称`blkhostgroup1`，创建成功。
 
 #### (3) 映射管理
-选择业务主机组`blkhostgroup1`然后选择【添加】，吧`lun0`,`lun1`也添加到主机组`blkhostgroup1`中。
+选择业务主机组`blkhostgroup1`然后选择【添加】，把`blkhost0`添加到主机组`blkhostgroup1`中。
 
 在主机中组`blkhostgroup1`中的主机182.200.21.73上运行
 ```
