@@ -44,12 +44,12 @@ block-dev
 #### ROW池的作用
 ROW池给分布式rocksdb用。
 
-#### SCache的作用
-SCache是bluestore之上的一层，存储的是pg角度看到的对象的数据和元数据，此时，没有bluestore参与（应该没有涉及rockdb）。
+#### scache的作用
+scache是bluestore之上的一层，存储的是pg角度看到的对象的数据和元数据，此时，没有bluestore参与（应该没有涉及rockdb）。
 
-SCache是只有一个盘，为多个HDD盘做加速，所以SCache组件所在的盘一般为SSD，osd进程会将数据线写入scache, 然后再异步将数据从scache所在的SSD转入HDD。
+scache是只有一个盘，为多个HDD盘做加速，所以SCache组件所在的盘一般为SSD，osd进程会将数据线写入scache, 然后再异步将数据从scache所在的SSD转入HDD。
 
-SCache一般可以通过osd目录下的fcache_uuid找到partuuid，然后在`/dev/disk/by-partuuid`下找到软链接，最后就能找到分区，大小一般为几十G。
+scache一般可以通过osd目录下的fcache_uuid找到partuuid，然后在`/dev/disk/by-partuuid`下找到软链接，最后就能找到分区，大小一般为几十G。
 
 #### osd下的block连接
 block链接的是数据盘。
