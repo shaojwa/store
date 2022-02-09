@@ -1,5 +1,5 @@
 ## root概念
-一个root就是一个
+一个root就是一个硬盘池，或者更准确说是一个分区池。
 
 ## 元数据的概念
 落盘时才会有元数据的需求
@@ -8,7 +8,7 @@
 ```
 OSD-pg
 OSD-rep/EC
----
+----
 OSD:scache
 OSD:nlueStore-rocksdb-bluefs
 block-dev
@@ -28,6 +28,10 @@ SCache是bluestore之上的一层，存储的是pg角度看到的对象的数据
 
 ## osd下的block连接
 block链接的是数据盘。
+
+## block分区和scache的关系
+block分区会和scache进行绑定。
+
 
 ## 元数据分离部署时中osd目录下多出的2个链接
 元数据分离部署情况下多出来的block.db, block.wal
