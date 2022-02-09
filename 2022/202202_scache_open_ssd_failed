@@ -1,0 +1,13 @@
+把其中的一个盘格式化掉
+```
+mkfs.ext4 /dev/sdb
+```
+onestor中的每个osd都有一个目录，比如：
+```
+cd /var/lib/ceph/osd/ceph-0
+```
+下有一个block的软连接，链接的是数据盘。
+```
+block -> /dev/disk/by-partuuid/c820d2fa-adff-4d6c-81fc-b636e6862a98
+```
+其实，在别的环境下，可能还有block.db和block.wal。
