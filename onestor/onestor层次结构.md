@@ -1,5 +1,5 @@
 
-#### onestor组件
+#### ONEStor 组件
 onestor的架构中组件较多，分以下几层：
 
 pool层概念，这个pool是分布式的，所以有metapool，datapool，还有一个为了加速用的cachepool(为了避免混乱，现在已经不叫cachetier)。
@@ -46,7 +46,10 @@ ROW池给分布式rocksdb用。
 
 #### SCache的作用
 SCache是bluestore之上的一层，存储的是pg角度看到的对象的数据和元数据，此时，没有bluestore参与（应该没有涉及rockdb）。
+
 SCache是只有一个盘，为多个HDD盘做加速，所以SCache组件所在的盘一般为SSD，osd进程会将数据线写入scache, 然后再异步将数据从scache所在的SSD转入HDD。
+
+SCache一般可以通过osd目录下的fcache_uuid找到partuuid，然后在`/dev/disk/by-partuuid`下找到软链接，最后就能找到分区，大小一般为几十G。
 
 #### osd下的block连接
 block链接的是数据盘。
@@ -58,12 +61,12 @@ block分区会和scache进行绑定。
 #### 元数据分离部署时中osd目录下多出的2个链接
 元数据分离部署情况下多出来的block.db, block.wal
 ```
-block.db    存放rocksdb中的数据。
-block.wal   存放rockdb的日志。
+block.db    存放rocksdb中的数据, 分区大小一般为16/32G。
+block.wal   存放rockdb的日志，分区大小一般为2G。
 ```
 
 #### 对象存储在block-dev上的位置等信息也是放在rocksdb中么
 是的
 
 #### 其他参考
-参考1：[混闪缓存盘为什么压力比较大](store/2021/202110混闪缓存盘为什么压力比较大.md)
+参考1：[混闪缓存盘为什么压力比较大](/store/2021/202110混闪缓存盘为什么压力比较大.md)
