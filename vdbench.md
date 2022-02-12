@@ -23,7 +23,8 @@ UnknownHostException: hd=hd1,system=55.55.56.223
 在多slave模式下，需要有一个master，这个master需要明确的ip，这样slave才能和这个master通信。
 如果vdbench不能从hostname解析出ip，那么vdbench就无法执行多slave模式。
 
-#### no such file or directory'
+
+#### no such file or directory
 路径用相对路径，然后ssh到slave上之后，用相对路径就不一定能放到位对应目录的vdbench，所以相对路径在slave机子上有风险。
 
 
