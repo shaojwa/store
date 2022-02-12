@@ -10,5 +10,7 @@ cat /etc/ganesha/ganesha.conf
 
 #### show mount in nfs-client
 ```
-showmount -e
+# showmount -e 192.9.10.100
+Export list for 192.9.10.100:
+/data/nfs0 *
 ```
