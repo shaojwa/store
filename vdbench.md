@@ -1,11 +1,11 @@
 ## 术语
 #### master 和 slave
-```
-master解析配置，决定运行哪些负载，以及上报结果。master的ip从hostname解析出来。
-而实际执行负载的是slave，slave的ip我们在配置文件中设置。
-```
+master解析配置，决定运行哪些负载，以及上报结果。master的ip从hostname解析出来。而实际执行负载的是slave，slave的ip我们在配置文件中设置。
+
+
 #### Data Validation
 数据校验，用来检查数据一致性。
+
 
 ## 运行Vdbench
 #### 常见启动失败原因
@@ -31,6 +31,12 @@ UnknownHostException: hd=hd1,system=55.55.56.223
 master解析配置，实际执行负载的是slave，master的ip从hostname解析出来。slave的ip我们在配置文件中设置。
 
 
+## openflags
+这个参数可以用在很多定义中，包括SD/WD/FSD/FWD/RD中。
+
+在FSD中使用，就是在创建文件系统结构时，如何打开文件，这对于写入有明显的影响。
+
+
 ## HD 
 host definitions，主机定义，一般只会在多主机测试场景下用。
   * system	主机ip或者网络主机名。
@@ -43,13 +49,13 @@ storage definition，存储定义
 workload definition，工作负载定义 
 
 ## FSD
-filesystem definitio // 文件件系统定义
-```
-括fsd_name，参数包括，路径，深度，广度，文件数，文件大小。
-```
+filesystem definition， 文件件系统定义，参数包括，路径，深度，广度，文件数，文件大小。
+一般是需要指定fsd的名字的，如果是fsd=default，那么这个就是fsd的默认配置，其他命名fsd就会严重这个里面分配置。
+
+在 File system testing 一节中明确说道，FSD就是定义要生成的目录和文件结构的。
+
 #### shared
 shard是在FSD中用的参数，是定义文件系统用的，在有多少个slave的场景下，浙西slave就需要对文件系统中的文件进行分配，不同的lave访问不同的文件。
-
 
 ## FWD
 filelesystem workload definition，文件系统工作负载定义，文件系统测试用fwd，不是wd，fwd依赖fsd。
@@ -80,9 +86,8 @@ format=restart
 
 但是，`fwd=format`是什么意思？
 
-## 
-## 样例
 
+## 样例
 ```
 # step 1: Host Definition
 # hd is used in multi-vdbench instance
