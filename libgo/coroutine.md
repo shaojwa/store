@@ -1,3 +1,13 @@
+
+#### 查看processer的分配
+```
+# 查看不同的模块用哪些processer
+ceph daemon dse.server1 config get processer_allocation
+
+# 查看这些processer都绑定在哪些CPU上
+ceph daemon dse.server1 config get libgo_conf
+```
+
 ## dse中的processor和os中thread的对应
 一个processor创建之后就和一个thread绑定，所以一个processor对应的thread是固定的。
 
