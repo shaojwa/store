@@ -99,3 +99,16 @@ ID  CLASS WEIGHT   TYPE NAME                           STATUS REWEIGHT PRI-AFF
 pool_wenjian ## filesystem data pool
 Metadata     ## filesystem meta pool
 ```
+
+#### atop DSK row stats
+```
+busy: shows portion of time that unit was busy handling requests
+read: number of read requests issued
+write: number of write requests issued
+KiB/r: number of KiBytes per read
+KiB/w: number of KiBytes per write
+MBr/s: number of MiBytes per second throughput for reads
+MBw/s: number of MiBytes per second throughput for writes
+avq: average queue depth
+avio: average number of miliseconds needed by request for data transfer
+```
