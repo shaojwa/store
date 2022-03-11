@@ -1,3 +1,6 @@
+#### insert要注意
+insert 的范围不要和原来的有交集，不然会有断言，要么就用union_insert代替。
+
 #### 赋值运算不会影响源interval_set
 ```
 interval_set<uint64> old_ints = interval_set<uint64>(old_map);
