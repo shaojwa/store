@@ -1,3 +1,12 @@
+#### erase
+如果erase时需要释放元素，那么用`erase_and_dispose()`来完成。
+
+#### clear
+如果清空并释放list中所有元素，直接用`clear_and_dispose()`来完成。
+
+#### 避免多次用iterator看多次erase
+要避免这种情况。
+
 ## Check if the node in list
 ```
 [root@node32 build]# fg
