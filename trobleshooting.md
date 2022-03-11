@@ -1,7 +1,7 @@
 #### plat-leader 调用rcache stat的频率
 15分钟一次
 
-## engine
+
 #### engine 启动标记
 ```
 set_module_processer
@@ -22,9 +22,9 @@ create objecter
 #### 一个dse中的所有engine
 handle_engine_map中的
 ```
-dout(1) << __func__ << “ ip:” << host_ip << “ engines:”
- << enginemap->get_host_engines(host_ip) << endl;
+dout(1) << __func__ << “ ip:” << host_ip << “ engines:” << enginemap->get_host_engines(host_ip) << endl;
 ```
+
 #### engine 开始shutdown
 ```
 shutdown_engine wait
