@@ -35,5 +35,4 @@ DCache_shutdown
 失败后重试，如果一直失败就说明CSD那边有问题
 
 #### nspace
-只有对象存储的时候需要用，文件和块不需要。
-同样shard_id的对象，执行删除对象的线程也是通过shard_index进行hash
+只有对象存储的时候需要用，文件和块不需要。同样shard_id的对象，执行删除对象的线程也是通过shard_index进行hash。
