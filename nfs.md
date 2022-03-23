@@ -3,7 +3,7 @@
 ```
 mount -t iso9660 CentOS.iso /mnt/cdrom 
 ```
-2 edit /etc/yum.repos.d/CentOS-Base.repo the \[base\] part
+2. edit /etc/yum.repos.d/CentOS-Base.repo the \[base\] part
 ```
   [base]
   name=CentOS-$releasever - Base
@@ -11,7 +11,7 @@ mount -t iso9660 CentOS.iso /mnt/cdrom
   gpgcheck=1
   gpgkey=file:///mnt/cdrom/RPM-GPG-KEY-CentOS-7
 ```
-3.disable others:
+3. disable others:
 ```
 enabled=0
 ```
