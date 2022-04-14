@@ -1,4 +1,6 @@
 cachepool是ceph中的自有功能，原先是文件在用，文件的数据写入数据盘之前，先写入cachepool，cachepool会按照IO大小，决定要不要转发到数据盘。
 cachepool后续不排除在块中使用，目前已经有这方面尝试。而cachepool和datapool之间的数据同步不需要我们干预，ceph自己会做这一层处理。
 
+datapool一般是EC，cachepool一般是三副本。
+
 dcache是5.0版本的特性，不分文件和块都会使用。
