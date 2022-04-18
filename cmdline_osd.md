@@ -1,4 +1,20 @@
-#### 维护
+#### osd中的关键水位
+```
+ceph osd dump | grep ratio
+```
+
+#### osd 使用率查看
+下面这个很常用：
+```
+ceph osd df
+```
+但是居然还有这个命令
+```
+ceph osd df tree
+```
+不过`ceph osd -h`里是有的。
+
+### 维护
 |命令|功能|说明|
 |:-|:-|:-|
 |ceph tell osd.* injectargs --debug_osd |show value||
