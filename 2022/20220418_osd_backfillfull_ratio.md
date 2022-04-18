@@ -1,0 +1,1 @@
+如果达到这个水位，osd就不再允许backfill，会延后backfull。
