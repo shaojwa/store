@@ -2,35 +2,6 @@
 #### master 和 slave
 master解析配置，决定运行哪些负载，以及上报结果。master的ip从hostname解析出来。而实际执行负载的是slave，slave的ip我们在配置文件中设置。
 
-
-#### Data Validation
-数据校验，用来检查数据一致性。
-
-
-## 运行Vdbench
-#### 常见启动失败原因
-```
-1. 总文件容量过大，空间不足
-2. vdbench脚本中的java路径错误
-3. 集群模式，免密没有配置
-4. 集群模式，运行后显示slave连接不上，记得配/etc/hosts文件
-```
-
-
-#### no such file or directory
-路径用相对路径，然后ssh到slave上之后，用相对路径就不一定能放到位对应目录的vdbench，所以相对路径在slave机子上有风险。
-
-
-#### master 和 slave
-master解析配置，实际执行负载的是slave，master的ip从hostname解析出来。slave的ip我们在配置文件中设置。
-
-
-## openflags
-这个参数可以用在很多定义中，包括SD/WD/FSD/FWD/RD中。
-
-在FSD中使用，就是在创建文件系统结构时，如何打开文件，这对于写入有明显的影响。
-
-
 ## HD 
 host definitions，主机定义，一般只会在多主机测试场景下用。
   * system	主机ip或者网络主机名。
@@ -66,55 +37,3 @@ filelesystem workload definition，文件系统工作负载定义，文件系统
 	
 ## RD
 run definitions，rd依赖fwd。
-
-#### format
-这是RD中的参数，指定运行时的格式化配置。在执行每一个fwd之前都会先执行这个。
-
-```
-// 目录层次的完全创建以及所有文件的初始化，会先删除当前的文件结构，然后重建文件结构，之后再运行需要的RD
-format=yes 
-
-// 只会生成缺少的文件以及扩展大小不足的文件，并不会重新创建目录结构。
-format=restart
-```
-
-但是，`fwd=format`是什么意思？
-
-
-## 样例
-```
-# step 1: Host Definition
-# hd is used in multi-vdbench instance
-# hd=default,vdbench=./vdbench,user=root,shell=ssh
-# hd=hd1,system=192.169.84.11
-# hd=hd2,system=192.169.84.12
-
-# step 2: FileSystem Definition, non-default fsd is required.
-fsd=fsd1,anchor=/mnt/vdbench,depth=1,width=100,files=50,size=64k,shared=yes
-
-# step 3: Filesytem Workload Definition, non-default fwd is required.
-#fwd=format,xfersize=(32k,30,8k,30,4k,40),threads=64
-#fwd=default,xfersize=(32k,30,8k,30,4k,40),fileio=random,fileselect=random,rdpct=60,threads=64
-#fwd=fwd1,fsd=fsd1
-#fwd=fwd1,fsd=fsd1,host=hd1
-#fwd=fwd2,fsd=fsd1,host=hd2
-fwd=fwd1,fsd=fsd1,xfersize=(32k,30,8k,30,4k,40),fileio=random,fileselect=random,rdpct=60,threads=64
-
-# step 4: Run Definition
-rd=rd1,fwd=fwd*,fwdrate=max,format=restart,elapsed=600,interval=1
-```
-
-样例二：
-```
-messagescan=no
-hd=default,vdbench=/root/vdbench50406,user=root,shell=ssh
-hd=hd1,system=55.55.56.223
-hd=hd2,system=55.55.56.224
-hd=hd3,system=55.55.56.43
-hd=hd4,system=55.55.56.44
-hd=hd5,system=55.55.56.88
-
-fsd=fsd1,anchor=/mnt/opm,depth=1,width=1000,files=2000,size=32k,shared=yes
-fwd=fwd1,fsd=fsd1,xfersize=32k,operation=create,threads=1
-rd=rd1,fwd=fwd*,fwdrate=max,format=(restart,only),elapsed=10,interval=1
-```
