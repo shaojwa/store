@@ -16,13 +16,6 @@ master解析配置，决定运行哪些负载，以及上报结果。master的ip
 4. 集群模式，运行后显示slave连接不上，记得配/etc/hosts文件
 ```
 
-#### UnknownHostException
-```
-UnknownHostException: hd=hd1,system=55.55.56.223
-```
-在多slave模式下，需要有一个master，这个master需要明确的ip，这样slave才能和这个master通信。
-如果vdbench不能从hostname解析出ip，那么vdbench就无法执行多slave模式。
-
 
 #### no such file or directory
 路径用相对路径，然后ssh到slave上之后，用相对路径就不一定能放到位对应目录的vdbench，所以相对路径在slave机子上有风险。
