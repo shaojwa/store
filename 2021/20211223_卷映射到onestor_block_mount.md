@@ -7,9 +7,6 @@
 - 选择【创建业务主机】，设置【名称】blkhost0，选择操作系统【linux】，【Agent IP】和【描述】都不用写。
 - 填写【启动器】，启动器的查询命令如下：
 ```
-[SDS_Admin@node60 dev]$ cat /etc/iscsi/initiatorname.iscsi
-InitiatorName=iqn.1994-05.com.redhat:4a4d75cfd042
-
 [SDS_Admin@node73 ~]$  cat /etc/iscsi/initiatorname.iscsi
 InitiatorName=iqn.1994-05.com.redhat:92fb21dd818
 ```
