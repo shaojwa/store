@@ -24,11 +24,26 @@ iSCSI来源于SCSI。SCSI，wikipedia上看的话，最早1986年就开始指定
 172.16.21.73:3260,1 iqn.2018-01.com.h3c.onestor:1f370e6107474f82a56d7810199c1f50
 ```
 登入所有的target，下面的命令会尝试登入发现的所有target，现在我们有三个target，尽管这三个target的IQN相同，但是portal不同。
-```
-$ sudo iscsiadm -m node -l
-```
 
 #### target portal 和 target iqn唯一确定一个target
 
 #### 什么是IQN
  IQN = iSCSI Qualified Name
+
+#### login target
+```
+$ sudo iscsiadm -m node -l
+```
+
+#### logout target
+```
+$ sudo iscsiadm -m node -u
+```
+
+#### 什么是 node
+Open-iscsi uses the term node to refer to a portal on a target.
+
+#### 什么是 target
+target =  targetname + portal(= node)
+
+
