@@ -1,3 +1,11 @@
+* 优化下一代OSD中消息处理，利用批处理提高性能(https://github.com/ceph/ceph/pull/27430)
+* 改进下一代OSD消息分发机制的优化手段(https://github.com/ceph/ceph/pull/27690)
+* Ceph在Recovery时，如何最大程度保证业务访问的性能问题。目前在Recovery时，会造成集群性能下降比较严重，导致正常的业务I/O收到影响。
+* Ceph中Qos的机制问题。
+* 如何降低Ceph运维成本？目前Ceph开源版本在运维成本上对于传统运维人员还是有很高的门槛。
+
+
+
 1. ScatterLock.h代码学习
 1. ceph hash函数实现学习：
 ```
