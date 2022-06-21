@@ -1,0 +1,2 @@
+processer_allocation这个配置项的意思是，每个engine中，特定模块有多少个processer。比如dcache是3，表示每个引擎会有3个processer分配。
+而libgo_conf说的是，dse中每个模块分配的所有processer序号是什么，比如dcache是这个33-56。表示不管有多少个引擎，dcache的工作都是33-56这24个processer来承载。
