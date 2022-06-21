@@ -36,6 +36,3 @@ filelesystem workload definition，文件系统工作负载定义，文件系统
 	
 ## RD
 run definitions，rd依赖fwd。
-
-## block + thread=64
-块的方式，对一个lun来说，所有的io都是串行的，及时 thread有多个线程，最终也会串行化。
