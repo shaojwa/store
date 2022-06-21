@@ -1,1 +1,2 @@
-每个模块使用的processer数量，比如csd是1-32，一共32个processer。dcache用33-56共24个processer。
+dse中每个模块分配使用的processer编号，比如csd是1-32，一共32个processer。dcache用33-56共24个processer。
+这是这个节点上，所有dcache共用的，具体到一个engine中，只能用其中的一部分，比如其中3个。如果引擎输出超过8，那么就会重复循环利用这些processer。
