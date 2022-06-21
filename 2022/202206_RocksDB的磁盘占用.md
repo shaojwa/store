@@ -1,2 +1,5 @@
-RocksDB占用的空间是又BlueFS管理的，和BlueStore没有关系。BlueFS文件系统来管理裸盘。
-RocksDB分两个部分，一个是sst，一个是log文件（即WAL文件）。在B50版本上，sst和log文件是用不同的分区隔离开来的。
+RocksDB占用的空间是又BlueFS管理的，和BlueStore没有关系。就算是RocksDb和BlueStore共享的那部分数据，其实本省也是BlueStore在管理的。
+BlueStore的元数据，对象的元数据，都是放在RocksDB中的，所以RocksDB是极为关键的。
+
+RocksDB需要的数据，是通过BlueFS文件系统来管理的，BlueFSD自己管理裸盘。RocksDB需要的数据分两个部分，一个是sst，一个是log文件（即WAL文件）。
+在B50版本上，sst和log文件是用不同的分区隔离开来的。当然BlueFSD自己也有文件系统的日志，这个也是占用磁盘空间的。
