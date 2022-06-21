@@ -1,0 +1,1 @@
+每个模块使用的processer数量，比如csd是1-32，一共32个processer。dcache用33-56共24个processer。
