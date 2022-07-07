@@ -1,0 +1,9 @@
+默认512K，修改为1024K，没什么效果:
+```
+/sys/block/sdp/queue/max_secters_kb
+```
+还有一个
+```
+/sys/block/sdp/queue/nr_requests
+```
+默认256，改成512
