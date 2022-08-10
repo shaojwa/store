@@ -1,0 +1,1 @@
+现在在sbin下边的python组件都是没法加载的。所以说这里有两个改法，一个是让sbin下边的python组件支持加载，一个是吧ceph-disk组件的编译目录改掉，如果预期是安装到bin下边，当前的cmakelist配置是不合理的 
