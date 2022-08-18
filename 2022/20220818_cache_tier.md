@@ -1,5 +1,9 @@
+https://docs.ceph.com/en/latest/rados/operations/cache-tiering/
+
 #### tier 是什么意思
-tier 就是一个层级， 和layer的概念类似，layer好像更倾向于逻辑上的层级，tier更适用于物理层次上的层级。
+tier 就是一个层级， 和layer的概念类似，layer好像更倾向于逻辑上的层级（Logical layers）。
+tier更适用于物理层次上的层级（Physical tiers）In other words, tiers are the physical deployment of layers.
+
 - https://stackoverflow.com/questions/120438/whats-the-difference-between-layers-and-tiers
 
 
@@ -15,4 +19,9 @@ ceph client
 #### backing storage tier
 后端存储
 
-####
+#### cache tier的实现方式
+及时创建一个cache pool，对client来说 cache tier 和backing storage是透明的。
+
+
+#### 引入的角色 agent
+tiering agent determines when to flush objects from the cache to the backing storage tier.
