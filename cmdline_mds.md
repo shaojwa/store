@@ -21,3 +21,4 @@
 |ceph daemon mds.mds10 export dir <dir> <rank> |查看子树||
 |ceph daemon mds.mds10 get pindirs|查看静态pin||
 |ceph daemon mds.mds10 set max_mds 10 |||
+|ceph daemon mds.mds0 dump_historic_ops_by_duration |||
