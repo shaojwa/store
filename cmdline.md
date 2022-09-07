@@ -43,3 +43,15 @@ ceph tell <name (type.id)> <command> [options…]
 ```
 ceph tell osd.* config set rocksdb_deletion_entries 10000000
 ```
+
+#### 集群刚部署之后的状态
+```
+[SDS_Admin@node80 wsh]$ ceph engine dump
+epoch 5
+fsid c0c77afa-1371-4193-91ba-03191f0fd726
+created 2022-09-01 16:40:49.266079
+modified 2022-09-01 16:46:12.621050
+flags
+crush_version 5
+min_compat_client luminous
+```
