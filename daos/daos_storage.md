@@ -26,5 +26,9 @@ pool中target的数量和pool创建时指定的node数量，以及每个node中�
 #### Target
 一个server上一般含有的Target量级为10
 
-
 ## 安全实现
+#### dkey
+distribution key
+
+#### akey
+attribute key 
