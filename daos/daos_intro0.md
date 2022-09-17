@@ -1,3 +1,6 @@
+- https://daosio.atlassian.net/wiki/spaces/DC/pages/4836661105/Roadmap
+- https://github.com/daos-stack/daos
+
 #### 什么是DAOS
 - 为了高性能运算
 - 为了发挥硬件的性能。
@@ -48,7 +51,6 @@
 - 建议两个PCIe上的SSD的数量也是一样的
 - 最后，一台服务器拆成两个完全独立的数据引擎
 - 对称设计可以简化数据分布策略算法的简化
-
 
 #### DAOS的存储管理
 - DAOS内部大量使用B+ tree, EV-tree 来存储DAOS系统的元数据。
