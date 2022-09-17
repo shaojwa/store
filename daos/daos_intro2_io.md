@@ -5,7 +5,6 @@
 - 一个盘创建1-2个线程，避免pthread带来的开销。
 - 在一个PMDK的transaction里，把SSD中的存储分配和元数据一次性写入PMEM中。用这个transaction来避免space leak。
 
-
 #### 多副本支持
 - client 把请求（注意不是数据）发到primary-server上，这个primary-server把这个request转发给其他engine，通过RPC。
 - 每个engine读取完成数据的io，从client侧通过RDMA获取数据。
@@ -16,13 +15,11 @@
 - 每个objecter都有自己的primary-server（通过hash算法来选）。
 - 三副本来说，这个对象的primary-server是固定的，甚至是以对象中的key为单位来选举primary-server。
 
-
-#### rdb
+#### rdb （raft database）
 - RDB是只用来存系统的元数据，不存用户的元数据，和IO没有关系。
 - 一个pool选了64个节点，是哪64个节点，这些系统的元数据，是存在RDB里的。
 - 用户的元数据是存在container之内的，这些数据我们不走raft，raft太慢，走2pc。
 - leader的选举用的hash算法，是一致性hash。
-
 
 #### 扩容支持
 - 支持节点级的扩容，不支持加盘。8台服务器可以变成12台是支持的。但是没太服务器中的盘数目前不支持扩容。
