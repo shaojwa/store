@@ -13,8 +13,8 @@
 
 
 #### 算法
-- bplus-tree
-- tangle-tree
+- bplus-tree (used for key index)
+- rectangle-tree (used for value index)
 - 正态哈希
 - ring-based placement
 - jump consistent hash
