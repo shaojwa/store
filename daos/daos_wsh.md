@@ -3,14 +3,24 @@
 而且，元数据的节点并不是集群中的每个节点，只有一部分节点提供元数据服务。
 
 #### engine和node的关系是怎样的？
+noode中target的数量，就是engine的数量。一个node中有多个engine。
+
 #### 同一个pool中的不同对象，可以用不同的冗余策略？
+是的，冗余策略是基于对象的，每个对象可以有自己的冗余策略。
+
 #### 三个副本策略下，读数据三个副本都可以读, 怎么确定读哪个副本？
+任意选一个。
+
 #### write的io流程图中，途中涉及9个步骤，其中涉及的ULT好像只有2个左右，是哪两个？
+一个是poll ULT，一个是handle ULT
+
 #### 数据迁移的时候，down掉一个，是怎么保证只需要移动一个节点？
+jump persistent hash
+
 #### 什么是punch operations
 #### 什么是out-of-band
-## 存储模型 storage model
 
+## 存储模型 storage model
 
 #### 算法
 - bplus-tree (used for key index)
