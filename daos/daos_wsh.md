@@ -1,8 +1,3 @@
-#### 算法
-- bplus-tree
-- tangle-tree
-- 正态哈希
-
 #### 同一个对象如果3副本，会放到单个不同的engine上，但是这三个不同的engine一定是不同的节点吗？
 看数据的性质，如果是元数据，那么一定是高层的故障域，那么至少也是Node级别的，那样的化，数据一定是放到不同的Node上的。
 而且，元数据的节点并不是集群中的每个节点，只有一部分节点提供元数据服务。
@@ -14,9 +9,16 @@
 #### 数据迁移的时候，down掉一个，是怎么保证只需要移动一个节点？
 #### 什么是punch operations
 #### 什么是out-of-band
-
 ## 存储模型 storage model
 
+
+#### 算法
+- bplus-tree
+- tangle-tree
+- 正态哈希
+- ring-based placement
+- jump consistent hash
+#### jump consistent hash
 #### 1 node has N target (in Hard-ware)
 #### 1 pool spans N nodes (1 shard/target)
 pool中target的数量和pool创建时指定的node数量，以及每个node中的target数量有关系，是一个加权和。
@@ -74,9 +76,15 @@ one daos-system = N daos-server
 #### SPDK
 用于NVMe-SSD的访问
 #### Rank
-每个data-plane实例一个，
+每个data-plane实例一个
+### daos-agent
+客户节点上的守护进程。
+
 ## 通信
-control-plane 和data-plane之间，用UDS和dRPC(daos-rpc)
+三种通信通道dRPC，gRPC，CART
+- daos_server(control-plane)和 daos_engine(data-plane)之间，用dRPC(基于UDS)
+- daos_agent(client)和libdaos之间，用dRPC(基于UDS)
+- daos_agent和daos_server之间，用gRPC
+- libdaos和和daos_engine之间，用CART(基于RDMA，高带块，低延时) 
 
-
-
+总结一下，同一个节点上的服务之间用dRPC通信，不同节点上，同控制面的交互用gRPC，同数据面的交互用CART。
