@@ -1,7 +1,7 @@
 - 修改`/usr/lib/systemd/system/dse@.service中`的`LimitCORE=infinity`
 - 注释掉`/etc/sysctl.conf`配置文件的`kernel.core_used_pid = 0`这一行
 - 运行`sysctl -p`来使得sysctl配置生效。
-- 运行`duso systemctl daemon-reload`
+- 运行`sudo systemctl daemon-reload`
 - 重启dse来服务`systemctl restart dse.target`
 - 确认配置是否生效`cat /proc/$(pidof dse)/limits`
 
