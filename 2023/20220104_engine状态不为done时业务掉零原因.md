@@ -1,0 +1,1 @@
+engine和osd的分布式不一样么？为什么需要所有的engine状态都为done时才能下发业务？
