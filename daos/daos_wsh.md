@@ -3,7 +3,7 @@
 而且，元数据的节点并不是集群中的每个节点，只有一部分节点提供元数据服务。
 
 #### engine和node的关系是怎样的？
-noode中target的数量，就是engine的数量。一个node中有多个engine。
+node中target的数量，就是engine的数量。一个node中有多个engine。
 
 #### 同一个pool中的不同对象，可以用不同的冗余策略？
 是的，冗余策略是基于对象的，每个对象可以有自己的冗余策略。
