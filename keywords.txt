@@ -1,2 +1,2 @@
-io-throughout
+throughput
 bandwidth
