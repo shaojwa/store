@@ -1,0 +1,4 @@
+- https://docs.taosdata.com/
+- https://docs.taosdata.com/concept/
+- 数据模型， 纵向扩展，水平扩展。物联网，工业4.0，海量时序数据处理。
+- 一定带有时间戳，结构化， 唯一数据源。
